@@ -29,27 +29,6 @@ class DatosBanco(models.Model):
         db_table = 'datos_banco'
 
 
-class DjangoContentType(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    app_label = models.CharField(max_length=100, blank=True, null=True)
-    model = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    app = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
-
-
 class Empleado(models.Model):
     rut = models.CharField(primary_key=True, max_length=10)
     nombre = models.CharField(max_length=100)

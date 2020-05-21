@@ -82,9 +82,14 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'localhost/XE',
-        'USER': 'Hostal',
-        'PASSWORD': 'Hostal',
+        'NAME': 'localhost:1521/xe',
+        'USER': 'c##Hostal',
+        'PASSWORD': 'oracle',
+        'TEST': {
+            'USER': 'default_test',
+            'TBLSPACE': 'default_test_tbls',
+            'TBLSPACE_TMP': 'default_test_tbls_tmp',
+        }
     }
 }
 
