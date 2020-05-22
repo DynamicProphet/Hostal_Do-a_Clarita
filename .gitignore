@@ -1,2 +1,5 @@
 myvenv
 proyectoHostal/myvenv
+proyectoHostal/apps/__pycache__
+proyectoHostal/apps/migrations
+proyectoHostal/hostal/__pycache__
