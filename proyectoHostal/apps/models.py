@@ -210,8 +210,8 @@ class ProductosPedidos(models.Model):
 class ProductosSolicitados(models.Model):
     id = models.BigIntegerField(primary_key=True)
     cantidad = models.BigIntegerField(blank=True, null=True)
-    fk_id_producto = models.ForeignKey('RetiroProducto', models.DO_NOTHING, db_column='fk_id_producto', blank=True, null=True)
-    fk_retiro_producto = models.BigIntegerField(blank=True, null=True)
+    fk_id_producto = models.ForeignKey(Producto, models.DO_NOTHING, db_column='fk_id_producto', blank=True, null=True)
+    fk_retiro_producto = models.ForeignKey('RetiroProducto', models.DO_NOTHING, db_column='fk_retiro_producto', blank=True, null=True)
     
     def __str__(self):
         return str(self.id)
