@@ -1,4 +1,4 @@
 Django
 Pillow
 djangorestframework
-cx_Oracle
+cx-Oracle
