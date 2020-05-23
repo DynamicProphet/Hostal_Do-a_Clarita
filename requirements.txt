@@ -1,4 +1,4 @@
-Django==2.1
+Django
 Pillow
 djangorestframework
-cx_Oracle
+cx-Oracle
