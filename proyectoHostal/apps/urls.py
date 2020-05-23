@@ -1,4 +1,4 @@
-from django.urls import path, include, re_path
+from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -13,5 +13,5 @@ from rest_framework.urlpatterns import format_suffix_patterns
 #from .views import ProductViewSet, ProductViewSetDetail
 
 urlpatterns = [
-    path('', pagina_principal, name='pagina_principal'),
+    url(r'^$', pagina_principal, name='pagina_principal'),
 ]

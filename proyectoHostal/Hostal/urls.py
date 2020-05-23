@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.urls import path, re_path
+#from django.urls import path, re_path
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('apps.urls'), name='producto'),
+    url(r'^admin/', admin.site.urls),
+    url(r'^$', include('apps.urls'), name='producto'),
 ]
