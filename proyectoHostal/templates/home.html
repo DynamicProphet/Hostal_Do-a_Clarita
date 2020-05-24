@@ -3,10 +3,12 @@
 
 {% block title %}Home{% endblock %}
 
-{% block content %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
-{% for contenido in contenidos %}
+{% block content %}
 <section class="slide fade-6 kenBurns">
+{% for contenido in contenidos %}
+
     <div class="content">
       <div class="container">
         <div class="wrap">
@@ -24,8 +26,64 @@
         </div>
       </div>
     </div>
-    <div class="background" style="background-image:url({% static 'img/background/img-34.jpg' %})"></div>
-  </section>
 {% endfor %}
+<div class="background" style="background-image:url({% static 'img/background/img-home2.jpg' %})"></div>
+</section>
+
+<!-- Slide 2 -->
+<section class="slide fade-6 kenBurns" data-name="iniciar_sesion">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+          <h1>Iniciar Sesión</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-login.jpg' %});"></div>
+</section>
+
+<!-- Slide 3 -->
+<section class="slide fade-6 kenBurns" data-name="registrarse">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+          <h1>Registrarse</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
+</section>
+
+<!-- Slide 4 -->
+<section class="slide fade-6 kenBurns" data-name="servicios">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12 toCenter">
+          <h1>Servicios</h1>
+        </div>    
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
+</section>
+
+<!-- Slide 6 (#83) -->
+<section class="slide fade-6 kenBurns" data-name="quienes_somos">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-10-12">
+          <h1>Quienes Somos</h1>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-qsomos.jpg' %})"></div>
+</section>
 
 {% endblock %}
