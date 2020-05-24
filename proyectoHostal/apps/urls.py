@@ -6,12 +6,12 @@ from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 
 #Para importar las funciones que estan en views.py
-from .views import pagina_principal
+from .views import *
 
 #Para la apis
 from rest_framework.urlpatterns import format_suffix_patterns
 #from .views import ProductViewSet, ProductViewSetDetail
 
 urlpatterns = [
-    url(r'^', pagina_principal, name='pagina_principal'),
+    url(r'^', home, name='pagina_principal'),
 ]

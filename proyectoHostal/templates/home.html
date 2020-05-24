@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% for contenido in contenidos %}
+<section class="slide fade-6 kenBurns">
+    <div class="content">
+      <div class="container">
+        <div class="wrap">
+        
+          <div class="fix-12-12">
+            <ul class="flex fixedSpaces verticalCenter reverse">
+              <li class="col-6-12 left middle">
+                <h1 class="ae-1 fromLeft">{{ contenido.nombre }}</h1>
+                <p class="ae-2 fromLeft"><span class="opacity-8">{{ contenido.contenido }}</span></p>
+                <a class="button blue gradient ae-3 fromCenter cropLeft">Ver Mas</a>
+              </li>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="background" style="background-image:url({% static 'img/background/img-34.jpg' %})"></div>
+  </section>
+{% endfor %}
+
+{% endblock %}
