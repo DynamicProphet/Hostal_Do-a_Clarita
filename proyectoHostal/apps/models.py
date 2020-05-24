@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from django.utils.translation import ugettext as _
 
 class ContenidoWeb(models.Model):
     id = models.BigIntegerField(primary_key=True)
@@ -49,6 +49,9 @@ class Empleado(models.Model):
     class Meta:
         managed = False
         db_table = 'empleado'
+        permissions = (
+            ('empleado', _ ('Es empleado')),
+        )
 
 
 class Empresa(models.Model):

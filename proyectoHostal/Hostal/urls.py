@@ -22,5 +22,5 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('apps.urls'), name='producto'),
+    url(r'^', include('apps.urls'), name='producto'),
 ]

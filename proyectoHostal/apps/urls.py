@@ -13,5 +13,5 @@ from rest_framework.urlpatterns import format_suffix_patterns
 #from .views import ProductViewSet, ProductViewSetDetail
 
 urlpatterns = [
-    url(r'^$', pagina_principal, name='pagina_principal'),
+    url(r'^', pagina_principal, name='pagina_principal'),
 ]
