@@ -1,11 +1,17 @@
 from django.contrib import admin
 from .models import *
+from django import forms
 # Register your models here.
+
+class ContenidoWebForm(forms.ModelForm):
+    contenido = forms.CharField( widget=forms.Textarea )
+    class meta:
+        model = ContenidoWeb
 
 class ContenidoWebAdmin(admin.ModelAdmin):
     list_display = ('id','nombre','servicio')
     list_display_links = ('id','nombre','servicio')
-    
+    form = ContenidoWebForm
     def servicio(self,obj):
         return obj.fk_id_servicio
 
