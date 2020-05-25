@@ -16,5 +16,6 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('', home, name='pagina-principal'),
     path('registro/', registro, name='registro'),
-    path('quienes-somos/', quienes_somos, name='quienes-somos'),
+    path('quienes-somos/', QuienesSomos, name='quienes-somos'),
+    path('realizar-reserva/', RealizarReserva, name='reserva'),
 ]
