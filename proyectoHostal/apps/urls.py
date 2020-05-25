@@ -14,5 +14,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 #from .views import ProductViewSet, ProductViewSetDetail
 
 urlpatterns = [
-    path('', home, name='pagina_principal'),
+    path('', home, name='pagina-principal'),
+    path('registro/', registro, name='registro'),
+    path('quienes-somos/', quienes_somos, name='quienes-somos'),
 ]

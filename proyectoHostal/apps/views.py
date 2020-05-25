@@ -9,3 +9,11 @@ def pagina_principal(request):
 def home(request):
     contenidos = ContenidoWeb.objects.all()
     return render(request, 'home.html', {'contenidos': contenidos})
+
+def registro(request):
+    #Falta llenar
+    return render(request, 'registration/registro.html', {})
+
+def quienes_somos(request):
+    #Falta llenar
+    return render(request, 'quienes_somos.html', {})
