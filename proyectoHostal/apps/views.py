@@ -20,7 +20,7 @@ def RealizarReserva(request):
     return render(request, 'reserva/realizar_reserva.html', {})
 
 #CU6: Administrar Comedor
-def ComedorListar(request):
+'''def ComedorListar(request):
     menus = Menu.objects.all()
     return render(request, '.html', {'menus' : menus}) 
 
@@ -53,4 +53,4 @@ def ComedorEliminar(request,menu_id):
     instacia= Menu.objects.get(id=menu_id)
     instacia.delete()
     messages.warning(request, f'El Menu {instacia.tipo_menu} Se Ha Eliminado!')
-    return render(request, '.html', {}) 
+    return render(request, '.html', {}) '''
