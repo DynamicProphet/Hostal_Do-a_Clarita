@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
+from .forms import *
+from django.contrib import messages
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -20,37 +22,37 @@ def RealizarReserva(request):
     return render(request, 'reserva/realizar_reserva.html', {})
 
 #CU6: Administrar Comedor
-'''def ComedorListar(request):
+def ComedorListar(request):
     menus = Menu.objects.all()
-    return render(request, '.html', {'menus' : menus}) 
+    return render(request, 'Cocina/menu_listar.html', {'menus' : menus}) 
 
 def ComedorAgregar(request):
     if request.method == 'POST':
-        form = #Form(request.POST, request.FILES)
+        form = MenuForms(request.POST, request.FILES)
         if form.is_valid():
             form.save()            
             tipo_menu = form.cleaned_data.get('tipo_menu')
             messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
-            return redirect('/')
+            return redirect('/comedor/listar')
     else:
-        form = #Form()
-    return render(request, '.html', {}) 
+        form = MenuForms()
+    return render(request, 'Cocina/agregar_listar.html', {}) 
 
 def ComedorEditar(request,menu_id):
     instancia= Menu.objects.get(id=menu_id)
-    form=  #Form(instance=instancia)
+    form=  MenuForms(instance=instancia)
     if request.method=="POST":
-        form= #Form(request.POST, request.FILES, instance=instancia)
+        form= MenuForms(request.POST, request.FILES, instance=instancia)
         if form.is_valid():
             instancia= form.save(commit=False)
             instancia.save()
             tipo_menu = form.cleaned_data.get('tipo_menu')
             messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
-            return redirect('/')
-    return render(request, '.html', {}) 
+            return redirect('/comedor/listar')
+    return render(request, 'Cocina/editar_listar.html', {}) 
 
 def ComedorEliminar(request,menu_id):
     instacia= Menu.objects.get(id=menu_id)
     instacia.delete()
     messages.warning(request, f'El Menu {instacia.tipo_menu} Se Ha Eliminado!')
-    return render(request, '.html', {}) '''
+    return redirect('/comedor/listar') 
