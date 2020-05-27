@@ -1,6 +1,10 @@
-{% include 'base/base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+
+{% block content %}
 <section class="slide fade-6 kenBurns">
   <div class="content">
     <div class="container">
@@ -13,3 +17,4 @@
   </div>
   <div class="background" style="background-image:url({% static 'img/background/img-qsomos.jpg' %})"></div>
 </section>
+{% endblock %}
