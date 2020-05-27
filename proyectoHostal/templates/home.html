@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+
+{% for contenido in contenidos %}
+<section class="slide fade-6 kenBurns">
+  </div>
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+          <ul class="flex fixedSpaces verticalCenter reverse">
+            <li class="col-6-12 left middle">
+              <h1 class="ae-1 fromLeft">{{ contenido.nombre }}</h1>
+              <p class="ae-2 fromLeft"><span class="opacity-8">{{ contenido.contenido }}</span></p>
+              <a class="button blue gradient ae-3 fromCenter cropLeft">Ver Mas</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-home2.jpg' %})">
+</section>
+{% empty %}
+<section class="slide fade-6 kenBurns">
+</div>
+<div class="content">
+  <div class="container">
+    <div class="wrap">
+      <div class="fix-12-12">
+        <ul class="flex fixedSpaces verticalCenter reverse">
+          <li class="col-6-12 left middle">
+            <h1 class="ae-1 fromLeft">ERROR</h1>
+            <p class="ae-2 fromLeft"><span class="opacity-8">No hay contenido por el momento, Intente Mas Tarde</span></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="background" style="background-image:url({% static 'img/gallery-60-1.jpg' %})">
+</section>
+{% endfor %}
+
+
+{% endblock %}

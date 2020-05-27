@@ -11,7 +11,8 @@
     <title> Hostal Doña Clarita - {% block title %} {% endblock %}</title>
 
     <!-- Compressed Styles -->
-    <link href="{% static 'css/slides.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/slides.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
 
     <!-- jQuery 3.3.1 -->
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
@@ -101,28 +102,7 @@
 
 </svg>
 
-<!-- Panel Top #05 -->
-<nav class="panel top">
-  <div class="sections desktop">
-    <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-    <div class="center">
-      <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#videos">Videos</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#case">Case study</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#download">Download</a></li>
-      </ul>
-    </div>
-    <div class="right"><a class="button blue gradient" href="#">Profile</a><a class="button green gradient" href="https://freehtml5.co/slides" target="_blank">Get App</a></div>
-  </div>
-  <div class="sections compact hidden">
-    <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-    <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span</div>
-  </div>
-</nav>
-
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 <!-- Sidebar -->
 <nav class="sidebar" data-sidebar-id="1">
   <div class="close"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg></div>
@@ -151,8 +131,7 @@
     </ul>
   </div>
 </nav>
-{% block content %}
-{% endblock %}
+{% block content %} {% endblock %}
 <!-- Panel Bottom #01 -->
 <nav class="panel bottom forceMobileView">
   <div class="sections desktop">

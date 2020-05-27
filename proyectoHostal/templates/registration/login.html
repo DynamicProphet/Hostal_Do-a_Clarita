@@ -1,0 +1,41 @@
+{% include 'base/base.html' %}
+{% load static %}
+<form method="post" class="formulario" id="formulario_log_in">
+	{% csrf_token %}
+    <section class="slide fade-6 kenBurns">
+        <div class="content">
+            <div class="container">
+                <div class="wrap">
+                    <div class="fix-12-12">
+                        <h1>Iniciar Sesión</h1>
+                        <div class="form-row" id="linea1">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="form-group">
+                                    <label for="username">Nombre de usuario:</label>
+                                    <input class="form-control" type="text" name="username">
+                                </div>
+                            </div>
+                        </div>    
+                        <div class="form-row">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="form-group">
+                                    <label for="username">Contraseña:</label>
+                                    <input class="form-control" type="password" name="password">
+                            </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 col-md-offset-3" id="ajuste-contraseña">
+                                <div class="form-group">
+                                    <input class="btn btn-primary" type="submit" value="Ingresar">
+                                    <a href="/password_reset/">Olvidé mi contraseña</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="background" style="background-image:url({% static 'img/background/img-login.jpg' %});"></div>
+    </section>
+</form> 
