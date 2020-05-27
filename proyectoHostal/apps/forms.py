@@ -8,9 +8,11 @@ class MenuForms(forms.ModelForm):
             'id',
             'tipo_menu',
             'precio',
+            'documento_menu',
         ]
         labels = {
             'id' : 'ID',
             'tipo_menu' : 'Tipo Menu',
             'precio' : 'Precio',
+            'documento_menu': 'Adjunto Minuta',
         }
