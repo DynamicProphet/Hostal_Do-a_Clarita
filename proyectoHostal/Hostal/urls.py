@@ -24,4 +24,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.urls'), name='producto'),
     path('accounts/', include('django.contrib.auth.urls')),
+    re_path(r'^password_reset/$',
+        auth_views.PasswordResetView.as_view(
+            template_name="registration/password_reset_form.html",
+            email_template_name="registration/password_reset_email.html",
+            success_url=('/password_reset_done/'),
+        ),
+        name='password_reset'
+    ),
+    re_path(r'^password_reset_confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    re_path(r'^password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    re_path(r'^password_reset_complete/$',auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
 ]
