@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from django.contrib import messages
+import pandas as pd
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -60,7 +61,7 @@ def ComedorAgregar(request):
             return redirect('/comedor/listar')
     else:
         form = MenuForms()
-    return render(request, 'Cocina/agregar_listar.html', {}) 
+    return render(request, 'Cocina/menu_agregar.html', {'form': form}) 
 
 def ComedorEditar(request,menu_id):
     instancia= Menu.objects.get(id=menu_id)
@@ -73,10 +74,16 @@ def ComedorEditar(request,menu_id):
             tipo_menu = form.cleaned_data.get('tipo_menu')
             messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
             return redirect('/comedor/listar')
-    return render(request, 'Cocina/editar_listar.html', {}) 
+    return render(request, 'Cocina/menu_editar.html', {'form': form}) 
 
 def ComedorEliminar(request,menu_id):
     instacia= Menu.objects.get(id=menu_id)
     instacia.delete()
     messages.warning(request, f'El Menu {instacia.tipo_menu} Se Ha Eliminado!')
     return redirect('/comedor/listar') 
+
+def ComedorAdjunto(request,menu_id):
+    instacia= Menu.objects.get(id=menu_id)
+    excel = pd.read_excel(instacia.documento_menu.path)
+    tabla =  excel.to_html(bold_rows=True,index=False)
+    return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla}) 

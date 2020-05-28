@@ -2,3 +2,5 @@ Django
 Pillow
 djangorestframework
 cx-Oracle
+pandas
+xlrd

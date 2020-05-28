@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Cocina Adjunto{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div id="tabla" class="table-responsive">
+            {{ tabla|safe }}
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

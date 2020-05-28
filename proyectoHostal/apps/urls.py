@@ -25,7 +25,8 @@ urlpatterns = [
     path('comedor/', include([
         path('listar', ComedorListar, name="listar-menu"),
         path('agregar', ComedorAgregar , name="agregar-menu"),
-        path('editar/<str:tipo_id>', ComedorEditar, name="editar-menu"),
-        path('eliminar/<str:tipo_id>', ComedorEliminar, name="eliminar-menu"),
+        path('adjunto/<int:menu_id>', ComedorAdjunto, name="adjunto-menu"),
+        path('editar/<int:menu_id>', ComedorEditar, name="editar-menu"),
+        path('eliminar/<int:menu_id>', ComedorEliminar, name="eliminar-menu"),
     ])),
 ]

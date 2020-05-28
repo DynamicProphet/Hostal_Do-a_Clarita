@@ -16,6 +16,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Tipo Menu</th>
                         <th scope="col">Precio</th>
+                        <th scope="col">Adjunto Minuta</th>
                     </tr>
                 <tbody>
         
@@ -24,6 +25,11 @@
                         <td>{{ menu.id }}</td>
                         <td>{{ menu.tipo_menu }}</td>
                         <td>{{ menu.precio }}</td>
+                        {% if menu.documento_menu %}
+                        <td><a href="/comedor/adjunto/{{ menu.id }}">Ver Adjunto</a></td>
+                        {% else %}
+                        <td>N/A</td>
+                        {% endif %}
                         <td><a class="text-danger" href="/" onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a></td>
                         <td><a class="text-danger" href="/" >Modificar</a></td>
                     </tr>
