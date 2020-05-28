@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block title %}Reservas{% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
@@ -9,7 +10,7 @@
         <div class="container">
             <div class="wrap">
                 <div class="fix-12-12">
-                    <a class="button reserva-button" style="width:180px" href="/realizar-reserva/">
+                    <a class="button reserva-button" style="width:180px" href="/reserva/realizar-reserva/">
                         <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Reserva" width="30px" height="30px"><br>
                         Agregar Reserva
                     </a>

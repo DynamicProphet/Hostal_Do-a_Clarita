@@ -18,8 +18,21 @@ def QuienesSomos(request):
     return render(request, 'quienes_somos.html', {})
 
 def RealizarReserva(request):
-    #Falta llenar
-    return render(request, 'reserva/realizar_reserva.html', {})
+    user = request.user
+    if True:
+        if request.method == 'POST':
+            form = ReservaForms(request.POST) #, request.FILES)
+            if form.is_valid():
+                form.save()
+            return redirect('/reserva/registrar-habitación/')
+        else:
+            form = ReservaForms()
+        return render(request, 'reserva/realizar_reserva.html', {'form': form})
+    else:
+        return redirect('/')
+
+def RegistrarHabitacion(request):
+    return render(request, 'reserva/registrar_habitacion.html', {})
 
 def VerReservas(request):
     reservas = Reserva.objects.all().order_by('id')

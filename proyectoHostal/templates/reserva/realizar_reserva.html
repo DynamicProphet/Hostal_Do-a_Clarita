@@ -1,8 +1,27 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block title %}Reservas{% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
-
+<section class="slide fade-6 kenBurns">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+          <form method="POST" class="formulario" enctype="multipart/form-data">
+                <div>
+                    {% csrf_token %}
+                    <h1>Realizar Reserva</h1>
+                    {{ form.as_p }}
+                    <button type="submit">Agregar</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
+</section>
 {% endblock %}

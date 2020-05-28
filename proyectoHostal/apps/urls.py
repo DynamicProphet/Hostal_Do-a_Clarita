@@ -17,12 +17,15 @@ urlpatterns = [
     path('', home, name='pagina-principal'),
     path('registro/', registro, name='registro'),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
-    path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
-    path('ver-reservas/', VerReservas, name='ver-reservas'),
+    path('reserva/', include ([
+        path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
+        path('ver-reservas/', VerReservas, name='ver-reservas'),
+        path('registrar-habitación/', RegistrarHabitacion, name='registrar-habitacion'),
+    ])),
     path('comedor/', include([
         path('listar', ComedorListar, name="listar-menu"),
         path('agregar', ComedorAgregar , name="agregar-menu"),
         path('editar/<str:tipo_id>', ComedorEditar, name="editar-menu"),
         path('eliminar/<str:tipo_id>', ComedorEliminar, name="eliminar-menu"),
-    ]))
+    ])),
 ]
