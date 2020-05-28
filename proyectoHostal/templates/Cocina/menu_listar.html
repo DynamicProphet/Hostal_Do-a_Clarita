@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Cocina Listar{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div id="tabla" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tipo Menu</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                <tbody>
+        
+                    {% for menu in menus %}
+                    <tr>
+                        <td>{{ menu.id }}</td>
+                        <td>{{ menu.tipo_menu }}</td>
+                        <td>{{ menu.precio }}</td>
+                        <td><a class="text-danger" href="/" onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a></td>
+                        <td><a class="text-danger" href="/" >Modificar</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                </tbody>
+                </thead>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

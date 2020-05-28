@@ -1,7 +1,7 @@
 #from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 
 #Para importar el login_required y aplicarlo en el Crud
 from django.contrib.auth.decorators import login_required
@@ -19,4 +19,10 @@ urlpatterns = [
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
     path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
     path('ver-reservas/', VerReservas, name='ver-reservas'),
+    path('comedor/', include([
+        path('listar', ComedorListar, name="listar-menu"),
+        path('agregar', ComedorAgregar , name="agregar-menu"),
+        path('editar/<str:tipo_id>', ComedorEditar, name="editar-menu"),
+        path('eliminar/<str:tipo_id>', ComedorEliminar, name="eliminar-menu"),
+    ]))
 ]
