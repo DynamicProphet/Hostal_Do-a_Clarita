@@ -17,5 +17,6 @@ urlpatterns = [
     path('', home, name='pagina-principal'),
     path('registro/', registro, name='registro'),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
-    path('realizar-reserva/', RealizarReserva, name='reserva'),
+    path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
+    path('ver-reservas/', VerReservas, name='ver-reservas'),
 ]

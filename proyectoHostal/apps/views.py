@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 # Create your views here.
 
@@ -18,6 +18,17 @@ def QuienesSomos(request):
 def RealizarReserva(request):
     #Falta llenar
     return render(request, 'reserva/realizar_reserva.html', {})
+
+def VerReservas(request):
+    reservas = Reserva.objects.all().order_by('id')
+    user = request.user
+    if False: #Valida si el usuario es de tipo cliente
+        return render(request, 'reserva/ver_reservas.html', {})
+    elif True: #Valida si el usuario es de tipo empleado
+        return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
+    else:
+        return redirect('/')
+    
 
 #CU6: Administrar Comedor
 '''def ComedorListar(request):
