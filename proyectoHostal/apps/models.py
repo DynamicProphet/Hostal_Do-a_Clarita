@@ -49,9 +49,6 @@ class Empleado(models.Model):
     class Meta:
         managed = False
         db_table = 'empleado'
-        permissions = (
-            ('empleado', _ ('Es empleado')),
-        )
 
 
 class Empresa(models.Model):
