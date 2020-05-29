@@ -7,12 +7,15 @@
 
 {% block content %}
 <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div id="tabla" class="table-responsive">
-            {{ tabla|safe }}
-        </div>
+  <div class="container">
+    <div class="wrap">
+      <form target="_blank" action="{{ path }}">
+        <input style="float:right" type="submit" value="Descargar Esta Minuta" />
+      </form>
+      <div class="table-responsive">
+        {{ tabla|safe }}
       </div>
     </div>
+  </div>
 </div>
 {% endblock %}

@@ -19,6 +19,8 @@ from django.urls import path, re_path
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,4 +38,4 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     re_path(r'^password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     re_path(r'^password_reset_complete/$',auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

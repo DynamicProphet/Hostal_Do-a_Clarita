@@ -132,7 +132,7 @@ class HuespedesReserva(models.Model):
 
 class Menu(models.Model):
     tipo_menu = models.CharField(max_length=20)
-    documento_menu = models.FileField(max_length=100, blank=True, null=True)
+    documento_menu = models.FileField(max_length=100, blank=True, null=True,upload_to='Menu/')
     precio = models.BigIntegerField(blank=True, null=True)
 
     def __str__(self):

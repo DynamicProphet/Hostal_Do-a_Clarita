@@ -84,6 +84,8 @@ def ComedorEliminar(request,menu_id):
 
 def ComedorAdjunto(request,menu_id):
     instacia= Menu.objects.get(id=menu_id)
+    path = instacia.documento_menu.url
     excel = pd.read_excel(instacia.documento_menu.path)
+    excel = excel.fillna('')  
     tabla =  excel.to_html(bold_rows=True,index=False)
-    return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla}) 
+    return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 

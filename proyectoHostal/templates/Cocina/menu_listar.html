@@ -9,6 +9,12 @@
 <div class="content">
     <div class="container">
       <div class="wrap">
+        <form action="/comedor/agregar">
+            <input style="float:right" type="submit" value="Agregar Menu" />
+        </form>
+        <form target="_blank" action="/media/Menu/minuta_base.xlsx">
+            <input style="float:right" type="submit" value="Descargar Nueva Minuta" />
+        </form>
         <div id="tabla" class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -26,12 +32,12 @@
                         <td>{{ menu.tipo_menu }}</td>
                         <td>{{ menu.precio }}</td>
                         {% if menu.documento_menu %}
-                        <td><a href="/comedor/adjunto/{{ menu.id }}">Ver Adjunto</a></td>
+                        <td><a target="_blank" href="/comedor/adjunto/{{ menu.id }}">Ver Adjunto</a></td>
                         {% else %}
                         <td>N/A</td>
                         {% endif %}
-                        <td><a class="text-danger" href="/" onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a></td>
-                        <td><a class="text-danger" href="/" >Modificar</a></td>
+                        <td><a class="text-danger" href="/comedor/editar/{{ menu.id }}" >Editar</a></td>
+                        <td><a class="text-danger" href="/comedor/eliminar/{{ menu.id }}" onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a></td>
                     </tr>
                     {% endfor %}
                     </tr>
@@ -43,3 +49,14 @@
     </div>
 </div>
 {% endblock %}
+
+<!-- Texto Para el Modal
+    Ayuda:
+    - Desde esta ventana puede administrar los menús registrados
+    - el botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea agregar una nueva minuta, 
+    editar la minuta de un Menú ya existente
+    - para agregar un nuevo menú presione el botón de 'Agregar Menú' y rellene el formulario
+    - para editar un menú presione el link de editar correspondiente al registro que desee editar
+    - para eliminar un menú presione el link de eliminar correspondiente al registro, para este paso hace falta
+    aceptar el mensaje de confirmación
+ -->
