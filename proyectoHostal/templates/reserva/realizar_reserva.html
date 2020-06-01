@@ -11,13 +11,20 @@
       <div class="wrap">
         <div class="fix-12-12">
           <form method="POST" class="formulario" enctype="multipart/form-data">
-                <div>
-                    {% csrf_token %}
-                    <h1>Realizar Reserva</h1>
-                    {{ form.as_p }}
-                    <button type="submit">Agregar</button>
-                </div>
-            </form>
+              <div>
+                  {% csrf_token %}
+                  <h1>Realizar Reserva</h1>
+                  {{ form.as_p }}
+                  <button type="submit">Agregar</button>
+              </div>
+          </form>
+          <section class="paginacion">
+            <ul>
+              <li><a class="active">1</a></li>
+              <li><a>2</a></li>
+              <li><a>3</a></li>
+            </ul>
+          </section>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ urlpatterns = [
     path('reserva/', include ([
         path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
         path('ver-reservas/', VerReservas, name='ver-reservas'),
-        path('registrar-habitación/', RegistrarHabitacion, name='registrar-habitacion'),
+        path('registrar-habitacion/', RegistrarHabitacion, name='registrar-habitacion'),
     ])),
     path('comedor/', include([
         path('listar', ComedorListar, name="listar-menu"),
