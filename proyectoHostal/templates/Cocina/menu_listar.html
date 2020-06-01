@@ -6,48 +6,62 @@
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
-<div class="content">
-    <div class="container">
-      <div class="wrap">
-        <form action="/comedor/agregar">
-            <input style="float:right" type="submit" value="Agregar Menu" />
-        </form>
-        <form target="_blank" action="/media/Menu/minuta_base.xlsx">
-            <input style="float:right" type="submit" value="Descargar Nueva Minuta" />
-        </form>
-        <div id="tabla" class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Tipo Menu</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Adjunto Minuta</th>
-                    </tr>
-                <tbody>
-        
-                    {% for menu in menus %}
-                    <tr>
-                        <td>{{ menu.id }}</td>
-                        <td>{{ menu.tipo_menu }}</td>
-                        <td>{{ menu.precio }}</td>
-                        {% if menu.documento_menu %}
-                        <td><a target="_blank" href="/comedor/adjunto/{{ menu.id }}">Ver Adjunto</a></td>
-                        {% else %}
-                        <td>N/A</td>
-                        {% endif %}
-                        <td><a class="text-danger" href="/comedor/editar/{{ menu.id }}" >Editar</a></td>
-                        <td><a class="text-danger" href="/comedor/eliminar/{{ menu.id }}" onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a></td>
-                    </tr>
-                    {% endfor %}
-                    </tr>
-                </tbody>
-                </thead>
-            </table>
+<section class="slide fade-6 kenBurns">
+    <div class="content">
+        <div class="container">
+            <div class="wrap">
+                <div class="fix-12-12">
+                    <a class="button reserva-button" target="_blank" style="width:180px" href="/comedor/agregar">
+                        <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Menu" width="30px"
+                            height="30px"><br>
+                        Agregar Menu
+                    </a>
+                    <a class="button reserva-button" target="_blank" style="width:180px"
+                        href="/media/Menu/minuta_base.xlsx">
+                        <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
+                            height="30px"><br>
+                        Nueva Minuta
+                    </a>
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr class="thtable">
+                                <td style="width: 55px;"><b>ID</b></td>
+                                <td><b>TIPO MENU</b></td>
+                                <td><b>PRECIO</b></td>
+                                <td><b>ADJUNTO MINUTA</b></td>
+                                <td><b>ACCIÓN</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if menus %}
+                            {% for menu in menus %}
+                            <tr class = "tbtable">
+                                <td>{{ menu.id }}</td>
+                                <td>{{ menu.tipo_menu }}</td>
+                                <td>{{ menu.precio }}</td>
+                                {% if menu.documento_menu %}
+                                <td><a class="button table-button" target="_blank" href="/comedor/adjunto/{{ menu.id }}">Ver.</a></td>
+                                {% else %}
+                                <td>N/A</td>
+                                {% endif %}
+                                <td>
+                                    <a class="button table-button" href="/comedor/editar/{{ menu.id }}">Editar</a>
+                                    <a class="button table-button" href="/comedor/eliminar/{{ menu.id }}"
+                                    onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <h1>No hay registros de Menus</h1>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-</div>
+    <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
+</section>
 {% endblock %}
 
 <!-- Texto Para el Modal
