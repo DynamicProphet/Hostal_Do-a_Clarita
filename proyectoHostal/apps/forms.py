@@ -2,6 +2,9 @@ from django.forms import ModelForm
 from django import forms
 from .models import *
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class MenuForms(forms.ModelForm):
     class Meta:
         model= Menu
@@ -25,16 +28,17 @@ class ReservaForms(forms.ModelForm):
             'id',
             'fecha_inicio',
             'fecha_termino',
+            'plantilla_huespedes',
             'fk_id_empresa',
         ]
         labels = {
             'id': 'ID',
             'fecha_inicio': 'Fecha Inicio',
             'fecha_termino': 'Fecha Termino',
+            'plantilla_huespedes': 'Plantilla de Huespedes',
             'fk_id_empresa': 'ID Empresa',
         }
         widgets = {
-            'id': forms.TextInput(attrs={'class':'form-control'}),
-            'fecha_inicio': forms.DateTimeInput(attrs={'class':'datepicker'}),
-            'fecha_termino': forms.DateTimeInput(attrs={'class':'datepicker'}),
+            'fecha_inicio': DateInput(),
+            'fecha_termino': DateInput(),
         }

@@ -22,10 +22,10 @@ def RealizarReserva(request):
     user = request.user
     if True:
         if request.method == 'POST':
-            form = ReservaForms(request.POST) #, request.FILES)
+            form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-            return redirect('/reserva/registrar-habitación/')
+            return redirect('/reserva/registrar-habitacion/')
         else:
             form = ReservaForms()
         return render(request, 'reserva/realizar_reserva.html', {'form': form})
