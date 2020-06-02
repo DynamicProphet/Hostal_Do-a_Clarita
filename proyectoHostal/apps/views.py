@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from django.views.generic import ListView
 from django.contrib import messages
 import pandas as pd
 # Create your views here.
@@ -19,6 +20,8 @@ def QuienesSomos(request):
     return render(request, 'quienes_somos.html', {})
 
 def RealizarReserva(request):
+    #Falta validar si hay habitaciones disponibles
+    #Falta validaciones que la cantidad de huespedes no puede ser mayor a la cantidad de habitaciones
     user = request.user
     if True:
         if request.method == 'POST':
@@ -33,7 +36,8 @@ def RealizarReserva(request):
         return redirect('/')
 
 def RegistrarHabitacion(request):
-    return render(request, 'reserva/registrar_habitacion.html', {})
+    habitaciones = Habitacion.objects.filter(estado='disponible')
+    return render(request, 'reserva/registrar_habitacion.html', {'habitaciones': habitaciones})
 
 def VerReservas(request):
     reservas = Reserva.objects.all().order_by('id')
@@ -95,3 +99,15 @@ def ComedorAdjunto(request,menu_id):
     tabla =  excel.to_html(bold_rows=True,index=False,
     classes="table table-responsive",justify='center',table_id="tabla_pandas")
     return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 
+
+
+class ReservaView(ListView):
+    model = Reserva
+    template_name = 'reserva/reserva_list.html'
+    context_object_name = "reservas"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reservas'] = Reserva.objects.all()  # or whatever
+        context['habitaciones'] = Habitacion.objects.filter(estado='disponible')  # or whatever
+        return context

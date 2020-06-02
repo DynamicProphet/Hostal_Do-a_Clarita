@@ -10,7 +10,37 @@
     <div class="container">
       <div class="wrap">
         <div class="fix-12-12">
-            {{user.groups.all.0|upper}}
+            <h1>Reservar Habitación</h1>
+            <table class="table table-responsive">
+                <thead>
+                    <tr class = "thtable">
+                        <td><b>NUMERO HABITACIÓN</b></td>
+                        <td><b>TIPO CAMA</b></td>
+                        <td><b>ACCESORIOS</b></td>
+                        <td><b>PRECIO</b></td>
+                        <td><b>ESTADO</b></td>
+                        <td><b>ACCIÓN</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if habitaciones %}
+                        {% for habitacion in habitaciones %}
+                        <tr class = "tbtable">
+                            <td>{{ habitacion.numero_habitacion }}</td>
+                            <td>{{ habitacion.tipo_cama }}</td>
+                            <td>{{ habitacion.accesorios }}</td>
+                            <td>{{ habitacion.precio }}</td>
+                            <td>{{ habitacion.estado }}</td>
+                            <td>
+                                <a class="button table-button" href="/editar/{{reserva.id}}/">Reservar</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                    <h1>No hay habitaciones disponibles</h1>
+                    {% endif %}
+                </tbody>
+            </table>
             <section class="paginacion">
                 <ul>
                 <li><a>1</a></li>

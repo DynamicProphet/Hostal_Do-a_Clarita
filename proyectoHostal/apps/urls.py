@@ -18,7 +18,7 @@ urlpatterns = [
     path('registro/', registro, name='registro'),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
     path('reserva/', include ([
-        path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
+        path('realizar-reserva/', ReservaView.as_view(), name='realizar-reserva'),
         path('ver-reservas/', VerReservas, name='ver-reservas'),
         path('registrar-habitacion/', RegistrarHabitacion, name='registrar-habitacion'),
     ])),

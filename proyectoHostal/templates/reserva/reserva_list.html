@@ -1,0 +1,101 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reservas{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+<section class="slide fade-6 kenBurns">
+    <div class="content">
+        <div class="container">
+            <div class="wrap">
+                <div class="fix-12-12">
+                    <div class="container">
+                        <h1>Realizar Reserva</h1>
+                        <div class="row">
+                        <div class="col-md-4 ">
+                            <h3>Reservar</h3>
+                            <form id="addUser" action="">
+                            <div class="form-group">
+                                Fecha Inicio
+                                <input class="form-control" type="date" name="fecha_inicio" placeholder="Fecha Inicio" required>
+                            </div>
+                            <div class="form-group">
+                                Fecha Termino
+                                <input class="form-control" type="date" name="fecha_termino" placeholder="Fecha Termino" required>
+                            </div>
+                            <div class="form-group">
+                                Plantilla de Huespedes
+                                
+                                <input class="form-control" type="file" name="plantila_huespedes" placeholder="Plantilla Huespedes" required>
+                            </div>
+                            <br>
+                            <button class="btn btn-primary form-control" type="submit">Registrar</button>
+                            </form>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-md-8">
+                            <h3>Habitaciones</h3>
+                            <table id="userTable" class="table table-responsive">
+                                <tr class = "thtable">
+                                    <td><b>NUMERO HABITACIÓN</b></td>
+                                    <td><b>TIPO CAMA</b></td>
+                                    <td><b>ACCESORIOS</b></td>
+                                    <td><b>PRECIO</b></td>
+                                    <td><b>ESTADO</b></td>
+                                    <td><b>ACCIÓN</b></td>
+                                </tr>
+                                {% if habitaciones %}
+                                    {% for habitacion in habitaciones %}
+                                    <tr id="habitacion-{{habitacion.id}}">
+                                        <td class="" name="address">{{habitacion.numero_habitacion}}</td>
+                                        <td class="userAge userData" name="age">{{ habitacion.tipo_cama}}</td>
+                                        <td class="userAddress userData" name="address">{{habitacion.accesorios}}</td>
+                                        <td class="userAge userData" name="age">{{habitacion.precio}}</td>
+                                        <td class="userAddress userData" name="address">{{habitacion.estado}}</td>
+                                        <td align="center">
+                                            <button class="btn btn-success form-control" onClick="editUser({{user.id}})" data-toggle="modal" data-target="#myModal")">Reservar</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    No hay habitaciones disponibles
+                                {% endif %}
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Update User</h4>
+                            </div>
+                            <form id="updateUser" action="">
+                            <div class="modal-body">
+                                <input class="form-control" id="form-id" type="hidden" name="formId"/>
+                                <label for="name">Name</label>
+                                <input class="form-control" id="form-name" type="text" name="formName"/>
+                                <label for="address">Address</label>
+                                <input class="form-control" id="form-address" type="text" name="formAddress"/>
+                                <label for="age">Age</label>
+                                <input class="form-control" id="form-age" type="number" name="formAge" min=10 max=100/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" >Save changes</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="background" style="background-image:url({% static 'img/background/img-home2.jpg' %})"></div>
+</section>
+{% endblock %}
