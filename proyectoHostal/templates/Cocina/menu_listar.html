@@ -22,6 +22,10 @@
                             height="30px"><br>
                         Nueva Minuta
                     </a>
+                    <a class="button reserva-button" id="myBtn" style="width:180px; float: right;">
+                        <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+                        Ayuda
+                    </a>
                     <table class="table table-responsive">
                         <thead>
                             <tr class="thtable">
@@ -35,19 +39,20 @@
                         <tbody>
                             {% if menus %}
                             {% for menu in menus %}
-                            <tr class = "tbtable">
+                            <tr class="tbtable">
                                 <td>{{ menu.id }}</td>
                                 <td>{{ menu.tipo_menu }}</td>
                                 <td>{{ menu.precio }}</td>
                                 {% if menu.documento_menu %}
-                                <td><a class="button table-button" target="_blank" href="/comedor/adjunto/{{ menu.id }}">Ver.</a></td>
+                                <td><a class="button table-button" target="_blank"
+                                        href="/comedor/adjunto/{{ menu.id }}">Ver.</a></td>
                                 {% else %}
                                 <td>N/A</td>
                                 {% endif %}
                                 <td>
                                     <a class="button table-button" href="/comedor/editar/{{ menu.id }}">Editar</a>
                                     <a class="button table-button" href="/comedor/eliminar/{{ menu.id }}"
-                                    onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a>
+                                        onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -59,9 +64,27 @@
                 </div>
             </div>
         </div>
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span id="closeBTN" class="close">&times;</span>
+                <p>Ayuda:</p>
+                <p>- Desde esta ventana puede administrar los menús registrados:</p>
+                <p>- El botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea
+                    agregar una nueva minuta o
+                    editar la minuta de un Menú ya existente.</p>
+                <p>- Para agregar un nuevo menú presione el botón de 'Agregar Menú' y rellene el formulario.
+                </p>
+                <p>- Para editar un menú presione el link de editar correspondiente al registro que desee
+                    editar.</p>
+                <p> - Para eliminar un menú presione el link de eliminar correspondiente al registro, para
+                    este paso hace falta aceptar el mensaje de confirmación.</p>
+            </div>
+        </div>
     </div>
     <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
 </section>
+<script src="{% static 'js/modal.js' %}"></script>
 {% endblock %}
 
 <!-- Texto Para el Modal

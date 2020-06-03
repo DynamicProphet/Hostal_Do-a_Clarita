@@ -1,66 +1,108 @@
 .navbar-position {
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
-.table, th, td {
-    border: 3px solid black;
-    background-color: #BCA993;
-    color: black;
+.table,
+th,
+td {
+  border: 3px solid black;
+  background-color: #bca993;
+  color: black;
 }
 .thtable td {
-    padding: 10px;
+  padding: 10px;
 }
 #tabla_pandas td {
-    padding: 10px;
+  padding: 10px;
 }
-.tbtable td{
-    vertical-align: middle;
+.tbtable td {
+  vertical-align: middle;
 }
-.table-button{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    vertical-align: unset;
-    width: 98px;
-    padding: 10px 18px 11px !important;
-    color: black;
-    opacity: 0.5;
-    background-color: white;
+.table-button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  vertical-align: unset;
+  width: 98px;
+  padding: 10px 18px 11px !important;
+  color: black;
+  opacity: 0.5;
+  background-color: white;
 }
-.reserva-button{
-    border: 2px solid black;
-    float: left;
-    padding: 9px 10px 11px !important;
-    background-color: white;
-    opacity: 0.5;
-    color: black;
+.reserva-button {
+  border: 2px solid black;
+  float: left;
+  padding: 9px 10px 11px !important;
+  background-color: white;
+  opacity: 0.5;
+  color: black;
 }
 .paginacion {
-	margin:20px 0;
+  margin: 20px 0;
 }
- 
+
 .paginacion ul {
-	list-style:none;
-	text-align: center;
+  list-style: none;
+  text-align: center;
 }
- 
+
 .paginacion ul li {
-	display:inline-block;
-	margin-right:10px;
+  display: inline-block;
+  margin-right: 10px;
 }
- 
+
 .paginacion ul li a {
-	display:block;
-	padding:10px 20px;
-	color:#fff;
-	background:#024959;
-	text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  background: #024959;
+  text-decoration: none;
 }
- 
+
 .paginacion ul li a:hover {
-	background:#037E8C;
+  background: #037e8c;
 }
- 
+
 .paginacion ul li .active {
-	background:#037E8C;
-	font-weight:bold;
+  background: #037e8c;
+  font-weight: bold;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.1); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #bca993;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+.modal-content p{
+    color: black;
+}
+/* The Close Button */
+.close {
+  color: rgb(0, 0, 0);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
