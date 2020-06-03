@@ -38,11 +38,38 @@ def RegistrarHabitacion(request):
 
 def VerReservas(request):
     reservas = Reserva.objects.all().order_by('id')
-    if request.user.groups.filter(name__in = "CLIENTE").exists(): #Valida si el usuario es de tipo cliente
+    if request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
         #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
         return render(request, 'reserva/ver_reservas.html', {'reservas:': reservas})
-    elif request.user.groups.filter(name__in = "SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
+    elif request.user.groups.filter(name="SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
         return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
+    else:
+        return redirect('/')
+
+def EditarReserva(request, id_reserva):
+    reserva = Reserva.objects.get(id=id_reserva)
+    user = request.user
+    if request.user.groups.filter(name = "CLIENTE").exists():
+        if request.method == "GET":
+            form = ReservaForms(instance=reserva)
+        else:
+            form = ReservaForms(request.POST, request.FILES,instance=reserva)
+            if form.is_valid():
+                reserva = form.save(commit=False)
+                reserva.save()
+            return redirect('reserva/ver-reservas/')
+        return render(request, "reserva/modificar_reserva.html", {'form': form})
+    else:
+        return redirect('/') 
+
+def CancelarReserva(request, id_reserva):
+    reserva = Reserva.objects.get(id=id_reserva)
+    user = request.user
+    if request.user.groups.filter(name = "CLIENTE").exists():
+        if request.method == 'POST':
+            reserva.delete()
+            return redirect('reserva/ver-reservas/')
+        return render(request, 'reserva/eliminar_reserva.html', {'reserva': reserva})
     else:
         return redirect('/')
     

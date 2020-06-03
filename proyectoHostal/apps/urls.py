@@ -20,6 +20,8 @@ urlpatterns = [
     path('reserva/', include ([
         path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
         path('ver-reservas/', VerReservas, name='ver-reservas'),
+        path('editar/<int:id_reserva>/', EditarReserva, name='editar-reservas'),
+        path('cancelar/<int:id_reserva>/', CancelarReserva, name='cancelar-reservas'),
         path('registrar-habitacion/', RegistrarHabitacion, name='registrar-habitacion'),
     ])),
     path('comedor/', include([

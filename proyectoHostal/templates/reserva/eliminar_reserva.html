@@ -1,0 +1,28 @@
+
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reservas{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+<section class="slide fade-6 kenBurns">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+            <form method="post" class="formulario">
+                <div class="mensaje_confirmacion">
+                    {% csrf_token %}
+                    <h3>¿Desea cancelar la reserva para el día {{ reserva.fecha_inicio }}?</h3>	
+                    <button class="btn btn-danger" type="submit">Sí, Cancelar</button>
+                    <a class= "btn btn-default" href="/reserva/ver-reserva/">Volver</a>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
+</section>
+{% endblock  %}

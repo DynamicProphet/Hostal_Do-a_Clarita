@@ -38,8 +38,8 @@
                                     {% endif %}
                                     {% if user.groups.all.0|upper == 'CLIENTE' %}
                                         <td>
-                                            <a class="button table-button" href="/editar/{{reserva.id}}/">Editar</a>
-                                            <a class="button table-button" href="/cancelar/{{reserva.id}}/">Cancelar</a>
+                                            <a class="button table-button" href="/reserva/editar/{{reserva.id}}/">Editar</a>
+                                            <a class="button table-button" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
                                         </td>
                                     {% elif user.groups.all.0|upper == 'SECRETARIA' %}
                                         <td>
@@ -50,7 +50,7 @@
                                 </tr>
                                 {% endfor %}
                             {% else %}
-                            <h1>No hay registros de productos</h1>
+                            <h1>No hay registros de reservas</h1>
                             {% endif %}
                         </tbody>
                     </table>
