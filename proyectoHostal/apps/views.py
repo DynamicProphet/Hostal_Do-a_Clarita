@@ -3,6 +3,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 import pandas as pd
+from django.contrib.auth.models import User, Group
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -25,7 +26,7 @@ def RealizarReserva(request):
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-            return redirect('/reserva/registrar-habitacion/')
+            return redirect('/')
         else:
             form = ReservaForms()
         return render(request, 'reserva/realizar_reserva.html', {'form': form})
@@ -37,10 +38,10 @@ def RegistrarHabitacion(request):
 
 def VerReservas(request):
     reservas = Reserva.objects.all().order_by('id')
-    user = request.user
-    if False: #Valida si el usuario es de tipo cliente
-        return render(request, 'reserva/ver_reservas.html', {})
-    elif True: #Valida si el usuario es de tipo empleado
+    if request.user.groups.filter(name__in = "CLIENTE").exists(): #Valida si el usuario es de tipo cliente
+        #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
+        return render(request, 'reserva/ver_reservas.html', {'reservas:': reservas})
+    elif request.user.groups.filter(name__in = "SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
         return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
     else:
         return redirect('/')

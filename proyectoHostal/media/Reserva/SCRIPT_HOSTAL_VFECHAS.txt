@@ -1,0 +1,472 @@
+﻿---SCRIPT HOSTAL - GRUPO 2
+
+--TABLAS
+CREATE TABLE tipo_empleado(
+ID INT, CONSTRAINT tipoemp_id_pk PRIMARY KEY(ID),
+tipo_empleado VARCHAR2(20) CONSTRAINT tipoemp_tipo_nn NOT NULL
+);
+
+CREATE TABLE datos_banco(
+	numero_cuenta INT,
+	banco VARCHAR2(20),
+	tipo_cuenta VARCHAR2(20)
+);
+
+ALTER TABLE datos_banco ADD CONSTRAINT dbanc_pk PRIMARY KEY ( numero_cuenta );
+
+CREATE TABLE empleado(
+	rut VARCHAR2(10),
+	nombre VARCHAR2(100) NOT NULL,
+	email VARCHAR2(50) NOT NULL,
+	numero VARCHAR2(20) NOT NULL,
+	fk_id_tipo_empleado INT,
+	fk_numero_cuenta INT
+);
+
+ALTER TABLE empleado ADD CONSTRAINT emp_pk PRIMARY KEY ( rut );
+ALTER TABLE empleado ADD CONSTRAINT emp_tipo_fk FOREIGN KEY ( fk_id_tipo_empleado ) REFERENCES tipo_empleado( ID );
+ALTER TABLE empleado ADD CONSTRAINT emp_num_fk FOREIGN KEY ( fk_numero_cuenta ) REFERENCES datos_banco( numero_cuenta );
+
+CREATE TABLE proveedor(
+ID INT, CONSTRAINT prov_id_pk PRIMARY KEY(ID),
+nombre VARCHAR2(20) CONSTRAINT prov_nom_nn NOT NULL,
+rubro VARCHAR2(30) CONSTRAINT prov_rub_nn NOT NULL,
+numero VARCHAR2(15) CONSTRAINT prov_num_nn NOT NULL,
+email VARCHAR2(50) CONSTRAINT prov_email_nn NOT NULL
+);
+
+CREATE TABLE pedido(
+	ID INT,
+	monto_total INT NOT NULL,
+	estado VARCHAR2(20) NOT NULL,
+	adjuntar_factura BLOB,
+	fk_id_proveedor INT
+);
+ALTER TABLE pedido ADD CONSTRAINT ped_pk PRIMARY KEY ( ID );
+ALTER TABLE pedido ADD CONSTRAINT ped_prov_fk FOREIGN KEY ( fk_id_proveedor ) REFERENCES proveedor ( ID );
+
+CREATE TABLE retiro_producto(
+	ID INT,
+	fecha DATE NOT NULL,
+	hora VARCHAR2(5) NOT NULL,
+	fk_id_empleado VARCHAR2(10)
+);
+ALTER TABLE retiro_producto ADD CONSTRAINT rprod_pk PRIMARY KEY ( ID );
+ALTER TABLE retiro_producto ADD CONSTRAINT rprod_pr_fk FOREIGN KEY ( fk_id_empleado ) REFERENCES empleado ( rut );
+
+CREATE TABLE producto(
+	ID INT,
+	stock INT NOT NULL,
+	nombre VARCHAR2(100) NOT NULL,
+	tipo_producto VARCHAR2(50) NOT NULL,
+	marca VARCHAR2(100) NOT NULL,
+	fk_id_proveedor INT
+);
+ALTER TABLE producto ADD CONSTRAINT prod_pk PRIMARY KEY ( ID );
+ALTER TABLE producto ADD CONSTRAINT prod_prov_fk FOREIGN KEY ( fk_id_proveedor ) REFERENCES proveedor ( ID );
+
+CREATE TABLE productos_solicitados(
+ID INT, CONSTRAINT prosoli_id_pk PRIMARY KEY(ID),
+cantidad INT, CONSTRAINT prosoli_cant_chk CHECK(cantidad>0),
+fk_id_producto INT, CONSTRAINT prosoli_proid_fk FOREIGN KEY(fk_id_producto) REFERENCES producto(ID),
+fk_retiro_producto INT, CONSTRAINT prosoli_retproid_fk FOREIGN KEY(fk_retiro_producto) REFERENCES retiro_producto(ID)
+);
+
+CREATE TABLE productos_pedidos(
+ID INT, CONSTRAINT proped_id_pk PRIMARY KEY(ID),
+cantidad INT, CONSTRAINT proped_cant_chk CHECK(cantidad>0),
+fk_id_producto INT, CONSTRAINT proped_proid_fk FOREIGN KEY(fk_id_producto) REFERENCES producto(ID),
+fk_id_pedido INT, CONSTRAINT proped_pedid_fk FOREIGN KEY(fk_id_pedido) REFERENCES pedido(ID)
+);
+
+CREATE TABLE menu(
+ID INT, CONSTRAINT menu_id_pk PRIMARY KEY(ID),
+tipo_menu VARCHAR2(20) CONSTRAINT menu_tipo_nn NOT NULL,
+documento_menu BLOB DEFAULT empty_blob(),
+precio INT, CONSTRAINT menu_prec_chk CHECK(precio>0)
+);
+
+CREATE TABLE EMPRESA (
+	id INT, 
+	rut VARCHAR2(10) NOT NULL, 
+	nombre VARCHAR2(100) NOT NULL, 
+	email VARCHAR2(50) NOT NULL, 
+	numero VARCHAR2(15) NOT NULL
+);
+
+ALTER TABLE EMPRESA ADD CONSTRAINT EMPRESA_PK PRIMARY KEY (id);
+
+CREATE TABLE reserva (
+	id INT,
+	fecha_inicio DATE NOT NULL,
+	fecha_termino DATE NOT NULL,
+	plantilla_huespedes BLOB,
+  fk_id_empresa INT
+);
+ALTER TABLE reserva ADD CONSTRAINT reserva_pk primary key (id);
+ALTER TABLE reserva ADD CONSTRAINT reserva_fk FOREIGN KEY (fk_id_empresa) REFERENCES empresa (id);
+
+CREATE TABLE habitacion (
+id INT,
+numero_habitacion INT,
+tipo_cama VARCHAR2(20) NOT NULL, 
+accesorios VARCHAR2(20) NOT NULL,
+precio INT, 
+estado VARCHAR2(15) NOT NULL);
+
+ALTER TABLE habitacion ADD CONSTRAINT habitacion_pk PRIMARY KEY (id);
+
+CREATE TABLE huesped (
+	id INT,
+	nombre VARCHAR2(100) NOT NULL,
+	rut VARCHAR2(10) NOT NULL,
+  fk_id_empresa INT
+);
+
+ALTER TABLE huesped ADD CONSTRAINT huesped_pk primary key (id);
+ALTER TABLE huesped ADD CONSTRAINT huesped_fk FOREIGN KEY (fk_id_empresa) REFERENCES empresa (id);
+
+CREATE TABLE habitaciones_reserva (
+	id INT,
+  fk_id_reserva INT,
+  fk_id_huesped INT
+);
+
+ALTER TABLE habitaciones_reserva ADD CONSTRAINT habitaciones_reserva_pk PRIMARY KEY(id);
+ALTER TABLE habitaciones_reserva ADD CONSTRAINT habitaciones_reserva_fk FOREIGN KEY(fk_id_reserva) REFERENCES reserva(id);
+ALTER TABLE habitaciones_reserva ADD CONSTRAINT habitaciones_reserva_fk2 FOREIGN KEY(fk_id_huesped) REFERENCES huesped(id);
+
+CREATE TABLE huespedes_reserva (
+	id INT,
+  fk_id_reserva INT,
+  fk_id_huesped INT
+);
+--Primary Key
+ALTER TABLE huespedes_reserva ADD CONSTRAINT huespedes_reserva_pk PRIMARY KEY (id);
+--Foreign Key
+ALTER TABLE huespedes_reserva ADD CONSTRAINT huespedes_reserva_fk FOREIGN KEY (fk_id_reserva) REFERENCES reserva (id);
+ALTER TABLE huespedes_reserva ADD CONSTRAINT huespedes_reserva_fk2 FOREIGN KEY (fk_id_huesped) REFERENCES huesped (id);
+
+CREATE TABLE servicio (
+id INT, 
+nombre VARCHAR2(20), 
+descripcion VARCHAR2(20),
+precio INT 
+);
+ALTER TABLE servicio ADD CONSTRAINT servicio_pk PRIMARY KEY(id);
+
+CREATE TABLE orden_compra (
+id INT,
+monto_pago INT,
+fk_id_reserva INT
+);
+
+--Primary key
+ALTER TABLE orden_compra ADD CONSTRAINT orden_compra_pk PRIMARY KEY (id);
+--Foreign key
+ALTER TABLE orden_compra ADD CONSTRAINT orden_compra_fk FOREIGN KEY (fk_id_reserva) REFERENCES reserva (id);
+
+CREATE TABLE factura (
+id INT,
+rut_empresa VARCHAR2(10),
+fk_id_orden_compra INT
+);
+ALTER TABLE factura ADD CONSTRAINT factura_pk PRIMARY KEY (id);
+ALTER TABLE factura ADD CONSTRAINT factura_fk FOREIGN KEY (fk_id_orden_compra) REFERENCES orden_compra (id);
+
+CREATE TABLE servicios_reserva (
+id INT,
+fk_id_servicio INT, 
+fk_id_reserva INT
+);
+ALTER TABLE servicios_reserva ADD CONSTRAINT servicios_reserva_pk PRIMARY KEY (id);
+ALTER TABLE servicios_reserva ADD CONSTRAINT servicios_reserva_fk FOREIGN KEY (fk_id_servicio) REFERENCES servicio (id);
+ALTER TABLE servicios_reserva ADD CONSTRAINT servicios_reserva_fk2 FOREIGN KEY (fk_id_reserva) REFERENCES reserva (id);
+
+CREATE TABLE contenido_web (
+id INT,
+nombre VARCHAR2(20),
+contenido VARCHAR2(100),
+fk_id_servicio INT
+);
+
+ALTER TABLE contenido_web ADD CONSTRAINT contenido_web_pk PRIMARY KEY (id);
+ALTER TABLE contenido_web ADD CONSTRAINT contenido_web_fk FOREIGN KEY (fk_id_servicio) REFERENCES servicio (id);
+
+--DATOS DE PRUEBA
+INSERT INTO TIPO_EMPLEADO VALUES(1,'ADMINISTRADOR');
+INSERT INTO TIPO_EMPLEADO VALUES(2,'GERENTE');
+INSERT INTO TIPO_EMPLEADO VALUES(3,'CLIENTE');
+INSERT INTO TIPO_EMPLEADO VALUES(4,'SECRETARIA');
+INSERT INTO TIPO_EMPLEADO VALUES(5,'GERENTE COCINA');
+INSERT INTO TIPO_EMPLEADO VALUES(6,'EMPLEADO BODEGA');
+
+INSERT INTO DATOS_BANCO VALUES(2287790879300614, 'BCI', 'Cuenta Corriente');
+INSERT INTO DATOS_BANCO VALUES(4966292490117167, 'Banco Estado', 'Cuenta Vista');
+INSERT INTO DATOS_BANCO VALUES(1790451565007142, 'Scotia Banc', 'Cuenta Corriente');
+INSERT INTO DATOS_BANCO VALUES(1350852717569032, 'Banco de Chile', 'Cuenta Corriente');
+INSERT INTO DATOS_BANCO VALUES(4145131766184716, 'Falabella', 'Cuenta Corriente');
+INSERT INTO DATOS_BANCO VALUES(8399522138121363, 'Banco de Chile', 'Cuenta Vista');
+INSERT INTO DATOS_BANCO VALUES(2153064136335620, 'Banco Estado', 'Cuenta RUT');
+INSERT INTO DATOS_BANCO VALUES(8931703051764445, 'BCI', 'Cuenta Corriente');
+INSERT INTO DATOS_BANCO VALUES(3716544023137208, 'Banco de Chile', 'Cuenta Vista');
+INSERT INTO DATOS_BANCO VALUES(5796422873834340, 'Banco Estado', 'Cuenta RUT');
+
+INSERT INTO empleado VALUES ('111111111', 'alvaro riquelme', 'alv.riquelme@gmail.com', '111111111', 6, 2287790879300614);
+INSERT INTO empleado VALUES ('222222222', 'juan cariceo', 'ju.cariceo@gmail.com', '222222222', 2, 4966292490117167);
+INSERT INTO empleado VALUES ('333333333', 'alberto rojas', 'al.rojas@gmail.com', '333333333', 3, 1790451565007142);
+INSERT INTO empleado VALUES ('444444444', 'ignacio hernandez', 'igna.hernandez@gmail.com', '444444444', 1, 1350852717569032);
+INSERT INTO empleado VALUES ('555555555', 'emilio rojas', 'emi.rojas@gmail.com', '555555555', 4, 4145131766184716);
+INSERT INTO empleado VALUES ('666666666', 'pablo marin', 'pa.marin@gmail.com', '666666666', 2, 8399522138121363);
+INSERT INTO empleado VALUES ('777777777', 'jose ulloa', 'jo.ulloa@gmail.com', '777777777', 3, 2153064136335620);
+INSERT INTO empleado VALUES ('888888888', 'andres alvarez', 'an.alvarez@gmail.com', '888888888', 5, 8931703051764445);
+INSERT INTO empleado VALUES ('999999999', 'bastian ramos', 'bas.ramos@gmail.com', '999999999', 2, 3716544023137208);
+INSERT INTO empleado VALUES ('101010101', 'cristobal muñoz', 'cris.muñoz@gmail.com', '101010101', 2, 5796422873834340);
+
+INSERT INTO PROVEEDOR VALUES(1,'Juan Carlos','Alimento','+569 1234 1234','Juan@gmail.com');
+INSERT INTO PROVEEDOR VALUES(2,'Marcelina Navas','Servicio de Aseo','+569 6665 4485','Marcelina@gmail.com');
+INSERT INTO PROVEEDOR VALUES(3,'Adria Macias','Lavanderia','+569 6684 4581','Adria@gmail.com');
+INSERT INTO PROVEEDOR VALUES(4,'Anabel San-Jose','Muebleria','+569 3215 4597','Anabel@gmail.com');
+INSERT INTO PROVEEDOR VALUES(5,'Fernanda Ramos','Productos de Aseo','+569 3549 6418','Fernanda@gmail.com');
+INSERT INTO PROVEEDOR VALUES(6,'Arantza Plaza','Papel e Imprenta','+569 6841 1230','Arantza@gmail.com');
+INSERT INTO PROVEEDOR VALUES(7,'Felix Gaspar','Lavanderia','+569 0035 5492','Felix@gmail.com');
+INSERT INTO PROVEEDOR VALUES(8,'Vicente Zhou','Bebidas','+569 6498 7745','Vicente@gmail.com');
+INSERT INTO PROVEEDOR VALUES(9,'Maria Ines Acedo','Textiles','+569 3316 6547','MariaInes@gmail.com');
+INSERT INTO PROVEEDOR VALUES(10,'Maria Benavente','Alimento','+569 9966 2663','MariaBenavente@gmail.com');
+
+INSERT INTO PEDIDO VALUES(1, 100000, 'recibido', NULL, 1);
+INSERT INTO PEDIDO VALUES(2, 120000, 'solicitado', NULL, 2);
+INSERT INTO PEDIDO VALUES(3, 150000, 'recibido', NULL, 1);
+INSERT INTO PEDIDO VALUES(4, 135000, 'recibido', NULL, 2);
+INSERT INTO PEDIDO VALUES(5, 160000, 'solicitado', NULL, 1);
+INSERT INTO PEDIDO VALUES(6, 130000, 'recibido', NULL, 1);
+INSERT INTO PEDIDO VALUES(7, 110000, 'solicitado', NULL, 2);
+INSERT INTO PEDIDO VALUES(8, 230000, 'solicitado', NULL, 1);
+INSERT INTO PEDIDO VALUES(9, 700000, 'recibido', NULL, 2);
+INSERT INTO PEDIDO VALUES(10, 500000, 'recibido', NULL, 1);
+
+INSERT INTO retiro_producto VALUES(1, '05/FEB/2020','12:00' , '111111111');
+INSERT INTO retiro_producto VALUES(2, '04/FEB/2020', '12:02', '111111111');
+INSERT INTO retiro_producto VALUES(3, '02/MAR/2020', '12:05', '111111111');
+INSERT INTO retiro_producto VALUES(4, '07/MAR/2020', '12:03', '111111111');
+INSERT INTO retiro_producto VALUES(5, '16/ABR/2020', '12:02', '111111111');
+INSERT INTO retiro_producto VALUES(6, '18/ABR/2020', '12:07', '111111111');
+INSERT INTO retiro_producto VALUES(7, '24/ABR/2020', '12:12', '111111111');
+INSERT INTO retiro_producto VALUES(8, '27/MAY/2020', '12:01', '111111111');
+INSERT INTO retiro_producto VALUES(9, '29/MAY/2020', '12:00', '111111111');
+INSERT INTO retiro_producto VALUES(10, '30/MAY/2020', '12:04', '111111111');
+
+INSERT INTO PRODUCTO VALUES(1, 40, 'queso laminado 500 gr', 'nose', 'Quilque', 1);
+INSERT INTO PRODUCTO VALUES(2, 55, 'Atún lomito en aceite  185 gr', 'nose', 'Lider', 1);
+INSERT INTO PRODUCTO VALUES(3, 32, 'Aceite vegetal botella  1 L', 'nose', 'Chef', 1);
+INSERT INTO PRODUCTO VALUES(4, 17, 'Harina sin polvos de hornear bolsa  1 Kg', 'nose', 'Selecta', 1);
+INSERT INTO PRODUCTO VALUES(5, 26, 'Harina con polvos de hornear bolsa  1 Kg', 'nose', 'Selecta', 1);
+INSERT INTO PRODUCTO VALUES(6, 20, 'Leche natural caja  1 L', 'nose', 'Colun', 1);
+INSERT INTO PRODUCTO VALUES(7, 21, 'Detergente líquido oxi energía botella  4,43 L', 'nose', 'Great Value',  1);
+INSERT INTO PRODUCTO VALUES(8, 5, 'saco de papas 25 K', 'nose', 'nose', 1);
+INSERT INTO PRODUCTO VALUES(9, 5, 'saco de cebollas 25 K', 'nose', 'nose', 1);
+INSERT INTO PRODUCTO VALUES(10, 5, 'saco de zanahorias 50 K', 'nose', 'nose', 1);
+
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(1,6,1,1);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(2,10,10,1);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(3,7,4,1);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(4,17,8,2);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(5,16,9,2);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(6,15,6,3);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(7,28,3,3);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(8,6,2,3);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(9,7,1,4);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(10,11,5,5);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(11,2,1,6);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(12,29,6,6);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(13,18,4,6);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(14,13,1,7);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(15,4,4,7);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(16,23,6,8);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(17,25,8,8);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(18,2,10,9);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(19,10,5,10);
+INSERT INTO PRODUCTOS_SOLICITADOS VALUES(20,15,10,10);
+
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(1,4,10,1);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(2,14,8,1);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(3,26,8,1);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(4,17,10,2);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(5,16,9,2);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(6,14,3,3);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(7,28,6,3);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(8,6,4,3);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(9,7,6,4);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(10,11,7,5);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(11,2,1,6);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(12,29,2,6);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(13,18,6,6);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(14,13,9,7);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(15,4,10,7);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(16,23,2,8);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(17,25,8,8);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(18,2,6,9);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(19,10,8,10);
+INSERT INTO PRODUCTOS_PEDIDOS VALUES(20,15,6,10);
+
+INSERT INTO MENU VALUES(1,'EJECUTIVO',NULL,3500);
+INSERT INTO MENU VALUES(2,'GENERAL',NULL,3000);
+INSERT INTO MENU VALUES(3,'ESPECIAL',NULL,5000);
+INSERT INTO MENU VALUES(4,'VEGANO',NULL,4000);
+
+INSERT INTO EMPRESA VALUES (1, '778989239', 'COCA-COLA', 'COCA-COLA@GMAIL.COM', '+56921212121');
+INSERT INTO EMPRESA VALUES (2, '798685321', 'CCU', 'CCU@GMAIL.COM', '+56933332222');
+INSERT INTO EMPRESA VALUES (3, '768985642', 'RIPLEY', 'RIPLEY@GMAIL.COM', '+56945454545');
+INSERT INTO EMPRESA VALUES (4, '726598754', 'FALABELLA', 'FALABELLA@GMAIL.COM', '+56969696969');
+INSERT INTO EMPRESA VALUES (5, '735689775', 'PARIS', 'PARIS@GMAIL.COM', '+56998987858');
+INSERT INTO EMPRESA VALUES (6, '768987798', 'GASCO', 'GASCO@GMAIL.COM', '+56956587454');
+INSERT INTO EMPRESA VALUES (7, '775653265', 'ABASTIBLE', 'ABASTIBLE@GMAIL.COM', '+56965896587');
+INSERT INTO EMPRESA VALUES (8, '712356645', 'CENCOSUD', 'CENCOSUD@GMAIL.COM', '+56933332222');
+INSERT INTO EMPRESA VALUES (9, '798965325', 'ENTEL', 'ENTEL@GMAIL.COM', '+56998765432');
+INSERT INTO EMPRESA VALUES (10, '700635989', 'MOVISTAR', 'MOVISTAR@GMAIL.COM', '+56912365478');
+
+INSERT INTO RESERVA VALUES (1, '19/JUN/2020', '21/JUN/2020', NULL, 10);
+INSERT INTO RESERVA VALUES (2, '22/JUN/2020', '24/JUN/2020', NULL, 9);
+INSERT INTO RESERVA VALUES (3, '25/JUN/2020', '27/JUN/2020', NULL, 8);
+INSERT INTO RESERVA VALUES (4, '28/JUN/2020', '30/JUN/2020', NULL, 7);
+INSERT INTO RESERVA VALUES (5, '01/JUL/2020', '03/JUL/2020', NULL, 6);
+INSERT INTO RESERVA VALUES (6, '04/JUL/2020', '06/JUL/2020', NULL, 5);
+INSERT INTO RESERVA VALUES (7, '07/JUL/2020', '09/JUL/2020', NULL, 4);
+INSERT INTO RESERVA VALUES (8, '10/JUL/2020', '12/JUL/2020', NULL, 3);
+INSERT INTO RESERVA VALUES (9, '13/JUL/2020', '15/JUL/2020', NULL, 2);
+INSERT INTO RESERVA VALUES (10, '16/JUL/2020', '18/JUL/2020', NULL, 1);
+
+INSERT INTO habitacion VALUES (1, 1, 'dos plazas', 'sofa', 28000, 'reservada');
+INSERT INTO habitacion VALUES (2, 2, 'plaza y media', 'microondas', 28000, 'mantenimiento');
+INSERT INTO habitacion VALUES (3, 3, 'plaza', 'televisor', 25000, 'reservada');
+INSERT INTO habitacion VALUES (4, 4, 'plaza y media', 'sofa', 30000, 'reservada');
+INSERT INTO habitacion VALUES (5, 5, 'king', 'televisor', 26000, 'disponible');
+INSERT INTO habitacion VALUES (6, 6, 'plaza y media', 'televisor', 28000, 'disponible');
+INSERT INTO habitacion VALUES (7, 7, 'super king', 'sofa', 32000, 'disponible');
+INSERT INTO habitacion VALUES (8, 8, 'plaza y media', 'sofa', 25000, 'mantenimiento');
+INSERT INTO habitacion VALUES (9, 9, 'dos plazas', 'televisor', 24000, 'mantenimiento');
+INSERT INTO habitacion VALUES (10, 10, 'plaza y media', 'microondas', 27000, 'disponible');
+
+INSERT INTO huesped VALUES (1, 'Alverto Sifuentes', '176596549', 1);
+INSERT INTO huesped VALUES (2, 'Raul Rodriguez', '156897454', 1);
+INSERT INTO huesped VALUES (3, 'Daniela Canelas', '165989787', 2);
+INSERT INTO huesped VALUES (4, 'Manuel Castillo', '165698454', 2);
+INSERT INTO huesped VALUES (5, 'Esteban Sifuentes', '176565986', 3);
+INSERT INTO huesped VALUES (6, 'Matias Perez', '186467896', 3);
+INSERT INTO huesped VALUES (7, 'Raul Mesa', '126456978', 4);
+INSERT INTO huesped VALUES (8, 'Manfredo Abarca', '134567498', 4);
+INSERT INTO huesped VALUES (9, 'Alfredo Jimenez', '169898565', 5);
+INSERT INTO huesped VALUES (10, 'Esteban Paez', '189494656', 5);
+INSERT INTO huesped VALUES (11, 'Leonardo Escalona', '196565984', 6);
+INSERT INTO huesped VALUES (12, 'Rony Fuertehijar', '174548965', 6);
+INSERT INTO huesped VALUES (13, 'Miguel Moraina', '136659898', 7);
+INSERT INTO huesped VALUES (14, 'Gilda Viejo', '169865656', 7);
+INSERT INTO huesped VALUES (15, 'Maribel Barriola', '189564322', 8);
+INSERT INTO huesped VALUES (16, 'Irving Villaba', '196596523', 8);
+INSERT INTO huesped VALUES (17, 'Alberto Cerdeira', '156598745', 9);
+INSERT INTO huesped VALUES (18, 'Eulalio Rubinos', '166598565', 9);
+INSERT INTO huesped VALUES (19, 'Alonso Ayuso', '135659878', 10);
+INSERT INTO huesped VALUES (20, 'Cecilio Sierralta', '166898565', 10);
+
+INSERT INTO habitaciones_reserva VALUES (1, 1, 10);
+INSERT INTO habitaciones_reserva VALUES (2, 1, 9);
+INSERT INTO habitaciones_reserva VALUES (3, 2, 1);
+INSERT INTO habitaciones_reserva VALUES (4, 2, 3);
+INSERT INTO habitaciones_reserva VALUES (5, 3, 4);
+INSERT INTO habitaciones_reserva VALUES (6, 3, 2);
+INSERT INTO habitaciones_reserva VALUES (7, 4, 1);
+INSERT INTO habitaciones_reserva VALUES (8, 4, 5);
+INSERT INTO habitaciones_reserva VALUES (9, 5, 6);
+INSERT INTO habitaciones_reserva VALUES (10, 5, 9);
+INSERT INTO habitaciones_reserva VALUES (11, 6, 10);
+INSERT INTO habitaciones_reserva VALUES (12, 6, 9);
+INSERT INTO habitaciones_reserva VALUES (13, 7, 7);
+INSERT INTO habitaciones_reserva VALUES (14, 7, 3);
+INSERT INTO habitaciones_reserva VALUES (15, 8, 10);
+INSERT INTO habitaciones_reserva VALUES (16, 8, 8);
+INSERT INTO habitaciones_reserva VALUES (17, 9, 7);
+INSERT INTO habitaciones_reserva VALUES (18, 9, 6);
+INSERT INTO habitaciones_reserva VALUES (19, 10, 2);
+INSERT INTO habitaciones_reserva VALUES (20, 10, 3);
+
+INSERT INTO huespedes_reserva VALUES(1, 1, 1);
+INSERT INTO huespedes_reserva VALUES(2, 1, 2);
+INSERT INTO huespedes_reserva VALUES(3, 2, 3);
+INSERT INTO huespedes_reserva VALUES(4, 2, 4);
+INSERT INTO huespedes_reserva VALUES(5, 3, 5);
+INSERT INTO huespedes_reserva VALUES(6, 3, 6);
+INSERT INTO huespedes_reserva VALUES(7, 4, 7);
+INSERT INTO huespedes_reserva VALUES(8, 4, 8);
+INSERT INTO huespedes_reserva VALUES(9, 5, 9);
+INSERT INTO huespedes_reserva VALUES(10, 5, 10);
+INSERT INTO huespedes_reserva VALUES(11, 6, 11);
+INSERT INTO huespedes_reserva VALUES(12, 6, 12);
+INSERT INTO huespedes_reserva VALUES(13, 7, 13);
+INSERT INTO huespedes_reserva VALUES(14, 7, 14);
+INSERT INTO huespedes_reserva VALUES(15, 8, 15);
+INSERT INTO huespedes_reserva VALUES(16, 8, 16);
+INSERT INTO huespedes_reserva VALUES(17, 9, 17);
+INSERT INTO huespedes_reserva VALUES(18, 9, 18);
+INSERT INTO huespedes_reserva VALUES(19, 10, 19);
+INSERT INTO huespedes_reserva VALUES(20, 10, 20);
+
+INSERT INTO orden_compra VALUES (1, 16000, 1);
+INSERT INTO orden_compra VALUES (2, 20000, 2);
+INSERT INTO orden_compra VALUES (3, 19000, 3);
+INSERT INTO orden_compra VALUES (4, 32000, 4);
+INSERT INTO orden_compra VALUES (5, 10000, 5);
+INSERT INTO orden_compra VALUES (6, 30000, 6);
+INSERT INTO orden_compra VALUES (7, 26000, 7);
+INSERT INTO orden_compra VALUES (8, 27000, 8);
+INSERT INTO orden_compra VALUES (9, 31000, 9);
+INSERT INTO orden_compra VALUES (10, 18000, 10);
+
+INSERT INTO factura VALUES (1, '202114311', 1);
+INSERT INTO factura VALUES (2, '196452218', 2);
+INSERT INTO factura VALUES (3, '186547651', 3);
+INSERT INTO factura VALUES (4, '197653472', 4);
+INSERT INTO factura VALUES (5, '208576545', 5);
+INSERT INTO factura VALUES (6, '172743856', 6);
+INSERT INTO factura VALUES (7, '207564822', 7);
+INSERT INTO factura VALUES (8, '178492734', 8);
+INSERT INTO factura VALUES (9, '194587923', 9);
+INSERT INTO factura VALUES (10, '194587394', 10);
+
+INSERT INTO servicio VALUES (1, 'casino', 'almuerzo en casino', 10000);
+INSERT INTO servicio VALUES (2, 'limpieza', 'limpieza de cuarto', 5000);
+
+INSERT INTO servicios_reserva VALUES (1, 1, 1);
+INSERT INTO servicios_reserva VALUES (2, 2, 2);
+INSERT INTO servicios_reserva VALUES (3, 1, 3);
+INSERT INTO servicios_reserva VALUES (4, 2, 4);
+INSERT INTO servicios_reserva VALUES (5, 2, 5);
+INSERT INTO servicios_reserva VALUES (6, 1, 6);
+INSERT INTO servicios_reserva VALUES (7, 1, 7);
+INSERT INTO servicios_reserva VALUES (8, 2, 8);
+INSERT INTO servicios_reserva VALUES (9, 1, 9);
+INSERT INTO servicios_reserva VALUES (10, 1 ,10);
+
+--DROP
+DROP TABLE CONTENIDO_WEB;
+DROP TABLE SERVICIOS_RESERVA;
+DROP TABLE FACTURA;
+DROP TABLE ORDEN_COMPRA;
+DROP TABLE HUESPEDES_RESERVA;
+DROP TABLE HABITACIONES_RESERVA;
+DROP TABLE HUESPED;
+DROP TABLE HABITACION;
+DROP TABLE RESERVA;
+DROP TABLE MENU;
+DROP TABLE PRODUCTOS_PEDIDOS;
+DROP TABLE PRODUCTOS_SOLICITADOS;
+DROP TABLE PRODUCTO;
+DROP TABLE RETIRO_PRODUCTO;
+DROP TABLE PEDIDO;
+DROP TABLE PROVEEDOR;
+DROP TABLE EMPRESA;
+DROP TABLE EMPLEADO;
+DROP TABLE DATOS_BANCO;
+DROP TABLE TIPO_EMPLEADO;
+DROP TABLE SERVICIO;
+
+

@@ -27,7 +27,7 @@
                         <tbody>
                             {% if reservas %}
                                 {% for reserva in reservas %}
-                                <tr class = "tbtable">
+                                <tr class="tbtable">
                                     <td>{{ reserva.id }}</td>
                                     <td>{{ reserva.fecha_inicio }}</td>
                                     <td>{{ reserva.fecha_termino }}</td>
@@ -36,10 +36,17 @@
                                     {% else %}
                                         <td>No</td>
                                     {% endif %}
-                                    <td>
-                                        <a class="button table-button" href="/editar/{{reserva.id}}/">Editar</a>
-                                        <a class="button table-button" href="/cancelar/{{reserva.id}}/">Cancelar</a>
-                                    </td>
+                                    {% if user.groups.all.0|upper == 'CLIENTE' %}
+                                        <td>
+                                            <a class="button table-button" href="/editar/{{reserva.id}}/">Editar</a>
+                                            <a class="button table-button" href="/cancelar/{{reserva.id}}/">Cancelar</a>
+                                        </td>
+                                    {% elif user.groups.all.0|upper == 'SECRETARIA' %}
+                                        <td>
+                                            <a class="button table-button" href="">Check-in</a>
+                                            <a class="button table-button" href="">Check-out</a>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                                 {% endfor %}
                             {% else %}
