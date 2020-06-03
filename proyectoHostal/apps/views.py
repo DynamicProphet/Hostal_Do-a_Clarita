@@ -10,9 +10,23 @@ def home(request):
     contenidos = ContenidoWeb.objects.all()
     return render(request, 'home.html', {'contenidos': contenidos})
 
+#CU1: Registrar
 def registro(request):
-    #Falta llenar
+    if True:
+        if request.method == 'POST':
+            form = RegistroForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/')
+        else:
+            form = RegistroForms()
+        return render(request, 'registration/registro.html', {'form': form})
+    else:
+        return redirect('/')
     return render(request, 'registration/registro.html', {})
+
+def RegistroExitoso(request):
+    return render(request, 'registration/registro_exitoso.html',{})
 
 def QuienesSomos(request):
     #Falta llenar
