@@ -11,6 +11,7 @@
         <div class="container">
             <div class="wrap">
                 <div class="fix-12-12">
+                    {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
                     <a class="button reserva-button" target="_blank" style="width:180px" href="/comedor/agregar">
                         <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Menu" width="30px"
                             height="30px"><br>
@@ -22,6 +23,7 @@
                             height="30px"><br>
                         Nueva Minuta
                     </a>
+                    {% endif %}
                     <a class="button reserva-button" id="myBtn" style="width:180px; float: right;">
                         <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
                         Ayuda
@@ -33,7 +35,10 @@
                                 <td><b>TIPO MENU</b></td>
                                 <td><b>PRECIO</b></td>
                                 <td><b>ADJUNTO MINUTA</b></td>
+                                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
                                 <td><b>ACCIÓN</b></td>
+                                {% endif %}
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -49,11 +54,14 @@
                                 {% else %}
                                 <td>N/A</td>
                                 {% endif %}
+                                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
                                 <td>
                                     <a class="button table-button" href="/comedor/editar/{{ menu.id }}">Editar</a>
                                     <a class="button table-button" href="/comedor/eliminar/{{ menu.id }}"
                                         onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a>
                                 </td>
+                                {% endif %}
+                            
                             </tr>
                             {% endfor %}
                             {% else %}
