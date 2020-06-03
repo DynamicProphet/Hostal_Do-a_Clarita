@@ -9,9 +9,6 @@ from django.contrib.auth.decorators import login_required
 #Para importar las funciones que estan en views.py
 from .views import *
 
-#Para la apis
-from rest_framework.urlpatterns import format_suffix_patterns
-#from .views import ProductViewSet, ProductViewSetDetail
 
 urlpatterns = [
     path('', home, name='pagina-principal'),
@@ -19,7 +16,9 @@ urlpatterns = [
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
     path('reserva/', include ([
         path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
-        path('ver-reservas/', VerReservas, name='ver-reservas'),
+        path('listar/', ListarReservas, name='listar-reservas'),
+        path('editar/<int:id_reserva>/', EditarReserva, name='editar-reservas'),
+        path('cancelar/<int:id_reserva>/', CancelarReserva, name='cancelar-reservas'),
         path('registrar-habitacion/', RegistrarHabitacion, name='registrar-habitacion'),
     ])),
     path('comedor/', include([

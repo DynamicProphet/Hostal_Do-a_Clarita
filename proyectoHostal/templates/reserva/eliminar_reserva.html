@@ -1,3 +1,4 @@
+
 {% extends 'base/base.html' %}
 {% load static %}
 
@@ -10,18 +11,18 @@
     <div class="container">
       <div class="wrap">
         <div class="fix-12-12">
-          <form method="POST" class="formulario" enctype="multipart/form-data">
-              <div>
-                  {% csrf_token %}
-                  <h1>Realizar Reserva</h1>
-                  {{ form.as_p }}
-                  <button type="submit">Agregar</button>
-              </div>
-          </form>
+            <form method="post" class="formulario">
+                <div class="mensaje_confirmacion">
+                    {% csrf_token %}
+                    <h3>¿Desea cancelar la reserva para el día {{ reserva.fecha_inicio }}?</h3>	
+                    <button class="btn btn-danger" type="submit">Sí, Cancelar</button>
+                    <a class= "btn btn-default" href="/reserva/ver-reserva/">Volver</a>
+                </div>
+            </form>
         </div>
       </div>
     </div>
   </div>
   <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
 </section>
-{% endblock %}
+{% endblock  %}

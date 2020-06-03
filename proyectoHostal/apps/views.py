@@ -3,6 +3,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 import pandas as pd
+from django.contrib.auth.models import User
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -25,7 +26,7 @@ def RealizarReserva(request):
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-            return redirect('/reserva/registrar-habitacion/')
+            return redirect('/')
         else:
             form = ReservaForms()
         return render(request, 'reserva/realizar_reserva.html', {'form': form})
@@ -35,13 +36,40 @@ def RealizarReserva(request):
 def RegistrarHabitacion(request):
     return render(request, 'reserva/registrar_habitacion.html', {})
 
-def VerReservas(request):
+def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
-    user = request.user
-    if False: #Valida si el usuario es de tipo cliente
-        return render(request, 'reserva/ver_reservas.html', {})
-    elif True: #Valida si el usuario es de tipo empleado
+    if request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
+        #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
+        return render(request, 'reserva/ver_reservas.html', {'reservas:': reservas})
+    elif request.user.groups.filter(name="SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
         return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
+    else:
+        return redirect('/')
+
+def EditarReserva(request, id_reserva):
+    reserva = Reserva.objects.get(id=id_reserva)
+    user = request.user
+    if request.user.groups.filter(name = "CLIENTE").exists():
+        if request.method == "GET":
+            form = ReservaForms(instance=reserva)
+        else:
+            form = ReservaForms(request.POST, request.FILES,instance=reserva)
+            if form.is_valid():
+                reserva = form.save(commit=False)
+                reserva.save()
+            return redirect('reserva/ver-reservas/')
+        return render(request, "reserva/modificar_reserva.html", {'form': form})
+    else:
+        return redirect('/') 
+
+def CancelarReserva(request, id_reserva):
+    reserva = Reserva.objects.get(id=id_reserva)
+    user = request.user
+    if request.user.groups.filter(name = "CLIENTE").exists():
+        if request.method == 'POST':
+            reserva.delete()
+            return redirect('reserva/ver-reservas/')
+        return render(request, 'reserva/eliminar_reserva.html', {'reserva': reserva})
     else:
         return redirect('/')
     
@@ -52,40 +80,45 @@ def ComedorListar(request):
     return render(request, 'Cocina/menu_listar.html', {'menus' : menus}) 
 
 def ComedorAgregar(request):
-    if request.method == 'POST':
-        form = MenuForms(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()            
-            tipo_menu = form.cleaned_data.get('tipo_menu')
-            messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
-            return redirect('/comedor/listar')
-    else:
-        form = MenuForms()
-    return render(request, 'Cocina/menu_agregar.html', {'form': form}) 
+    if request.user.groups.filter(name = "GERENTE COCINA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        if request.method == 'POST':
+            form = MenuForms(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()            
+                tipo_menu = form.cleaned_data.get('tipo_menu')
+                messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
+                return redirect('/comedor/listar')
+        else:
+            form = MenuForms()
+        return render(request, 'Cocina/menu_agregar.html', {'form': form})
+    return redirect('/comedor/listar')
 
 def ComedorEditar(request,menu_id):
-    instancia= Menu.objects.get(id=menu_id)
-    if instancia.documento_menu:
-        path = instancia.documento_menu.url
-    else:
-        path = None
-        
-    form=  MenuForms(instance=instancia)
-    if request.method=="POST":
-        form= MenuForms(request.POST, request.FILES, instance=instancia)
-        if form.is_valid():
-            instancia= form.save(commit=False)
-            instancia.save()
-            tipo_menu = form.cleaned_data.get('tipo_menu')
-            messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
-            return redirect('/comedor/listar')
-    return render(request, 'Cocina/menu_editar.html', {'form': form,'path':path}) 
+    if request.user.groups.filter(name = "GERENTE COCINA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instancia= Menu.objects.get(id=menu_id)
+        if instancia.documento_menu:
+            path = instancia.documento_menu.url
+        else:
+            path = None
+        form=  MenuForms(instance=instancia)
+        if request.method=="POST":
+            form= MenuForms(request.POST, request.FILES, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                tipo_menu = form.cleaned_data.get('tipo_menu')
+                messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
+                return redirect('/comedor/listar')
+        return render(request, 'Cocina/menu_editar.html', {'form': form,'path':path})
+    return redirect('/comedor/listar')
 
 def ComedorEliminar(request,menu_id):
-    instacia= Menu.objects.get(id=menu_id)
-    instacia.delete()
-    messages.warning(request, f'El Menu {instacia.tipo_menu} Se Ha Eliminado!')
-    return redirect('/comedor/listar') 
+    if request.user.groups.filter(name = "GERENTE COCINA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= Menu.objects.get(id=menu_id)
+        instacia.delete()
+        messages.warning(request, f'El Menu {instacia.tipo_menu} Se Ha Eliminado!')
+        return redirect('/comedor/listar') 
+    return redirect('/comedor/listar')
 
 def ComedorAdjunto(request,menu_id):
     instacia= Menu.objects.get(id=menu_id)

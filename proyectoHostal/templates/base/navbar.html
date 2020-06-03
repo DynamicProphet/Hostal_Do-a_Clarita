@@ -1,5 +1,4 @@
 {% load static %}
-
 <nav class="panel top">
   <div class="sections desktop">
     <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
@@ -16,7 +15,8 @@
             {% elif user.groups.all.0|upper == 'SECRETARIA' %}
               <li><a href="">Futuras ventanas de Secretaria</a></li>
             {% elif user.groups.all.0|upper == 'GERENTE COCINA' %}
-              <li><a href="comedor/listar">Ver Minutas</a></li>  
+              <li><a href="/comedor/listar">Ver Minutas</a></li>
+              <li><a href="/comedor/agregar">Agregar Menú</a></li>
             {% else %}<!--Usuario logueado sin grupos, idealmente cuando un cliente se crea no tendrá grupos y esta deberia ser el navbar de el-->
               <li><a href="/reserva/ver-reservas/">Reservas</a></li>
               <li><a href="/quienes-somos/">Quienes Somos</a></li>
@@ -25,6 +25,7 @@
             <li><a href="/accounts/login/">Iniciar Sesión</a></li>
             <li><a href="/registro/">Registrarse</a></li>
             <li><a href="/quienes-somos/">Quienes Somos</a></li>
+            <li><a href="/comedor/listar">Comedor</a></li>
           {% endif %}
         </ul>
       </div>
