@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block title %}Registro{% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
@@ -9,7 +10,15 @@
     <div class="container">
       <div class="wrap">
         <div class="fix-12-12">
-          <h1>Registro</h1>
+          <form method="POST" class="formulario" enctype="multipart/form-data">
+            <div>
+                {% csrf_token %}
+                <h1>Registro</h1>
+                <h5>El registro es solamente para Empresas</h5>
+                {{ form.as_p }}
+                <button type="submit">Registrar</button>
+            </div>
+        </form>
         </div>
       </div>
     </div>

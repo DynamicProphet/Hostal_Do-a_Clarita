@@ -42,3 +42,21 @@ class ReservaForms(forms.ModelForm):
             'fecha_inicio': DateInput(),
             'fecha_termino': DateInput(),
         }
+
+#CU1
+class RegistroForms(forms.ModelForm):
+    class Meta:
+        model= Empresa
+        fields = [
+            'rut',
+            'nombre',
+            'email',
+            'numero',
+        ]
+        labels = {
+            'rut' : 'Rut',
+            'nombre' : 'Nombre',
+            'email' : 'Email',
+            'numero' : 'Numero',
+        }
+ 
