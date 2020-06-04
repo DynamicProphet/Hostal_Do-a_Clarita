@@ -38,9 +38,10 @@ def RegistrarHabitacion(request):
 
 def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
-    if request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
+    user = request.user
+    if  request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
         #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
-        return render(request, 'reserva/ver_reservas.html', {'reservas:': reservas})
+        return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
     elif request.user.groups.filter(name="SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
         return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
     else:
