@@ -3,7 +3,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 import pandas as pd
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -36,7 +36,7 @@ def RealizarReserva(request):
 def RegistrarHabitacion(request):
     return render(request, 'reserva/registrar_habitacion.html', {})
 
-def VerReservas(request):
+def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
     if request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
         #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
