@@ -1,144 +1,42 @@
 {% load static %}
-{% if request.user.username %} <!--Valida si el usuario esta logueado-->
-    {% if user.groups.all.0|upper == 'ADMINISTRADOR' %} <!--Deberá validar el tipo de grupo del usuario-->
-       <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav> 
-    {% elif user.groups.all.0|upper == 'GERENTE' %} 
-        <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav>
-    {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
-        <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav>
-    {% elif user.groups.all.0|upper == 'SECRETARIA' %} 
-        <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="">2</a></li>
-                  <li><a href="">3</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav>
-    {% elif user.groups.all.0|upper == 'GERENTE COCINA' %} 
-        <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="/comedor/listar">Ver Menus</a></li>
-                  <li><a href="/comedor/agregar">Agregar Menu</a></li>
-                  <li><a href="">4</a></li>
-                  <li><a href="">5</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav>
-    {% else %}<!--Usuario logueado sin grupos, idealmente cuando un cliente se crea no tendrá grupos y esta deberia ser el navbar de el-->
-      <nav class="panel top">
-          <div class="sections desktop">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="center">
-              <ul class="menu">
-                  <li><a href="/">Home</a></li>
-                  <li><a href="/reserva/listar/">Reservas</a></li>
-                  <li><a href="/comedor/listar">Comedor</a></li>
-                  <li><a href="/quienes-somos/">Quienes Somos</a></li>
-              </ul>
-              </div>
-              <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-          </div>
-          <div class="sections compact hidden">
-              <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-              <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
-          </div>
-        </nav>
-    {% endif %}
-    
-{% else %}
-<!-- Sidebar -->
 <nav class="panel top">
   <div class="sections desktop">
     <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-    <div class="center">
-      <ul class="menu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/accounts/login/">Iniciar Sesión</a></li>
-        <li><a href="/registro/">Registrarse</a></li>
-        <li><a href="/quienes-somos/">Quienes Somos</a></li>
-      </ul>
+      <div class="center">
+        <ul class="menu">
+          <li><a href="/">Home</a></li>
+          {% if request.user.username %} <!--Valida si el usuario esta logueado-->
+            {% if user.groups.all.0|upper == 'ADMINISTRADOR' %} <!--Deberá validar el tipo de grupo del usuario-->
+              <li><a href="admin">Admin</a></li>
+            {% elif user.groups.all.0|upper == 'GERENTE' %}
+              <li><a href="">Futuras ventanas de gerente</a></li>
+            {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
+              <li><a href="">Futura ventana de bodega</a></li>
+            {% elif user.groups.all.0|upper == 'SECRETARIA' %}
+              <li><a href="">Futuras ventanas de Secretaria</a></li>
+            {% elif user.groups.all.0|upper == 'GERENTE COCINA' %}
+              <li><a href="/comedor/listar">Ver Minutas</a></li>
+              <li><a href="/comedor/agregar">Agregar Menú</a></li>
+            {% else %}<!--Usuario logueado sin grupos, idealmente cuando un cliente se crea no tendrá grupos y esta deberia ser el navbar de el-->
+              <li><a href="/reserva/ver-reservas/">Reservas</a></li>
+              <li><a href="/quienes-somos/">Quienes Somos</a></li>
+            {% endif %}
+          {% else %}
+            <li><a href="/accounts/login/">Iniciar Sesión</a></li>
+            <li><a href="/registro/">Registrarse</a></li>
+            <li><a href="/quienes-somos/">Quienes Somos</a></li>
+            <li><a href="/comedor/listar">Comedor</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      {% if request.user.username %}
+        <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
+      {% else %}
+        <div class="right"><a class="button blue gradient" href="#">Profile</a><a class="button green gradient" href="https://freehtml5.co/slides" target="_blank">Get App</a></div>
+      {% endif %}
     </div>
-    <div class="right"><a class="button blue gradient" href="#">Profile</a><a class="button green gradient" href="https://freehtml5.co/slides" target="_blank">Get App</a></div>
-  </div>
   <div class="sections compact hidden">
     <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
     <div class="right"><span class="button actionButton sidebarTrigger" data-sidebar-id="1"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu"></use></svg></span></div>
   </div>
 </nav>
-{% endif %}
