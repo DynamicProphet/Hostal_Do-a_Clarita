@@ -5,78 +5,79 @@
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
 {% block content %}
-<section class="slide fade-6 kenBurns">
-    <div class="content">
-        <div class="container">
-            <div class="wrap">
-                <div class="fix-12-12">
-                    {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                    <a class="button reserva-button" target="_blank" style="width:180px" href="/comedor/agregar">
-                        <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Menu" width="30px"
-                            height="30px"><br>
-                        Agregar Menu
-                    </a>
-                    <a class="button reserva-button" target="_blank" style="width:180px"
-                        href="/media/Menu/minuta_base.xlsx">
-                        <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
-                            height="30px"><br>
-                        Nueva Minuta
-                    </a>
+<div class="">
+    <div class="div px-5 pt-5" role="group">
+        {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
+        <a class="btn btn-primary" target="_blank" href="/comedor/agregar">
+            <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Menu" width="30px" height="30px"><br>
+            Agregar Menu
+        </a>
+        <a class="btn btn-primary" target="_blank" href="/media/Menu/minuta_base.xlsx">
+            <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
+                height="30px"><br>
+            Nueva Minuta
+        </a>
+        {% endif %}
+        <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
+            <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+            Ayuda
+        </a>
+    </div>
+    <div class="table-responsive px-5 pt-2">
+        <table class="table table-bordered bg-light text-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">TIPO MENU</th>
+                    <th scope="col">PRECIO</th>
+                    <th scope="col">ADJUNTO MINUTA</th>
+                    <th scope="col">ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if menus %}
+                {% for menu in menus %}
+                <tr>
+                    <td>{{ menu.id }}</td>
+                    <td>{{ menu.tipo_menu }}</td>
+                    <td>{{ menu.precio }}</td>
+                    {% if menu.documento_menu %}
+                    <td><a class="btn btn-primary" target="_blank" href="/comedor/adjunto/{{ menu.id }}">Ver.</a>
+                    </td>
+                    {% else %}
+                    <td>N/A</td>
                     {% endif %}
-                    <a class="button reserva-button" id="myBtn" style="width:180px; float: right;">
-                        <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
-                        Ayuda
-                    </a>
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr class="thtable">
-                                <td style="width: 55px;"><b>ID</b></td>
-                                <td><b>TIPO MENU</b></td>
-                                <td><b>PRECIO</b></td>
-                                <td><b>ADJUNTO MINUTA</b></td>
-                                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                                <td><b>ACCIÓN</b></td>
-                                {% endif %}
-                                
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if menus %}
-                            {% for menu in menus %}
-                            <tr class="tbtable">
-                                <td>{{ menu.id }}</td>
-                                <td>{{ menu.tipo_menu }}</td>
-                                <td>{{ menu.precio }}</td>
-                                {% if menu.documento_menu %}
-                                <td><a class="button table-button" target="_blank"
-                                        href="/comedor/adjunto/{{ menu.id }}">Ver.</a></td>
-                                {% else %}
-                                <td>N/A</td>
-                                {% endif %}
-                                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                                <td>
-                                    <a class="button table-button" href="/comedor/editar/{{ menu.id }}">Editar</a>
-                                    <a class="button table-button" href="/comedor/eliminar/{{ menu.id }}"
-                                        onclick="return confirm('¿Esta seguro de borrar?');">Eliminar</a>
-                                </td>
-                                {% endif %}
-                            
-                            </tr>
-                            {% endfor %}
-                            {% else %}
-                            <h1>No hay registros de Menus</h1>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
+                    {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
+                    <td>
+                        <a class="btn btn-primary" href="/comedor/editar/{{ menu.id }}" role="button">Editar</a>
+                        <a class="btn btn-danger" href="/comedor/eliminar/{{ menu.id }}"
+                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Eliminar</a>
+                    </td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1>No hay registros de Menus</h1>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ayuda:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </div>
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span id="closeBTN" class="close">&times;</span>
-                <p>Ayuda:</p>
+            <div class="modal-body">
                 <p>- Desde esta ventana puede administrar los menús registrados:</p>
                 <p>- El botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea
                     agregar una nueva minuta o
@@ -88,11 +89,12 @@
                 <p> - Para eliminar un menú presione el link de eliminar correspondiente al registro, para
                     este paso hace falta aceptar el mensaje de confirmación.</p>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
-    <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
-</section>
-<script src="{% static 'js/modal.js' %}"></script>
+</div>
 {% endblock %}
 
 <!-- Texto Para el Modal

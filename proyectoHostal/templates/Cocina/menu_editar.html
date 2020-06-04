@@ -5,38 +5,22 @@
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
 {% block content %}
-<section class="slide fade-6 kenBurns">
-    <div class="content">
-        <div class="container">
-            <div class="wrap">
-                <div class="fix-12-12">
-                    <form method="POST" class="formulario" enctype="multipart/form-data">
-                        <div>
-                            {% csrf_token %}
-                            <h1>Editar Menu</h1>
-                            {{ form.as_p }}
-                            <button type="submit">Editar</button>
-                        </div>
-                    </form>
-                    <a class="button reserva-button" target="_blank" style="width:180px"
-                        href="/media/Menu/minuta_base.xlsx">
-                        <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
-                            height="30px"><br>
-                        Nueva Minuta
-                    </a>
-                    {% if path %}
-                    <a class="button reserva-button" target="_blank" style="width:180px"
-                        href="{{path}}">
-                        <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
-                            height="30px"><br>
-                        Minuta Actual
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
+<div id="form_wrap" class="bg-light">
+    <form method="POST" class="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1 class="text-center pt-2">Editar Menu</h1>
+        <div class="form-group p-5">
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">Editar</button>
+            <a class="btn btn-outline-primary float-right" target="_blank" href="/media/Menu/minuta_base.xlsx">
+                <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Minuta" width="30px"
+                    height="30px"><br>
+                Nueva Minuta
+            </a>
         </div>
-    </div>
-    <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
-</section>
+    </form>
+</div>
 {% endblock %}

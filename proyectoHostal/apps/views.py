@@ -111,10 +111,6 @@ def ComedorAgregar(request):
 def ComedorEditar(request,menu_id):
     if request.user.groups.filter(name = "GERENTE COCINA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         instancia= Menu.objects.get(id=menu_id)
-        if instancia.documento_menu:
-            path = instancia.documento_menu.url
-        else:
-            path = None
         form=  MenuForms(instance=instancia)
         if request.method=="POST":
             form= MenuForms(request.POST, request.FILES, instance=instancia)
@@ -124,7 +120,7 @@ def ComedorEditar(request,menu_id):
                 tipo_menu = form.cleaned_data.get('tipo_menu')
                 messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
                 return redirect('/comedor/listar')
-        return render(request, 'Cocina/menu_editar.html', {'form': form,'path':path})
+        return render(request, 'Cocina/menu_editar.html', {'form': form,})
     return redirect('/comedor/listar')
 
 def ComedorEliminar(request,menu_id):
@@ -141,5 +137,5 @@ def ComedorAdjunto(request,menu_id):
     excel = pd.read_excel(instacia.documento_menu.path)
     excel = excel.fillna('')  
     tabla =  excel.to_html(bold_rows=True,index=False,
-    classes="table table-responsive",justify='center',table_id="tabla_pandas")
+    classes="table table-bordered bg-light text-dark",justify='center')
     return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 

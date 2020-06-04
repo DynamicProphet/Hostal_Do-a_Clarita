@@ -9,16 +9,19 @@ class MenuForms(forms.ModelForm):
     class Meta:
         model= Menu
         fields = [
-            'id',
             'tipo_menu',
             'precio',
             'documento_menu',
         ]
         labels = {
-            'id' : 'ID',
             'tipo_menu' : 'Tipo Menu',
             'precio' : 'Precio',
             'documento_menu': 'Adjunto Minuta',
+        }
+        widgets = {
+            'tipo_menu' : forms.TextInput(attrs={'class': 'form-control'}),
+            'precio' : forms.NumberInput(attrs={'class': 'form-control'}),
+            'documento_menu' : forms.ClearableFileInput(attrs={'class': 'form-control-file'})
         }
 
 class ReservaForms(forms.ModelForm):

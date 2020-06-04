@@ -5,22 +5,20 @@
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
 {% block content %}
-<section class="slide fade-6 kenBurns">
-  <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div class="fix-12-12">
-          <a class="button reserva-button" target="_blank" style="width:180px" href="{{ path }}">
-            <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Minuta" width="30px"
-              height="30px"><br>
-            Descargar Minuta
-          </a>
-          {{ tabla|safe }}
-        </div>
-      </div>
-    </div>
+<div class="">
+  <div class="pr-5">
+    <a class="btn btn-primary float-right" target="_blank" href="{{ path }}">
+      <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Minuta" width="30px"
+        height="30px"><br>
+      Descargar Minuta
+    </a>
   </div>
-  <div class="background" style="background-image:url({% static 'img/background/img-cocina.jpg' %})"></div>
-</section>
+
+  <div class="table-responsive px-5 pt-2">
+    {{ tabla|safe }}
+  </div>
+</div>
 {% endblock %}
