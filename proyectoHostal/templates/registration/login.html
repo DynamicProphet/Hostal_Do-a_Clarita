@@ -6,36 +6,27 @@
 {% block content %}
 <form method="post" class="formulario" id="formulario_log_in">
 	{% csrf_token %}
-    <section class="slide fade-6 kenBurns">
+    <section class="slide fade-6">
         <div class="content">
             <div class="container">
                 <div class="wrap">
-                    <div class="fix-12-12">
-                        <h1>Iniciar Sesión</h1>
-                        <div class="form-row" id="linea1">
-                            <div class="col-md-6 col-md-offset-3">
-                                <div class="form-group">
-                                    <label for="username">Nombre de usuario:</label>
-                                    <input class="form-control" type="text" name="username">
-                                </div>
+                    <div class="fix-12-12 login">
+                        <form method="post">
+                            <h1>Iniciar Sesión</h1>
+                            <div class="form-group">
+                                <label for="username">Nombre de usuario:</label>
+                                <input class="form-control" type="text" name="username">
                             </div>
-                        </div>    
-                        <div class="form-row">
-                            <div class="col-md-6 col-md-offset-3">
-                                <div class="form-group">
-                                    <label for="username">Contraseña:</label>
-                                    <input class="form-control" type="password" name="password">
+                            <div class="form-group">
+                                <label for="username">Contraseña:</label>
+                                <input class="form-control" type="password" name="password">
                             </div>
+                            <br>
+                            <div class="form-group">
+                                <input class="btn btn-dark" type="submit" value="Ingresar">
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6 col-md-offset-3" id="ajuste-contraseña">
-                                <div class="form-group">
-                                    <input class="btn btn-primary" type="submit" value="Ingresar">
-                                    <a href="/password_reset/">Olvidé mi contraseña</a>
-                                </div>
-                            </div>
-                        </div>
+                            <a style="color: white;" href="/password_reset/">Olvidé mi contraseña</a>
+                        </form>
                     </div>
                 </div>
             </div>

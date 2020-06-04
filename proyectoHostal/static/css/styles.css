@@ -106,3 +106,20 @@ td {
   text-decoration: none;
   cursor: pointer;
 }
+
+.login h1 {
+  font-size: 40px;
+}
+
+.login label {
+  font-size: 20px;
+}
+
+.login a {
+  font-size: 15px;
+}
+
+.login input {
+  font-size: 18px;
+  text-align: center !important;
+}
