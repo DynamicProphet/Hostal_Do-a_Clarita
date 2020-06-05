@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
-
+{% block img_bg %} style="background-image:url({% static 'img/background/img-login.jpg' %})" {% endblock %}
 {% block content %}
 <form method="post" class="formulario" id="formulario_log_in">
 	{% csrf_token %}
@@ -31,7 +31,6 @@
                 </div>
             </div>
         </div>
-        <div class="background" style="background-image:url({% static 'img/background/img-login.jpg' %});"></div>
     </section>
 </form> 
 {% endblock %}

@@ -1,38 +1,42 @@
 {% load static %}
-<nav class="panel top">
-  <div class="sections desktop">
-    <div class="left"><a href="#" title="Slides Framework"><svg style="width:82px;height:24px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a></div>
-      <div class="center">
-        <ul class="menu">
-          <li><a href="/">Home</a></li>
-          {% if request.user.username %} <!--Valida si el usuario esta logueado-->
-            {% if user.groups.all.0|upper == 'ADMINISTRADOR' %} <!--Deberá validar el tipo de grupo del usuario-->
-              <li><a href="admin">Admin</a></li>
-            {% elif user.groups.all.0|upper == 'GERENTE' %}
-              <li><a href="">Futuras ventanas de gerente</a></li>
-            {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
-              <li><a href="">Futura ventana de bodega</a></li>
-            {% elif user.groups.all.0|upper == 'SECRETARIA' %}
-              <li><a href="">Futuras ventanas de Secretaria</a></li>
-            {% elif user.groups.all.0|upper == 'GERENTE COCINA' %}
-              <li><a href="/comedor/listar">Ver Minutas</a></li>
-              <li><a href="/comedor/agregar">Agregar Menú</a></li>
-            {% else %}<!--Usuario logueado sin grupos, idealmente cuando un cliente se crea no tendrá grupos y esta deberia ser el navbar de el-->
-              <li><a href="/reserva/listar/">Reservas</a></li>
-              <li><a href="/quienes-somos/">Quienes Somos</a></li>
-            {% endif %}
-          {% else %}
-            <li><a href="/accounts/login/">Iniciar Sesión</a></li>
-            <li><a href="/registracion/registro">Registrarse</a></li>
-            <li><a href="/quienes-somos/">Quienes Somos</a></li>
-            <li><a href="/comedor/listar">Comedor</a></li>
-          {% endif %}
-        </ul>
-      </div>
-      {% if request.user.username %}
-        <div class="right"><p class="login">Bienvenido, {{request.user.first_name | title}}<a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></p><div>
-      {% else %}
-        <div class="right"><a class="button blue gradient" href="#">Profile</a><a class="button green gradient" href="https://freehtml5.co/slides" target="_blank">Get App</a></div>
-      {% endif %}
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="d-flex w-50 order-0">
+        <a class="navbar-brand mr-1" href="#">Hostal Clarita</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
+    <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item active"><a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a></li>
+            {% if request.user.username %} <!--Valida si el usuario esta logueado-->
+              {% if user.groups.all.0|upper == 'ADMINISTRADOR' %} <!--Deberá validar el tipo de grupo del usuario-->
+                <li class="nav-item disable"><a class="nav-link" href="admin">Admin<span class="sr-only">(current)</span></a></li>
+              {% elif user.groups.all.0|upper == 'GERENTE' %}
+                <li class="nav-item disable"><a class="nav-link" href="">Futuras ventanas de gerente<span class="sr-only">(current)</span></a></li>
+              {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
+                <li class="nav-item disable"><a class="nav-link" href="">Futura ventana de bodega<span class="sr-only">(current)</span></a></li>
+              {% elif user.groups.all.0|upper == 'SECRETARIA' %}
+                <li class="nav-item disable"><a class="nav-link" href="">Futuras ventanas de Secretaria<span class="sr-only">(current)</span></a></li>
+              {% elif user.groups.all.0|upper == 'GERENTE COCINA' %}
+                <li class="nav-item disable"><a class="nav-link" href="/comedor/listar">Ver&nbspMinutas<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item disable"><a class="nav-link" href="/comedor/agregar">Agregar&nbspMenú<span class="sr-only">(current)</span></a></li>
+              {% else %}<!--Usuario logueado sin grupos, idealmente cuando un cliente se crea no tendrá grupos y esta deberia ser el navbar de el-->
+                <li class="nav-item"><a class="nav-link" href="/reserva/listar/">Reservas<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/quienes-somos/">Quienes&nbspSomos<span class="sr-only">(current)</span></a></li>
+              {% endif %}
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="/accounts/login/">Iniciar&nbspSesión<span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="/registracion/registro">Registrarse<span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="/quienes-somos/">Quienes&nbspSomos<span class="sr-only">(current)</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="/comedor/listar">Comedor<span class="sr-only">(current)</span></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if request.user.username %}
+      <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last" style="font-size:15px; color: white;">Bienvenido, {{request.user.first_name | title}} <a style ="color: white; font-size:10px;" href="/accounts/logout">(Logout)</a></span>
+    {% else %}
+       <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last" style="visibility: hidden;">always show</span>
+       <!--<div class="right"><a class="button blue gradient" href="#">Profile</a><a class="button green gradient" href="https://freehtml5.co/slides" target="_blank">Get App</a></div>-->
+    {% endif %}
 </nav>

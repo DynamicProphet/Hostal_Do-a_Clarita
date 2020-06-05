@@ -66,9 +66,13 @@ td {
   background: #037e8c;
   font-weight: bold;
 }
+.login {
+  color: white;
+}
 
 .login h1 {
   font-size: 40px;
+  color: white;
 }
 
 .login label {
