@@ -62,4 +62,21 @@ class RegistroForms(forms.ModelForm):
             'email' : 'Email',
             'numero' : 'Numero',
         }
- 
+
+class RegistroHabitacionForms(forms.ModelForm):
+    class Meta:
+        model= Habitacion
+        fields = [
+            'numero_habitacion',
+            'tipo_cama',
+            'accesorios',
+            'precio',
+            'estado',
+        ] 
+        labels = {
+            'numero_habitacion' : 'Numero de habitacion',
+            'tipo_cama' : 'Tipo de cama',
+            'accesorios' : 'Accesorios',
+            'precio' : 'Precio',
+            'estado' : 'Estado',
+        }

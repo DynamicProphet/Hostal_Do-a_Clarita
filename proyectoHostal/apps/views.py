@@ -48,7 +48,18 @@ def RealizarReserva(request):
         return redirect('/')
 
 def RegistrarHabitacion(request):
-    return render(request, 'reserva/registrar_habitacion.html', {})
+    user = request
+    if True:
+        if request.method == 'POST':
+            form = RegistroHabitacionForms(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+            return redirect ('/')
+        else:
+            form = RegistroHabitacionForms()
+        return render(request, 'reserva/registrar_habitacion.html', {'form': form})
+    else:
+        return redirect('/')
 
 def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
