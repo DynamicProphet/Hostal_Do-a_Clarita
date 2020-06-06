@@ -2,13 +2,15 @@
   align-items: center;
   justify-content: center;
 }
+/*
 .table,
 th,
 td {
   border: 3px solid black;
   background-color: #bca993;
   color: black;
-}
+} 
+*/
 .thtable td {
   padding: 10px;
 }
