@@ -153,6 +153,6 @@ def AgregarHabitacion(request):
             return redirect('/')
         else:
             form = AgregarHabitacionForms()
-        return render(request, 'habitacion/habitacion-agregar.html',{})
+        return render(request, 'habitacion/habitacion-agregar.html',{'form' : form})
     else:
         return redirect('/')
