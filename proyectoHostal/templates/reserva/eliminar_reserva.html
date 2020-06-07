@@ -6,22 +6,24 @@
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
-<section class="slide fade-6 kenBurns">
-  <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div class="fix-12-12">
-            <form method="post" class="formulario">
-                <div class="mensaje_confirmacion">
-                    {% csrf_token %}
-                    <h3>¿Desea cancelar la reserva para el día {{ reserva.fecha_inicio }}?</h3>	
-                    <button class="btn btn-danger" type="submit">Sí, Cancelar</button>
-                    <a class= "btn btn-default" href="/reserva/ver-reserva/">Volver</a>
-                </div>
-            </form>
-        </div>
-      </div>
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h3>¿Desea cancelar la reserva para el día {{ reserva.fecha_inicio }}?</h3>	
+            </div>
+            <div class="card-body">    
+              <form method="POST" enctype="multipart/form-data" class="formulario">
+                {% csrf_token %}
+                <a class= "btn btn-dark" href="/reserva/listar/">No, Volver</a>
+                <button class="btn btn-danger" type="submit">Sí, Cancelar</button>
+              </form>
+            </div>
+          </div>
+      </section>
     </div>
   </div>
-</section>
+</div>
 {% endblock  %}

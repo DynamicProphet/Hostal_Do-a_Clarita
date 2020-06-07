@@ -16,11 +16,11 @@
             </div>
             <div class="card-body">    
               <form method="POST" enctype="multipart/form-data" class="formulario">
-                    
                     <div class="formulario">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit">Editar</button>
+                        <a class="btn btn-dark" href="/reserva/listar/">volver</a>
+                        <button class="btn btn-success" type="submit">Editar</button>
                     </div>
                 </form>
             </div>
