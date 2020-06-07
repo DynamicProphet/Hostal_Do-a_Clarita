@@ -24,10 +24,9 @@ urlpatterns = [
         path('cancelar/<int:id_reserva>/', CancelarReserva, name='cancelar-reservas'),
         path('registrar-habitacion-reserva/', RegistrarHabitacionReserva, name='registrar-habitacion-reserva'),
     ])),
-    # Descomentar para el Crud De Habitaciones
-    #path('habitacion/', include ([
-    #    path('', ,name=""),
-    #])),
+    path('habitacion/', include([
+        path('habitacion-agregar/', AgregarHabitacion, name='habitacion-agregar'),
+    ])),
     path('comedor/', include([
         path('listar', ComedorListar, name="listar-menu"),
         path('agregar', ComedorAgregar , name="agregar-menu"),

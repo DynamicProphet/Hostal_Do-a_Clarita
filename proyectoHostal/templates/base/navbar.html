@@ -12,8 +12,10 @@
             {% if request.user.username %} <!--Valida si el usuario esta logueado-->
               {% if user.groups.all.0|upper == 'ADMINISTRADOR' %} <!--Deberá validar el tipo de grupo del usuario-->
                 <li class="nav-item"><a class="nav-link" href="admin">Admin<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-agregar">Agregar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'GERENTE' %}
                 <li class="nav-item "><a class="nav-link" href="">Futuras ventanas de gerente<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-agregar">Agregar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
                 <li class="nav-item"><a class="nav-link" href="">Futura ventana de bodega<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'SECRETARIA' %}
