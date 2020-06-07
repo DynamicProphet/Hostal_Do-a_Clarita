@@ -86,3 +86,10 @@ class RegistroHabitacionForms(forms.ModelForm):
             'precio' : 'Precio',
             'estado' : 'Estado',
         }
+        widgets = {
+            'numero_habitacion' : forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo_cama' : forms.TextInput(attrs={'class': 'form-control'}),
+            'accesorios' : forms.TextInput(attrs={'class': 'form-control'}),
+            'precio' : forms.NumberInput(attrs={'class': 'form-control'}),
+            'estado' : forms.TextInput(attrs={'class': 'form-control'}),
+        }

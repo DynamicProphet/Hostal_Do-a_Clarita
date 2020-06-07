@@ -13,8 +13,8 @@ from .views import *
 urlpatterns = [
     path('', home, name='pagina-principal'),
     path('registracion/', include([
-    path('registro/', registro, name='registro'),
-    path('registro_exitoso/', RegistroExitoso, name='registro_exitoso'),            
+        path('registro/', registro, name='registro'),
+        path('registro_exitoso/', RegistroExitoso, name='registro_exitoso'),            
     ])),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
     path('reserva/', include ([

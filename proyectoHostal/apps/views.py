@@ -148,5 +148,5 @@ def ComedorAdjunto(request,menu_id):
     excel = pd.read_excel(instacia.documento_menu.path)
     excel = excel.fillna('')  
     tabla =  excel.to_html(bold_rows=True,index=False,
-    classes="table table-bordered bg-light text-dark",justify='center')
+    classes="table table-striped table-dark text-light",justify='center')
     return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 
