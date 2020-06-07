@@ -5,23 +5,25 @@
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
-<section class="slide fade-6 kenBurns">
-  <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div class="fix-12-12">
-          <form method="POST" class="formulario" enctype="multipart/form-data">
-              <div>
-                  {% csrf_token %}
-                  <h1>Realizar Reserva</h1>
-                  {{ form.as_p }}
-                  <button type="submit">Agregar</button>
-              </div>
-          </form>
-        </div>
-      </div>
+
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h1>Realizar Reserva</h1>
+            </div>
+            <div class="card-body">    
+              <form method="POST" class="formulario" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-dark" type="submit">Agregar</button>
+              </form>
+            </div>
+          </div>
+      </section>
     </div>
   </div>
-  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
-</section>
+</div>
 {% endblock %}

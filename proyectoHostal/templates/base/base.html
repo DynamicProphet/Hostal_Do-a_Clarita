@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="es">
+<html lang="es" class="h-100">
 
 <head>
     <meta charset="UTF-8">
@@ -35,12 +35,9 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 
 </head>
-<body class="bg-dark" {% block img_bg %} {% endblock %}>
+<body class="h-100 bg-dark" {% block img_bg %} {% endblock %}>
   {% block navbar %} {% endblock %}
-
   {% block content %} {% endblock %}
-
-  {% block javascript %}
-  {% endblock %}
+  {% block javascript %} {% endblock %}
 </body>
 </html>

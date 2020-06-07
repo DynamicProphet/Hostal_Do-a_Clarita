@@ -4,33 +4,36 @@
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} style="background-image:url({% static 'img/background/img-login.jpg' %})" {% endblock %}
 {% block content %}
-<form method="post" class="formulario" id="formulario_log_in">
-	{% csrf_token %}
-    <section class="slide fade-6">
-        <div class="content">
-            <div class="container">
-                <div class="wrap">
-                    <div class="fix-12-12 login">
-                        <form method="post">
-                            <h1>Iniciar Sesión</h1>
-                            <div class="form-group">
-                                <label for="username">Nombre de usuario:</label>
-                                <input class="form-control" type="text" name="username">
-                            </div>
-                            <div class="form-group">
-                                <label for="username">Contraseña:</label>
-                                <input class="form-control" type="password" name="password">
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <input class="btn btn-dark" type="submit" value="Ingresar">
-                            </div>
-                            <a style="color: white;" href="/password_reset/">Olvidé mi contraseña</a>
-                        </form>
-                    </div>
-                </div>
+
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+                <h1>Iniciar Sesión</h1>     
             </div>
-        </div>
-    </section>
-</form> 
+            <div class="card-body">   
+                <form method="post" class="formulario" id="formulario_log_in">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Nombre de usuario:</label>
+                        <input class="form-control input-style" type="text" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Contraseña:</label>
+                        <input class="form-control input-style" type="password" name="password">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input class="btn btn-dark" type="submit" value="Ingresar">
+                    </div>
+                    <a style="color: black;" href="/password_reset/"><u>Recuperar contraseña</u></a>     
+                <form>
+            </div>
+          </div>
+      </section>
+    </div>
+  </div>
+</div>
 {% endblock %}
