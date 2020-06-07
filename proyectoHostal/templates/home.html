@@ -4,28 +4,16 @@
 {% block title %}Home{% endblock %}
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
-
+{% block img_bg %} style="background-image:url({% static 'img/background/img-login.jpg' %})" {% endblock %}
 {% block content %}
 <div class="p-5">
-  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" style="margin-left: 10%; margin-right: 10%;">
     <div class="carousel-inner" role="listbox">
-      <div class="carousel-item active">
-        <img class="img-fluid" src="{% static 'img/background/img-qsomos.jpg' %}">
-        <div class="carousel-caption d-none d-md-block bg-dark">
-          <h3>¿Quienes Somos?</h3>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
-            Aldus PageMaker including versions of Lorem Ipsum.</p>
-        </div>
-      </div>
       {% if contenidos %}
       {% for contenido in contenidos %}
-      <div class="carousel-item ">
+      <div class="carousel-item {% if forloop.first %}  active  {% endif %}">
         <img class="img-fluid" src="{% static 'img/background/img-home2.jpg' %}">
-        <div class="carousel-caption d-none d-md-block bg-dark">
+        <div class="carousel-caption d-none d-md-block bg-light text-dark">
           <h3>{{ contenido.nombre }}</h3>
           <p>{{ contenido.contenido }}</p>
         </div>
