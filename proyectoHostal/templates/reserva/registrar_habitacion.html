@@ -1,33 +1,25 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Habitación{% endblock %}
-{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}}
-
+{% block title %}Reservas{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
-<section class="slide fade-6 kenBurns">
-  <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div class="fix-12-12">
-          <form method="POST" class="formulario" enctype="multipart/form-data">
-            {{user.groups.all.0|upper}}
-            <section class="paginacion">
-                <ul>
-                <li><a>1</a></li>
-                <li><a class="active">2</a></li>
-                <li><a>3</a></li>
-                </ul>
-                {% csrf_token %}
-                <h1>Registro de Habitación</h1>
-                {{ form.as_p }}
-                <button type="submit">Registrar</button>
-            </section>
-        </div>
-      </div>
+
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h1>Registro Habitaciones Reserva</h1>
+            </div>
+            <div class="card-body">    
+              proximamente
+            </div>
+          </div>
+      </section>
     </div>
   </div>
-  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
-</section>
+</div>
 {% endblock %}
-

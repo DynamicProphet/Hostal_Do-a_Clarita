@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Habitación{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}}
+
+{% block content %}
+<section class="slide fade-6 kenBurns">
+  <div class="content">
+    <div class="container">
+      <div class="wrap">
+        <div class="fix-12-12">
+          <form method="POST" class="formulario" enctype="multipart/form-data">
+            {{user.groups.all.0|upper}}
+            <section class="paginacion">
+                <ul>
+                <li><a>1</a></li>
+                <li><a class="active">2</a></li>
+                <li><a>3</a></li>
+                </ul>
+                {% csrf_token %}
+                <h1>Registro de Habitación</h1>
+                {{ form.as_p }}
+                <button type="submit">Registrar</button>
+            </section>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
+</section>
+{% endblock %}
+
