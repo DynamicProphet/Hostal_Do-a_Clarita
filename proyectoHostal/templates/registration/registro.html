@@ -2,27 +2,21 @@
 {% load static %}
 
 {% block title %}Registro{% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-registro.jpg' %})" {% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
-<section class="slide fade-6 kenBurns">
-  <div class="content">
-    <div class="container">
-      <div class="wrap">
-        <div class="fix-12-12">
-          <form method="POST" class="formulario" enctype="multipart/form-data">
-            <div>
-                {% csrf_token %}
-                <h1>Registro</h1>
-                <h5>El registro es solamente para Empresas</h5>
-                {{ form.as_p }}
-                <button type="submit">Registrar</button>
-            </div>
-        </form>
-        </div>
+<div id="form_wrap" class="bg-light">
+  <form method="POST" class="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h1 class="text-center pt-2">Registro</h1>
+      <h5 class="text-center pt-2">El registro es solamente para Empresas</h5>
+      <div class="form-group p-5">
+          {{ form.as_p }}
+          <button class="btn btn-primary" type="submit">Registrar</button>
       </div>
-    </div>
-  </div>
-  <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
-</section>
+  </form>
+</div>
 {% endblock %}
+
+

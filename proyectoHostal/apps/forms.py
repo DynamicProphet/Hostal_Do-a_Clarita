@@ -62,6 +62,12 @@ class RegistroForms(forms.ModelForm):
             'email' : 'Email',
             'numero' : 'Numero',
         }
+        widgets = {
+            'rut' : forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
+            'email' : forms.TextInput(attrs={'class': 'form-control'}),
+            'numero' : forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 class RegistroHabitacionForms(forms.ModelForm):
     class Meta:
