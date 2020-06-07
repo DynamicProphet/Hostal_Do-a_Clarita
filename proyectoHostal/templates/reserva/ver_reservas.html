@@ -6,11 +6,23 @@
 {% block img_bg %} class= "fondo" style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
 <div class="container h-100">
+    <div class="row w-100">
+        <div class="col-6">
+            <h1 style="margin-bottom: 15px; color:white;"><b>Reservas</b></h1>
+        </div>
+        <div class="col-6">
+            <div class="div px-5 pt-5" role="group">
+                <a class="btn btn-dark text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal" style="margin-bottom:3px;">
+                    <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+                    Ayuda
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-center h-100">
         <section class="w-100">
-            <h1 style="margin-bottom: 15px; color:white;"><b>Reservas</b></h1>
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-bordered table-striped mb-0 table-style">
+                <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
                     <thead class="thead-dark">
                         <tr>
                             <th style="width: 55px;"><b>ID</b></th>	
@@ -50,11 +62,38 @@
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-reserva/">
-                <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Reserva" width="30px" height="30px"><br>
-                Agregar Reserva
-            </a>
+            {% if user.groups.all.0|upper == "CLIENTE" %}
+                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-reserva/">
+                    <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Reserva" width="30px" height="30px"><br>
+                    Agregar Reserva
+                </a>
+            {% endif %}
         </section>
+    </div>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ayuda:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>- Desde esta ventana puede administrar las reservas:</p>
+                <p>- Para agregar una nueva reserva presione el botón de 'Agregar Reserva' y rellene el formulario.
+                </p>
+                <p>- Para editar una reserva presione el boton de editar correspondiente al registro que desee
+                    editar.</p>
+                <p> - Para cancelar una reserva presione el boton de cancelar correspondiente al registro, para
+                    este paso hace falta aceptar el mensaje de confirmación.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
