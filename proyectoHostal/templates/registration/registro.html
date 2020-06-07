@@ -8,15 +8,16 @@
 {% block content %}
 <div id="form_wrap" class="bg-light">
   <form method="POST" class="" enctype="multipart/form-data">
-      {% csrf_token %}
-      <h1 class="text-center pt-2">Registro</h1>
-      <h5 class="text-center pt-2">El registro es solamente para Empresas</h5>
+    {% csrf_token %}
+    <div class="card border-dark mb-3">
+      <div class="card-header">
+        <h1 class="text-center pt-2">Registro</h1>
+        <h5 class="text-center pt-2">El registro es solamente para Empresas</h5>
+      </div>
       <div class="form-group p-5">
-          {{ form.as_p }}
-          <button class="btn btn-primary" type="submit">Registrar</button>
+        {{ form.as_p }}
+        <button class="btn btn-dark" type="submit">Registrar</button>
       </div>
   </form>
 </div>
 {% endblock %}
-
-

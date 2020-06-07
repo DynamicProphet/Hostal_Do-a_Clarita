@@ -48,18 +48,7 @@ def RealizarReserva(request):
         return redirect('/')
 
 def RegistrarHabitacion(request):
-    user = request
-    if True:
-        if request.method == 'POST':
-            form = RegistroHabitacionForms(request.POST, request.FILES)
-            if form.is_valid():
-                form.save()
-            return redirect ('/')
-        else:
-            form = RegistroHabitacionForms()
-        return render(request, 'reserva/registrar_habitacion.html', {'form': form})
-    else:
-        return redirect('/')
+    return render(request, 'reserva/registrar_habitacion.html', {})
 
 def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
@@ -150,3 +139,17 @@ def ComedorAdjunto(request,menu_id):
     tabla =  excel.to_html(bold_rows=True,index=False,
     classes="table table-striped table-dark text-light",justify='center')
     return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 
+
+def AgregarHabitacion(request):
+    User = request.user
+    if True:
+        if request.method == 'POST':
+            form = AgregarHabitacionForms(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+            return redirect('/')
+        else:
+            form = AgregarHabitacionForms()
+        return render(request, 'habitacion/habitacion-agregar.html',{})
+    else:
+        return redirect('/')

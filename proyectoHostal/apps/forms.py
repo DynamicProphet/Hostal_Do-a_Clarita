@@ -63,13 +63,13 @@ class RegistroForms(forms.ModelForm):
             'numero' : 'Numero',
         }
         widgets = {
-            'rut' : forms.TextInput(attrs={'class': 'form-control'}),
+            'rut' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Poner rut sin puntos ni guion, Ejemplo: 205461239"}),
             'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
             'email' : forms.TextInput(attrs={'class': 'form-control'}),
-            'numero' : forms.TextInput(attrs={'class': 'form-control'}),
+            'numero' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Ejemplo: +56975486232"}),
         }
 
-class RegistroHabitacionForms(forms.ModelForm):
+class AgregarHabitacionForms(forms.ModelForm):
     class Meta:
         model= Habitacion
         fields = [
@@ -85,11 +85,4 @@ class RegistroHabitacionForms(forms.ModelForm):
             'accesorios' : 'Accesorios',
             'precio' : 'Precio',
             'estado' : 'Estado',
-        }
-        widgets = {
-            'numero_habitacion' : forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_cama' : forms.TextInput(attrs={'class': 'form-control'}),
-            'accesorios' : forms.TextInput(attrs={'class': 'form-control'}),
-            'precio' : forms.NumberInput(attrs={'class': 'form-control'}),
-            'estado' : forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        }   
