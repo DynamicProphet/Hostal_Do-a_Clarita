@@ -52,6 +52,7 @@
                                 {% elif user.groups.all.0|upper == 'SECRETARIA' %}
                                     <td>
                                         <a class="btn btn-primary" href="/reserva/registrar-habitacion-reserva/">Ver Reserva</a>
+                                        <a class="btn btn-secondary" href="">Pago Reserva</a>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -82,13 +83,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>- Desde esta ventana puede administrar las reservas:</p>
-                <p>- Para agregar una nueva reserva presione el botón de 'Agregar Reserva' y rellene el formulario.
-                </p>
-                <p>- Para editar una reserva presione el boton de editar correspondiente al registro que desee
-                    editar.</p>
-                <p> - Para cancelar una reserva presione el boton de cancelar correspondiente al registro, para
-                    este paso hace falta aceptar el mensaje de confirmación.</p>
+                {% if user.groups.all.0|upper == "CLIENTE" %}
+                    <p>- Desde esta ventana puede administrar las reservas:</p>
+                    <p>- Para agregar una nueva reserva presione el botón de 'Agregar Reserva' y rellene el formulario.</p>
+                    <p>- Para editar una reserva presione el boton de editar correspondiente al registro que desee
+                        editar.</p>
+                    <p> - Para cancelar una reserva presione el boton de cancelar correspondiente al registro, para
+                        este paso hace falta aceptar el mensaje de confirmación.</p>
+                {% elif user.groups.all.0|upper == "SECRETARIA" %}
+                    <p>- Desde esta ventana puede administrar las reservas:</p>
+                    <p>-  (Los siguientes puntos estarán implementados en la entrega 3)</p>
+                    <p>- Para gestionar el check-in o check-out de una reserva presionar el boton "Ver Reserva"</p>
+                    <p>- Para gestionar el pago de una reserva presionar en el boton "Pago Reserva"</p>
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
