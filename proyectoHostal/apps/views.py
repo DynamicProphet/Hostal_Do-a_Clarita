@@ -47,6 +47,9 @@ def RealizarReserva(request):
     else:
         return redirect('/')
 
+def RegistrarHabitacionReserva(request):
+    return render(request, 'reserva/registrar_habitacion.html', {})
+
 def RegistrarHabitacion(request):
     user = request
     if True:
