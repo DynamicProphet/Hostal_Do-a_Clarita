@@ -18,13 +18,12 @@ def registro(request):
             form = RegistroForms(request.POST)
             if form.is_valid():
                 form.save()
-            return redirect('/')
+            return redirect('/registracion/registro_exitoso')
         else:
             form = RegistroForms()
         return render(request, 'registration/registro.html', {'form': form})
     else:
         return redirect('/')
-    return render(request, 'registration/registro.html', {})
 
 def RegistroExitoso(request):
     return render(request, 'registration/registro_exitoso.html',{})
@@ -143,6 +142,7 @@ def ComedorAdjunto(request,menu_id):
     classes="table table-striped table-dark text-light",justify='center')
     return render(request, 'Cocina/menu_adjunto.html', {'tabla':tabla,'path':path}) 
 
+#CU7
 def AgregarHabitacion(request):
     User = request.user
     if True:
@@ -150,9 +150,28 @@ def AgregarHabitacion(request):
             form = AgregarHabitacionForms(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-            return redirect('/')
+            return redirect('/habitacion/habitacion-listar')
         else:
             form = AgregarHabitacionForms()
         return render(request, 'habitacion/habitacion-agregar.html',{'form' : form})
     else:
-        return redirect('/')
+        return redirect('/habitacion/habitacion-listar')
+
+def ListarHabitacion(request):
+    habitaciones = Habitacion.objects.all().order_by('id')
+    return render(request, 'habitacion/habitacion-listar.html', {'habitaciones': habitaciones})
+
+def EditarHabitacion(request,id):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instancia = Habitacion.objects.get(id=id)
+        form= HabitacionForms(instance=instancia)
+        if request.method=="POST":
+            form= HabitacionForms(request.POST, request.FILES, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                return redirect('/habitacion/habitacion-listar')
+        return render(request, 'habitacion/habitacion-editar.html', {'form': form})
+    return redirect('/habitacion/habitacion-listar/')
+
+
