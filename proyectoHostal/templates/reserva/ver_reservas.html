@@ -26,6 +26,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th style="width: 55px;"><b>ID</b></th>	
+                            <th><b>EMPRESA</b></th>
                             <th><b>FECHA INICIO</b></th>
                             <th><b>FECHA TERMINO</b></th>
                             <th><b>POSEE PLANTILLA</b></th>
@@ -35,27 +36,41 @@
                     <tbody>
                         {% if reservas %}
                             {% for reserva in reservas %}
-                            <tr>
-                                <td>{{ reserva.id }}</td>
-                                <td>{{ reserva.fecha_inicio }}</td>
-                                <td>{{ reserva.fecha_termino }}</td>
-                                {% if reserva.plantilla_huespedes %}
-                                    <td>Si</td>
+                                {% if empresa and user.groups.all.0|upper == 'CLIENTE' %}
+                                    {% if reserva.fk_id_empresa.nombre == empresa|upper %}
+                                        <tr>
+                                            <td>{{ reserva.id }}</td>
+                                            <td>{{ reserva.fk_id_empresa.nombre }}</td>
+                                            <td>{{ reserva.fecha_inicio }}</td>
+                                            <td>{{ reserva.fecha_termino }}</td>
+                                            {% if reserva.plantilla_huespedes %}
+                                                <td>Si</td>
+                                            {% else %}
+                                                <td>No</td>
+                                            {% endif %}
+                                            <td>
+                                                <a class="btn btn-success" href="/reserva/editar/{{reserva.id}}/">Editar</a>
+                                                <a class="btn btn-danger" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 {% else %}
-                                    <td>No</td>
-                                {% endif %}
-                                {% if user.groups.all.0|upper == 'CLIENTE' %}
-                                    <td>
-                                        <a class="btn btn-success" href="/reserva/editar/{{reserva.id}}/">Editar</a>
-                                        <a class="btn btn-danger" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
-                                    </td>
-                                {% elif user.groups.all.0|upper == 'SECRETARIA' %}
+                                <tr>
+                                    <td>{{ reserva.id }}</td>
+                                    <td>{{ reserva.fk_id_empresa.nombre }}</td>
+                                    <td>{{ reserva.fecha_inicio }}</td>
+                                    <td>{{ reserva.fecha_termino }}</td>
+                                    {% if reserva.plantilla_huespedes %}
+                                        <td>Si</td>
+                                    {% else %}
+                                        <td>No</td>
+                                    {% endif %}
                                     <td>
                                         <a class="btn btn-primary" href="/reserva/registrar-habitacion-reserva/">Ver Reserva</a>
                                         <a class="btn btn-secondary" href="">Pago Reserva</a>
                                     </td>
+                                </tr>
                                 {% endif %}
-                            </tr>
                             {% endfor %}
                         {% else %}
                         <h1>No hay registros de reservas</h1>

@@ -57,8 +57,11 @@ def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
     user = request.user
     if  request.user.groups.filter(name='CLIENTE').exists(): #Valida si el usuario es de tipo cliente
-        #reservas = Reserva.objects.filter(fk_id_empresa=empresa_id)
-        return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
+        if request.user.first_name != " ":
+            empresa = Empresa.objects.get(nombre=request.user.first_name)
+            return render(request, 'reserva/ver_reservas.html', {'reservas': reservas, 'empresa': empresa})
+        else:
+            return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
     elif request.user.groups.filter(name="SECRETARIA").exists(): #Valida si el usuario es de tipo empleado
         return render(request, 'reserva/ver_reservas.html', {'reservas': reservas})
     else:
