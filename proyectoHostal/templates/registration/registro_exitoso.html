@@ -1,20 +1,17 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}RegistroExitoso{% endblock %}
+{% block title %}Registro{% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-registro.jpg' %})" {% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
 {% block content %}
-<section class="slide fade-6 kenBurns">
-    <div class="content">
-        <div class="container">
-            <div class="wrap">
-                <div class="fix-12-12">
-                    <h1>Registro Exitoso</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="background" style="background-image:url({% static 'img/background/img-registro.jpg' %})"></div>
-</section>
+<div id="form_wrap" class="bg-light">
+  <form method="POST" class="" enctype="multipart/form-data">
+    <div class="card border-dark mb-3">
+      <div class="card-header">
+        <h1 class="text-center pt-2">Registro Exitoso</h1>
+      </div>
+  </form>
+</div>
 {% endblock %}

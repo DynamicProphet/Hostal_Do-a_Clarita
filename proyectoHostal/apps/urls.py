@@ -26,6 +26,8 @@ urlpatterns = [
     ])),
     path('habitacion/', include([
         path('habitacion-agregar/', AgregarHabitacion, name='habitacion-agregar'),
+        path('habitacion-listar/', ListarHabitacion, name='habitacion-listar'),
+        path('editar/<int:id>/', EditarHabitacion, name='editar-habitacion')
     ])),
     path('comedor/', include([
         path('listar', ComedorListar, name="listar-menu"),

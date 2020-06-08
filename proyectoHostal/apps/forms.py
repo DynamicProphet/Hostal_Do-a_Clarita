@@ -93,3 +93,21 @@ class AgregarHabitacionForms(forms.ModelForm):
             'precio' : forms.NumberInput(attrs={'class': 'form-control'}),
             'estado' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Reservada, Disponible, Mantenimiento"}),
         }
+
+class HabitacionForms(forms.ModelForm):
+    class Meta:
+        model= Habitacion
+        fields = [
+            'numero_habitacion',
+            'tipo_cama',
+            'accesorios',
+            'precio',
+            'estado',
+        ] 
+        labels = {
+            'numero_habitacion' : 'Numero de habitacion',
+            'tipo_cama' : 'Tipo de cama',
+            'accesorios' : 'Accesorios',
+            'precio' : 'Precio',
+            'estado' : 'Estado',
+        }   
