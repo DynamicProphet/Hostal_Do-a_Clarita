@@ -47,6 +47,20 @@ class ReservaForms(forms.ModelForm):
         }
         
 
+class RegistroForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = [
+				'username',
+				'first_name',
+				'email',
+		]
+		labels = {
+				'username': 'Nombre de usuario',
+				'first_name': 'Nombre',
+				'email': 'Correo',
+		}
+
 #CU1
 class RegistroForms(forms.ModelForm):
     class Meta:
