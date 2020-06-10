@@ -13,8 +13,8 @@ from .views import *
 urlpatterns = [
     path('', home, name='pagina-principal'),
     path('registracion/', include([
-        path('registro-usuario-django/', registroDjango, name='registro-usuario'),
-        path('registro/', registro, name='registro'),
+        path('registro-usuario-django/', RegistroUsuario.as_view(), name='registro-usuario'),
+        path('registro/', RegistroUsuarioV2, name='registro'),
         path('registro_exitoso/', RegistroExitoso, name='registro_exitoso'),            
     ])),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),

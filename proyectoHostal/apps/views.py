@@ -6,12 +6,22 @@ import pandas as pd
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView
 # Create your views here.
 
 #CU13: Administrar La Página
 def home(request):
     contenidos = ContenidoWeb.objects.all()
     return render(request, 'home.html', {'contenidos': contenidos})
+
+def RegistroUsuarioV2(request):
+	return render(request, 'registration/registro.html')
+	
+class RegistroUsuario(CreateView):
+    model = User
+    template_name = "registration/registro-usuario-django.html"
+    form_class = RegistroForm
+    success_url = '/registracion/registro/'
 
 #CU1: Registrar
 def registro(request):
