@@ -162,16 +162,17 @@ def ListarHabitacion(request):
     return render(request, 'habitacion/habitacion-listar.html', {'habitaciones': habitaciones})
 
 def EditarHabitacion(request,id):
+    habitacion = Habitacion.objects.get(id=id_habitacion)
+    user = request.user
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        instancia = Habitacion.objects.get(id=id)
-        form= HabitacionForms(instance=instancia)
-        if request.method=="POST":
-            form= HabitacionForms(request.POST, request.FILES, instance=instancia)
+        if request.method == "GET":
+            form = HabitacionForms(instance=habitacion)
+        else:
+            form = HabitacionForms(request.POST, request.FILES,instance=habitacion)
             if form.is_valid():
-                instancia= form.save(commit=False)
-                instancia.save()
-                return redirect('/habitacion/habitacion-listar')
-        return render(request, 'habitacion/habitacion-editar.html', {'form': form})
-    return redirect('/habitacion/habitacion-listar/')
-
-
+                habitacion = form.save(commit=False)
+                habitacion.save()
+            return redirect('habitacion/habitacion-listar/')
+        return render(request, "habitacion/habitacion-listar.html", {'form': form})
+    else:
+        return redirect('/') 

@@ -8,14 +8,28 @@
 {% block img_bg %} style="background-image:url({% static 'img/background/img-login.jpg' %})" {% endblock %}
 
 {% block content %}
-<div id="form_wrap" class="bg-dark pt-5">
-    <form method="POST" class="text-light" enctype="multipart/form-data">
-        {% csrf_token %}
-        <h1 class="text-center pt-2">Editar Habitacion</h1>
-        <div class="form-group p-5">
-            {{ form.as_p }}
-            <button class="btn btn-primary" type="submit">Editar</button>
-        </div>
-    </form>
-</div>
+
+<div class="container h-100">
+    <div class="row justify-content-center h-100">
+      <div class="col-sm-8 align-self-center text-center">  
+        <section>
+            <div class="card border-dark mb-3">
+              <div class="card-header">
+                <h1>Editar Habitacion</h1>
+              </div>
+              <div class="card-body">    
+                <form method="POST" enctype="multipart/form-data" class="formulario">
+                      <div class="formulario">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                          <a class="btn btn-dark" href="/habitacion/habitacion-listar/">volver</a>
+                          <button class="btn btn-success" type="submit">Editar</button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+        </section>
+      </div>
+    </div>
+  </div>
 {% endblock %}
