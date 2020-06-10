@@ -4,6 +4,8 @@ from .forms import *
 from django.contrib import messages
 import pandas as pd
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -24,6 +26,20 @@ def registro(request):
         return render(request, 'registration/registro.html', {'form': form})
     else:
         return redirect('/')
+
+def registroDjango(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('Registro de usuario:')
+            raw_password = form.cleaned_data.get('Contraseña 1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/registro-usuario-django.html', {'form': form})
 
 def RegistroExitoso(request):
     return render(request, 'registration/registro_exitoso.html',{})

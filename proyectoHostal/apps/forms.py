@@ -1,6 +1,8 @@
 from django.forms import ModelForm
 from django import forms
 from .models import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -111,3 +113,4 @@ class HabitacionForms(forms.ModelForm):
             'precio' : 'Precio',
             'estado' : 'Estado',
         }   
+
