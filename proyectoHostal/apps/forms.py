@@ -47,7 +47,7 @@ class ReservaForms(forms.ModelForm):
         }
         
 
-class RegistroForm(UserCreationForm):
+class RegistroForms(UserCreationForm):
 	class Meta:
 		model = User
 		fields = [
@@ -62,7 +62,7 @@ class RegistroForm(UserCreationForm):
 		}
 
 #CU1
-class RegistroForms(forms.ModelForm):
+class RegistroEmpresaForms(forms.ModelForm):
     class Meta:
         model= Empresa
         fields = [
@@ -79,8 +79,8 @@ class RegistroForms(forms.ModelForm):
         }
         widgets = {
             'rut' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Poner rut sin puntos ni guion, Ejemplo: 205461239"}),
-            'nombre' : forms.TextInput(attrs={'class': 'form-control'}),
-            'email' : forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Nombre Empresa"}),
+            'email' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Repita el Email"}),
             'numero' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Ejemplo: +56975486232"}),
         }
 

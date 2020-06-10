@@ -3,8 +3,8 @@ from django.apps import AppConfig
 
 class AppsConfig(AppConfig):
     name = 'apps'
-    verbose_name = "Apps"
+    verbose_name = "Nuestros apps"
 
     def ready(self):
-        import app.signals.handlers
+        import apps.signals.handlers
     

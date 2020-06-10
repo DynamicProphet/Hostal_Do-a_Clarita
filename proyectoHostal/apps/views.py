@@ -15,24 +15,34 @@ def home(request):
     return render(request, 'home.html', {'contenidos': contenidos})
 
 def RegistroUsuarioV2(request):
-	return render(request, 'registration/registro.html')
+    if True:
+        if request.method == 'POST':
+            form = RegistroEmpresaForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/registracion/registro_exitoso')
+        else:
+            form = RegistroEmpresaForms()
+        return render(request, 'registration/registro.html', {'form': form})
+    else:
+        return redirect('/')
 	
 class RegistroUsuario(CreateView):
     model = User
     template_name = "registration/registro-usuario-django.html"
-    form_class = RegistroForm
+    form_class = RegistroForms
     success_url = '/registracion/registro/'
 
 #CU1: Registrar
 def registro(request):
     if True:
         if request.method == 'POST':
-            form = RegistroForms(request.POST)
+            form = RegistroEmpresaForms(request.POST)
             if form.is_valid():
                 form.save()
             return redirect('/registracion/registro_exitoso')
         else:
-            form = RegistroForms()
+            form = RegistroEmpresaForms()
         return render(request, 'registration/registro.html', {'form': form})
     else:
         return redirect('/')
