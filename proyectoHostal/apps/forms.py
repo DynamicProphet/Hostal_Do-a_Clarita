@@ -78,7 +78,7 @@ class RegistroEmpresaForms(forms.ModelForm):
             'numero' : 'Numero',
         }
         widgets = {
-            'rut' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Poner rut sin puntos ni guion, Ejemplo: 205461239"}),
+            'rut' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Poner rut de empresa sin puntos ni guion, Ejemplo: 205461239"}),
             'nombre' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Nombre Empresa"}),
             'email' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Repita el Email"}),
             'numero' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Ejemplo: +56975486232"}),
