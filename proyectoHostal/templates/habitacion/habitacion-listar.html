@@ -41,7 +41,7 @@
                   <td>{{ habitacion.estado }}</td>
                   {% if user.groups.all.0|upper == 'GERENTE' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
                   <td>
-                      <a class="btn btn-primary" href="/habitacion/habitacion-editar/{{ id.habitacion }}" role="button">Editar</a>
+                      <a class="btn btn-primary" href="/habitacion/editar/{{ habitacion.id }}/" role="button">Editar</a>
                   </td>
                   {% endif %}
               </tr>

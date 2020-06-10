@@ -2,8 +2,6 @@ from django.forms import ModelForm
 from django import forms
 from .models import *
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
 
 class MenuForms(forms.ModelForm):
     class Meta:
@@ -42,9 +40,10 @@ class ReservaForms(forms.ModelForm):
             'fk_id_empresa': 'ID Empresa',
         }
         widgets = {
-            'fecha_inicio': DateInput(),
-            'fecha_termino': DateInput(),
+            'fecha_inicio': forms.TextInput(attrs={'class': 'form-control', "placeholder" : "aaaa-mm-dd", "style": "text-align:center"}),
+            'fecha_termino': forms.TextInput(attrs={'class': 'form-control', "placeholder" : "aaaa-mm-dd", "style": "text-align:center"}),
         }
+        
 
 #CU1
 class RegistroForms(forms.ModelForm):
@@ -88,10 +87,10 @@ class AgregarHabitacionForms(forms.ModelForm):
         }   
         widgets = {
             'numero_habitacion' : forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo_cama' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Plaza, Plaza y media, Dos plazas, King, Super king"}),
+            'tipo_cama' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Plaza, Plaza y media, Dos plazas, King, Super king", "style": "text-align:center"}),
             'accesorios' : forms.TextInput(attrs={'class': 'form-control'}),
             'precio' : forms.NumberInput(attrs={'class': 'form-control'}),
-            'estado' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Reservada, Disponible, Mantenimiento"}),
+            'estado' : forms.TextInput(attrs={'class': 'form-control', "placeholder" : "Reservada, Disponible, Mantenimiento", "style": "text-align:center"}),
         }
 
 class HabitacionForms(forms.ModelForm):

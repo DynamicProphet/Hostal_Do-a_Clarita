@@ -16,14 +16,13 @@
                 <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-agregar">Agregar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-listar">Listar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'GERENTE' %}
-                <li class="nav-item "><a class="nav-link" href="">Futuras ventanas de gerente<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item "><a class="nav-link" href="">Futuras&nbspventanas&nbspde&nbspgerente<span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-agregar">Agregar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/habitacion/habitacion-listar">Listar&nbspHabitacion<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'EMPLEADO BODEGA' %} 
-                <li class="nav-item"><a class="nav-link" href="">Futura ventana de bodega<span class="sr-only">(current)</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="">Futura&nbspventana&nbspde&nbspbodega<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'SECRETARIA' %}
                 <li class="nav-item"><a class="nav-link" href="/reserva/listar/">Reservas<span class="sr-only">(current)</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/habitacion/listar/">Habitaciones<span class="sr-only">(current)</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="">Futuras&nbspventanas&nbspsecretaria<span class="sr-only">(current)</span></a></li>
               {% elif user.groups.all.0|upper == 'GERENTE COCINA' %}
                 <li class="nav-item"><a class="nav-link" href="/comedor/listar">Ver&nbspMinutas<span class="sr-only">(current)</span></a></li>
