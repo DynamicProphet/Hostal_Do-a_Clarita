@@ -123,9 +123,9 @@ admin.site.register(Pedido,PedidoAdmin)
 
 
 class ProductoAdmin(admin.ModelAdmin):
-    list_display = ('id','stock','nombre','tipo_producto','marca','proveedor')
-    list_display_links = ('id','stock','nombre','tipo_producto','marca','proveedor')
-
+    list_display = ('id','stock','nombre','precio','fecha_venc','fk_id_marca','fk_id_tipo','fk_id_proveedor')
+    list_display_links = ('id','stock','nombre','precio','fecha_venc','fk_id_marca','fk_id_tipo','fk_id_proveedor')
+    
     def proveedor(self,obj):
         return obj.fk_id_proveedor
 
@@ -214,3 +214,15 @@ class TipoEmpleadoAdmin(admin.ModelAdmin):
     list_display_links= ('id', 'tipo_empleado')
     pass
 admin.site.register(TipoEmpleado,TipoEmpleadoAdmin)
+
+class MarcaProductoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_display_links= ('id', 'descripcion')
+    pass
+admin.site.register(MarcaProducto,MarcaProductoAdmin)
+
+class TipoProductoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'descripcion')
+    list_display_links= ('id', 'descripcion')
+    pass
+admin.site.register(TipoProducto,TipoProductoAdmin)
