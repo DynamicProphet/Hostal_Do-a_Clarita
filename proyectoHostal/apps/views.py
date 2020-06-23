@@ -215,3 +215,46 @@ def EditarHabitacion(request,id):
         return render(request, "habitacion/habitacion-listar.html", {'form': form})
     else:
         return redirect('/') 
+
+#CU11: Administrar Productos
+def ProductoListar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        productos = Producto.objects.all()
+        return render(request, 'producto/listar-producto.html', {'productos' : productos}) 
+    return redirect('/producto/listar')
+def ProductoAgregar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        if request.method == 'POST':
+            form = ProductoForms(request.POST)
+            if form.is_valid():
+                form.save()            
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Producto {prod_nombre} Se Ha Agregado!')
+                return redirect('/producto/listar')
+        else:
+            form = ProductoForms()
+        return render(request, 'producto/agregar-producto.html', {'form': form})
+    return redirect('/producto/listar')
+
+def ProductoEditar(request,prod_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instancia= Producto.objects.get(id=prod_id)
+        form=  ProductoForms(instance=instancia)
+        if request.method=="POST":
+            form= ProductoForms(request.POST, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Producto {prod_nombre} Se Ha Editado!')
+                return redirect('/producto/listar')
+        return render(request, 'producto/editar-producto.html', {'form': form,})
+    return redirect('/producto/listar')
+
+def ProductoEliminar(request,prod_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= Producto.objects.get(id=prod_id)
+        instacia.delete()
+        messages.warning(request, f'El Producto {instacia.nombre} Se Ha Eliminado!')
+        return redirect('/producto/listar') 
+    return redirect('/producto/listar')

@@ -127,3 +127,37 @@ class HabitacionForms(forms.ModelForm):
             'estado' : 'Estado',
         }   
 
+#CU11: Administrar Producto
+class ProductoForms(forms.ModelForm):
+    class Meta:
+        model= Producto
+        fields = [
+            'id',
+            'stock',
+            'nombre',
+            'precio',
+            'fecha_venc',
+            'fk_id_marca',
+            'fk_id_tipo',
+            'fk_id_proveedor',
+        ]
+        labels = {
+            'id' : 'ID',
+            'stock': 'Stock',
+            'nombre': 'Nombre/Descripcion',
+            'precio': 'Precio',
+            'fecha_venc': 'Fecha Vencimiento',
+            'fk_id_marca': 'Marca',
+            'fk_id_tipo': 'Tipo Producto',
+            'fk_id_proveedor' : 'Proveedor',
+        }
+        widgets = {
+            'id' : forms.NumberInput(attrs={'class': 'form-control'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'fecha_venc': forms.DateInput(attrs={'class': 'form-control'}),	
+            'fk_id_marca': forms.Select(attrs={'class': 'form-control'}),
+            'fk_id_tipo': forms.Select(attrs={'class': 'form-control'}),
+            'fk_id_proveedor' : forms.Select(attrs={'class': 'form-control'}),
+        }
