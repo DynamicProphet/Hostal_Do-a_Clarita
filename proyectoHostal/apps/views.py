@@ -4,6 +4,9 @@ from .forms import *
 from django.contrib import messages
 import pandas as pd
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -11,19 +14,52 @@ def home(request):
     contenidos = ContenidoWeb.objects.all()
     return render(request, 'home.html', {'contenidos': contenidos})
 
-#CU1: Registrar
-def registro(request):
+def RegistroUsuarioV2(request):
     if True:
         if request.method == 'POST':
-            form = RegistroForms(request.POST)
+            form = RegistroEmpresaForms(request.POST)
             if form.is_valid():
                 form.save()
             return redirect('/registracion/registro_exitoso')
         else:
-            form = RegistroForms()
+            form = RegistroEmpresaForms()
         return render(request, 'registration/registro.html', {'form': form})
     else:
         return redirect('/')
+	
+class RegistroUsuario(CreateView):
+    model = User
+    template_name = "registration/registro-usuario-django.html"
+    form_class = RegistroForms
+    success_url = '/registracion/registro/'
+
+#CU1: Registrar
+def registro(request):
+    if True:
+        if request.method == 'POST':
+            form = RegistroEmpresaForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/registracion/registro_exitoso')
+        else:
+            form = RegistroEmpresaForms()
+        return render(request, 'registration/registro.html', {'form': form})
+    else:
+        return redirect('/')
+
+def registroDjango(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('Registro de usuario:')
+            raw_password = form.cleaned_data.get('Contraseña 1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/registro-usuario-django.html', {'form': form})
 
 def RegistroExitoso(request):
     return render(request, 'registration/registro_exitoso.html',{})
@@ -77,7 +113,7 @@ def EditarReserva(request, id_reserva):
             if form.is_valid():
                 reserva = form.save(commit=False)
                 reserva.save()
-            return redirect('/reserva/listar/')
+            return redirect('reserva/ver-reservas/')
         return render(request, "reserva/modificar_reserva.html", {'form': form})
     else:
         return redirect('/') 
@@ -88,7 +124,7 @@ def CancelarReserva(request, id_reserva):
     if request.user.groups.filter(name = "CLIENTE").exists():
         if request.method == 'POST':
             reserva.delete()
-            return redirect('reserva/listar/')
+            return redirect('reserva/ver-reservas/')
         return render(request, 'reserva/eliminar_reserva.html', {'reserva': reserva})
     else:
         return redirect('/')
@@ -164,18 +200,18 @@ def ListarHabitacion(request):
     habitaciones = Habitacion.objects.all().order_by('id')
     return render(request, 'habitacion/habitacion-listar.html', {'habitaciones': habitaciones})
 
-def EditarHabitacion(request, id_habitacion):
+def EditarHabitacion(request,id):
     habitacion = Habitacion.objects.get(id=id_habitacion)
     user = request.user
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         if request.method == "GET":
             form = HabitacionForms(instance=habitacion)
         else:
-            form = HabitacionForms(request.POST, instance=habitacion)
+            form = HabitacionForms(request.POST, request.FILES,instance=habitacion)
             if form.is_valid():
                 habitacion = form.save(commit=False)
                 habitacion.save()
-            return redirect('/habitacion/habitacion-listar/')
-        return render(request, "habitacion/habitacion-editar.html", {'form': form})
+            return redirect('habitacion/habitacion-listar/')
+        return render(request, "habitacion/habitacion-listar.html", {'form': form})
     else:
         return redirect('/') 

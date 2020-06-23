@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Registro{% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-registro.jpg' %})" {% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block content %}
+<div id="form_wrap" class="bg-light">
+  <form method="POST" class="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card border-dark mb-3">
+      <div class="card-header">
+        <h1 class="text-center pt-2">Registro</h1>
+        <h5 class="text-center pt-2">El registro es solamente para Empresas</h5>
+      </div>
+      <div class="form-group p-5">
+        {{ form.as_p }}
+        <button class="btn btn-dark" type="submit">Siguiente</button>
+      </div>
+  </form>
+</div>
+{% endblock %}
