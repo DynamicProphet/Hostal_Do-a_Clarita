@@ -160,7 +160,7 @@ def ComedorEditar(request,menu_id):
                 instancia= form.save(commit=False)
                 instancia.save()
                 tipo_menu = form.cleaned_data.get('tipo_menu')
-                messages.success(request, f'El Menu {tipo_menu} Se Ha Agregado!')
+                messages.success(request, f'El Menu {tipo_menu} Se Ha Editado!')
                 return redirect('/comedor/listar')
         return render(request, 'Cocina/menu_editar.html', {'form': form,})
     return redirect('/comedor/listar')
