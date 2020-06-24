@@ -217,12 +217,9 @@ def EditarHabitacion(request,id):
         return redirect('/') 
 
 def PagarReserva(request, id_reserva):
-    reservas = Reserva.objects.get(id=id_reserva)
-    empresas = Empresa.objects.all()
-    facturas = Factura.objects.all()
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
-    return render(request, "reserva/pago_reserva.html", {'reservas': reservas, 'empresas': empresas, 'facturas': facturas, 'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas})
+    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas})
 
 def PagoExitoso(request):
     return render(request, "reserva/pago_exitoso.html", {})
