@@ -152,12 +152,38 @@ class ProductoForms(forms.ModelForm):
             'fk_id_proveedor' : 'Proveedor',
         }
         widgets = {
-            'id' : forms.NumberInput(attrs={'class': 'form-control'}),
-            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
-            'fecha_venc': forms.DateInput(attrs={'class': 'form-control'}),	
-            'fk_id_marca': forms.Select(attrs={'class': 'form-control'}),
-            'fk_id_tipo': forms.Select(attrs={'class': 'form-control'}),
-            'fk_id_proveedor' : forms.Select(attrs={'class': 'form-control'}),
+            'id' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control col-auto'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control col-auto'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control col-auto'}),
+            'fecha_venc': forms.SelectDateWidget(attrs={'class': 'form-control col-4'}),	
+            'fk_id_marca': forms.Select(attrs={'class': 'form-control col-9'}),
+            'fk_id_tipo': forms.Select(attrs={'class': 'form-control col-9'}),
+            'fk_id_proveedor' : forms.Select(attrs={'class': 'form-control col-9'}),
+        }
+
+class MarcaForm(forms.ModelForm):
+    class Meta:
+        model= MarcaProducto
+        fields = [
+            'descripcion',
+        ]
+        labels = {
+            'descripcion' : 'Descripcion',
+        }
+        widgets = {
+            'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class TipoProductoForm(forms.ModelForm):
+    class Meta:
+        model= TipoProducto
+        fields = [
+            'descripcion',
+        ]
+        labels = {
+            'descripcion' : 'Descripcion',
+        }
+        widgets = {
+            'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
         }

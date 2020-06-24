@@ -13,7 +13,26 @@
         {% csrf_token %}
         <h1 class="text-center pt-2">Agregar Producto</h1>
         <div class="form-group p-5">
-            {{ form.as_p }}
+            {% for field in form %}
+            {{ field.label_tag }}
+            <div class="form-row p-1">
+                {{ field.errors }}
+                {% if field.label == "Marca" or field.label == "Tipo Producto" %}
+                {{ field }}
+                <a class="btn btn-success px-2" target="_blank" href="#" id="agregar{{ field.label }}">
+                    <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar {{ field.label }}" width="15px" height="15px">
+                </a>
+                <a class="btn btn-warning px-2" target="_blank" href="#" id="editar{{ field.label }}">
+                    <img src="{% static 'img/icono-editar.png' %}" alt="Editar {{ field.label }}" width="15px" height="15px">
+                </a>
+                {% else %}
+                {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
             <button class="btn btn-primary" type="submit">Agregar</button>
         </div>
     </form>
