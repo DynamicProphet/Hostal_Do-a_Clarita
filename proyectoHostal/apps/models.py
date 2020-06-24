@@ -185,9 +185,9 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     precio = models.BigIntegerField()
     fecha_venc = models.DateField(blank=True, null=True)
-    fk_id_marca = models.ForeignKey(MarcaProducto, models.DO_NOTHING, db_column='fk_id_marca', blank=True, null=True)
-    fk_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='fk_id_tipo', blank=True, null=True)
-    fk_id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='fk_id_proveedor', blank=True, null=True)
+    fk_id_marca = models.ForeignKey(MarcaProducto, models.DO_NOTHING, db_column='fk_id_marca', blank=False, null=True)
+    fk_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='fk_id_tipo', blank=False, null=True)
+    fk_id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='fk_id_proveedor', blank=False, null=True)
 
     def __str__(self):
         return self.nombre
