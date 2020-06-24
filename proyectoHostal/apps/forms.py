@@ -127,3 +127,63 @@ class HabitacionForms(forms.ModelForm):
             'estado' : 'Estado',
         }   
 
+#CU11: Administrar Producto
+class ProductoForms(forms.ModelForm):
+    class Meta:
+        model= Producto
+        fields = [
+            'id',
+            'stock',
+            'nombre',
+            'precio',
+            'fecha_venc',
+            'fk_id_marca',
+            'fk_id_tipo',
+            'fk_id_proveedor',
+        ]
+        labels = {
+            'id' : 'ID',
+            'stock': 'Stock',
+            'nombre': 'Nombre/Descripcion',
+            'precio': 'Precio',
+            'fecha_venc': 'Fecha Vencimiento',
+            'fk_id_marca': 'Marca',
+            'fk_id_tipo': 'Tipo Producto',
+            'fk_id_proveedor' : 'Proveedor',
+        }
+        widgets = {
+            'id' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control col-auto'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control col-auto'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control col-auto'}),
+            'fecha_venc': forms.SelectDateWidget(attrs={'class': 'form-control col-4'}),	
+            'fk_id_marca': forms.Select(attrs={'class': 'form-control col-9'}),
+            'fk_id_tipo': forms.Select(attrs={'class': 'form-control col-9'}),
+            'fk_id_proveedor' : forms.Select(attrs={'class': 'form-control col-9'}),
+        }
+
+class MarcaForm(forms.ModelForm):
+    class Meta:
+        model= MarcaProducto
+        fields = [
+            'descripcion',
+        ]
+        labels = {
+            'descripcion' : 'Descripcion',
+        }
+        widgets = {
+            'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class TipoProductoForm(forms.ModelForm):
+    class Meta:
+        model= TipoProducto
+        fields = [
+            'descripcion',
+        ]
+        labels = {
+            'descripcion' : 'Descripcion',
+        }
+        widgets = {
+            'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
+        }

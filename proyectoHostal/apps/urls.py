@@ -39,4 +39,18 @@ urlpatterns = [
         path('editar/<int:menu_id>', ComedorEditar, name="editar-menu"),
         path('eliminar/<int:menu_id>', ComedorEliminar, name="eliminar-menu"),
     ])),
+    path('producto/', include([
+        path('listar', ProductoListar, name="listar-producto"),
+        path('agregar', ProductoAgregar , name="agregar-producto"),
+        path('editar/<int:prod_id>', ProductoEditar, name="editar-producto"),
+        path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
+        path('tipo/', include([
+            path('agregar', TipoProductoAgregar , name="agregar-tipo-producto"),
+            path('editar/<int:prod_tipo_id>', TipoProductoEditar, name="editar-tipo-producto"),
+        ])),
+        path('marca/', include([
+            path('agregar', MarcaProductoAgregar , name="agregar-marca-producto"),
+            path('editar/<int:prod_marca_id>', MarcaProductoEditar, name="editar-marca-producto"),
+        ])),
+    ])),
 ]

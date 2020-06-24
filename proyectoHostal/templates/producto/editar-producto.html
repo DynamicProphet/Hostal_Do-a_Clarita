@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Producto Agregar{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
+{% block content %}
+<div id="form_wrap" class="bg-dark pt-5">
+    <form method="POST" class="text-light" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1 class="text-center pt-2">Editar Producto</h1>
+        <div class="form-group p-5">
+            {% for field in form %}
+            {{ field.label_tag }}
+            <div class="form-row p-1">
+                {{ field.errors }}
+                 {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Editar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

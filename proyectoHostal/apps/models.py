@@ -129,6 +129,16 @@ class HuespedesReserva(models.Model):
         managed = False
         db_table = 'huespedes_reserva'
 
+class MarcaProducto(models.Model):
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        managed = False
+        db_table = 'marca_producto'
+
 
 class Menu(models.Model):
     tipo_menu = models.CharField(max_length=20)
@@ -170,10 +180,13 @@ class Pedido(models.Model):
 
 
 class Producto(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     stock = models.BigIntegerField()
     nombre = models.CharField(max_length=100)
-    tipo_producto = models.CharField(max_length=50)
-    marca = models.CharField(max_length=100)
+    precio = models.BigIntegerField()
+    fecha_venc = models.DateField(blank=True, null=True)
+    fk_id_marca = models.ForeignKey(MarcaProducto, models.DO_NOTHING, db_column='fk_id_marca', blank=True, null=True)
+    fk_id_tipo = models.ForeignKey('TipoProducto', models.DO_NOTHING, db_column='fk_id_tipo', blank=True, null=True)
     fk_id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='fk_id_proveedor', blank=True, null=True)
 
     def __str__(self):
@@ -285,3 +298,14 @@ class TipoEmpleado(models.Model):
     class Meta:
         managed = False
         db_table = 'tipo_empleado'
+
+
+class TipoProducto(models.Model):
+    descripcion = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.descripcion
+
+    class Meta:
+        managed = False
+        db_table = 'tipo_producto'

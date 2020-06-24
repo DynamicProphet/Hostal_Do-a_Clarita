@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -215,7 +216,8 @@ def EditarHabitacion(request,id):
         return render(request, "habitacion/habitacion-listar.html", {'form': form})
     else:
         return redirect('/') 
-
+        
+#CU10: Factura
 def PagarReserva(request, id_reserva):
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
@@ -223,3 +225,109 @@ def PagarReserva(request, id_reserva):
 
 def PagoExitoso(request):
     return render(request, "reserva/pago_exitoso.html", {})
+
+#CU11: Administrar Productos
+def ProductoListar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        productos = Producto.objects.all()
+        return render(request, 'producto/listar-producto.html', {'productos' : productos}) 
+    return redirect('/producto/listar')
+
+def ProductoAgregar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        if request.method == 'POST':
+            form = ProductoForms(request.POST)
+            if form.is_valid():
+                form.save()            
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Producto {prod_nombre} Se Ha Agregado!')
+                return redirect('/producto/listar')
+        else:
+            form = ProductoForms()
+        return render(request, 'producto/agregar-producto.html', {'form': form})
+    return redirect('/producto/listar')
+
+def ProductoEditar(request,prod_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instancia= Producto.objects.get(id=prod_id)
+        form=  ProductoForms(instance=instancia)
+        if request.method=="POST":
+            form= ProductoForms(request.POST, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Producto {prod_nombre} Se Ha Editado!')
+                return redirect('/producto/listar')
+        return render(request, 'producto/editar-producto.html', {'form': form,})
+    return redirect('/producto/listar')
+
+def ProductoEliminar(request,prod_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= Producto.objects.get(id=prod_id)
+        instacia.delete()
+        messages.warning(request, f'El Producto {instacia.nombre} Se Ha Eliminado!')
+        return redirect('/producto/listar') 
+    return redirect('/producto/listar')
+
+def TipoProductoAgregar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        tipo = 'Agregar'
+        if request.method == 'POST':
+            form = TipoProductoForm(request.POST)
+            if form.is_valid():
+                form.save()            
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Tipo Producto {prod_nombre} Se Ha Agregado!')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        else:
+            form = TipoProductoForm()
+        return render(request, 'producto/cu-tipo-producto.html', {'form': form,'tipo':tipo})
+    return redirect('/producto/listar')
+
+def TipoProductoEditar(request,prod_tipo_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        tipo = 'Editar'
+        instancia= TipoProducto.objects.get(id=prod_tipo_id)
+        form=  TipoProductoForm(instance=instancia)
+        if request.method=="POST":
+            form= TipoProductoForm(request.POST, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                prod_nombre = form.cleaned_data.get('nombre')
+                messages.success(request, f'El Tipo Producto {prod_nombre} Se Ha Editado!')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return render(request, 'producto/cu-tipo-producto.html', {'form': form,'tipo':tipo})
+    return redirect('/producto/listar')
+
+def MarcaProductoAgregar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        tipo = 'Agregar'
+        if request.method == 'POST':
+            form = MarcaForm(request.POST)
+            if form.is_valid():
+                form.save()            
+                descripcion = form.cleaned_data.get('descripcion')
+                messages.success(request, f'La Marca {descripcion} Se Ha Agregado!')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        else:
+            form = MarcaForm()
+        return render(request, 'producto/cu-marca-producto.html', {'form': form,'tipo':tipo})
+    return redirect('/producto/listar')
+
+def MarcaProductoEditar(request,prod_marca_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        tipo = 'Editar'
+        instancia= MarcaProducto.objects.get(id=prod_marca_id)
+        form=  MarcaForm(instance=instancia)
+        if request.method=="POST":
+            form= MarcaForm(request.POST, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                descripcion = form.cleaned_data.get('descripcion')
+                messages.success(request, f'La Marca {descripcion} Se Ha Editado!')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return render(request, 'producto/cu-marca-producto.html', {'form': form,'tipo':tipo})
+    return redirect('/producto/listar')
