@@ -36,13 +36,16 @@
                             <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 1 %}</td>
                           </tr>
                         {% endfor %}
+                        
+                        {% for habitacion_reserva in habitaciones_reserva %}
+                          <tr>
+                            <td>TIPO CAMA - {{habitacion_reserva.fk_id_habitaciones.tipo_cama|upper}} </td> 
+                            <td>${{habitacion_reserva.fk_id_habitaciones.precio}}</td>       
+                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 1 %}</td>       
+                          </tr>
+                        {% endfor %}
                         <tr>
-                          <td>Reserva</td>
-                          <td>$Falta valor</td> 
-                          <td>$Falta valor</td>       
-                        </tr>
-                        <tr>
-                          <td>Total:</td>
+                          <td>TOTAL</td>
                           <td>${{orden.monto_pago}}</td>
                           <td>${% widthratio orden.monto_pago 750 1 %}</td>       
                         </tr>
