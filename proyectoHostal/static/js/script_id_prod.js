@@ -54,7 +54,7 @@ $(document).ready(function () {
     var id_4 = '';
     id_4 = dd + mm + yyyy;
     if (id_4 == "") {
-      id_4 = "0";
+      id_4 = "00000000";
     }
     full_id = id_1 + id_2 + id_3 + id_4;
     $("#id_id").val(full_id);

@@ -280,7 +280,8 @@ def TipoProductoAgregar(request):
                 form.save()            
                 prod_nombre = form.cleaned_data.get('nombre')
                 messages.success(request, f'El Tipo Producto {prod_nombre} Se Ha Agregado!')
-                return redirect('/producto/agregar')
+                next = request.POST.get('next','/')
+                return HttpResponseRedirect(next)
         else:
             form = TipoProductoForm()
         return render(request, 'producto/cu-tipo-producto.html', {'form': form,'tipo':tipo})
@@ -298,7 +299,8 @@ def TipoProductoEditar(request,prod_tipo_id):
                 instancia.save()
                 prod_nombre = form.cleaned_data.get('nombre')
                 messages.success(request, f'El Tipo Producto {prod_nombre} Se Ha Editado!')
-                return redirect('/producto/agregar')
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
         return render(request, 'producto/cu-tipo-producto.html', {'form': form,'tipo':tipo})
     return redirect('/')
 
@@ -307,7 +309,7 @@ def TipoProductoEliminar(request,prod_tipo_id):
         instacia= TipoProducto.objects.get(id=prod_tipo_id)
         instacia.delete()
         messages.warning(request, f'El Tipo Producto {instacia.descripcion} Se Ha Eliminado!')
-        return redirect('/producto/agregar') 
+        return redirect(request.META['HTTP_REFERER']) 
     return redirect('/')
 #marca
 def MarcaProductoAgregar(request):
@@ -319,7 +321,8 @@ def MarcaProductoAgregar(request):
                 form.save()            
                 descripcion = form.cleaned_data.get('descripcion')
                 messages.success(request, f'La Marca {descripcion} Se Ha Agregado!')
-            return redirect('/producto/agregar')
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
         else:
             form = MarcaForm()
         return render(request, 'producto/cu-marca-producto.html', {'form': form,'tipo':tipo})
@@ -337,7 +340,8 @@ def MarcaProductoEditar(request,prod_marca_id):
                 instancia.save()
                 descripcion = form.cleaned_data.get('descripcion')
                 messages.success(request, f'La Marca {descripcion} Se Ha Editado!')
-            return redirect('/producto/agregar')
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
         return render(request, 'producto/cu-marca-producto.html', {'form': form,'tipo':tipo})
     return redirect('/')
 
@@ -346,5 +350,5 @@ def MarcaProductoEliminar(request,prod_marca_id):
         instacia= MarcaProducto.objects.get(id=prod_marca_id)
         instacia.delete()
         messages.warning(request, f'La Marca {instacia.descripcion} Se Ha Eliminado!')
-        return redirect('/producto/agregar') 
+        return redirect(request.META['HTTP_REFERER'])
     return redirect('/')
