@@ -221,7 +221,8 @@ def EditarHabitacion(request,id):
 def PagarReserva(request, id_reserva):
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
-    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas})
+    habitaciones_reserva = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_reserva)
+    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva})
 
 def PagoExitoso(request):
     return render(request, "reserva/pago_exitoso.html", {})

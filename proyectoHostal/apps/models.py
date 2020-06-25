@@ -95,7 +95,7 @@ class Habitacion(models.Model):
 
 class HabitacionesReserva(models.Model):
     fk_id_reserva = models.ForeignKey('Reserva', models.DO_NOTHING, db_column='fk_id_reserva', blank=True, null=True)
-    fk_id_huesped = models.ForeignKey('Huesped', models.DO_NOTHING, db_column='fk_id_huesped', blank=True, null=True)
+    fk_id_habitaciones = models.ForeignKey('Habitacion', models.DO_NOTHING, db_column='fk_id_habitaciones', blank=True, null=True)
     
     def __str__(self):
         return str(self.id)
