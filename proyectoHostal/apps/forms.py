@@ -148,7 +148,7 @@ class ProductoForms(forms.ModelForm):
             'precio': 'Precio',
             'fecha_venc': 'Fecha Vencimiento',
             'fk_id_marca': 'Marca',
-            'fk_id_tipo': 'Tipo Producto',
+            'fk_id_tipo': 'Tipo',
             'fk_id_proveedor' : 'Proveedor',
         }
         widgets = {

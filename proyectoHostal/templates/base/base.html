@@ -36,8 +36,34 @@
 
 </head>
 <body class="h-100 bg-dark" {% block img_bg %} {% endblock %}>
+
+  <!--Navbar-->
   {% block navbar %} {% endblock %}
+
+  <!--Alertas-->
+  {% if messages %}
+  {% for message in messages %}
+  <div class="message alert alert-{{ message.tags }} mx-5" id="mensaje">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!--Content-->
   {% block content %} {% endblock %}
+
+  <!--Java Script-->
   {% block javascript %} {% endblock %}
+
+  <!--Script para las alertas-->
+  <script>
+    $(document).ready(function () {
+      var message_ele = document.getElementById("mensaje");
+
+      setTimeout(function () {
+        message_ele.style.display = "none";
+      }, 5000);
+    });
+  </script>
 </body>
 </html>
