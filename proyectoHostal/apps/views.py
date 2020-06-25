@@ -353,3 +353,25 @@ def MarcaProductoEliminar(request,prod_marca_id):
         messages.warning(request, f'La Marca {instacia.descripcion} Se Ha Eliminado!')
         return redirect(request.META['HTTP_REFERER'])
     return redirect('/')
+
+#Retiro Producto
+def RetiroProductoListar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        retiroproducto = RetiroProducto.objects.all()
+        return render(request, 'retiro_producto/listar-retiro.html', {'retiroproducto' : retiroproducto}) 
+
+def RetiroProductoAgregar(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        RetiroProducto(hora='20:01',fk_id_empleado=request.user.id)
+        return redirect(request.META['HTTP_REFERER'])
+    return redirect('/')
+
+def RetiroProductoEliminar(request,prod_id):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= RetiroProducto.objects.get(id=prod_id)
+        instacia.delete()
+        messages.warning(request, f'El Producto {instacia.nombre} Se Ha Eliminado!')
+        return redirect('/retiro_producto/listar') 
+    return redirect('/')
+
+#Producto Solicitado    

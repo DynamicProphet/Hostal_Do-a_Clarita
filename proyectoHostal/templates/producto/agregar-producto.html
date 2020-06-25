@@ -28,9 +28,11 @@
                 <a class="btn btn-warning px-2" href="#" id="editar{{ field.id_for_label }}">
                     <img src="{% static 'img/icono-editar.png' %}" alt="Editar {{ field.label }}" width="15px" height="15px">
                 </a>
+                <!--
                 <a class="btn btn-danger px-2" href="#" id="eliminar{{ field.id_for_label }}" onclick="return confirm('¿Esta seguro de borrar?');">
                     <img src="{% static 'img/icono-eliminar.png' %}" alt="Eliminar {{ field.label }}" width="15px" height="15px">
                 </a>
+                -->
                 {% else %}
                 {{ field }}
                 {% endif %}
