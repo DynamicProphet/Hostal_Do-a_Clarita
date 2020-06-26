@@ -357,21 +357,67 @@ def MarcaProductoEliminar(request,prod_marca_id):
 #Retiro Producto
 def RetiroProductoListar(request):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        retiroproducto = RetiroProducto.objects.all()
+        retiroproducto = RetiroProducto.objects.all().order_by('-id')
         return render(request, 'retiro_producto/listar-retiro.html', {'retiroproducto' : retiroproducto}) 
 
 def RetiroProductoAgregar(request):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        RetiroProducto(hora='20:01',fk_id_empleado=request.user.id)
+        emp = Empleado.objects.get(rut='101010101')
+        #request.user.id
+        rp = RetiroProducto(hora='20:01',fk_id_empleado=emp)
+        rp.save()
+        messages.success(request, f'Retiro De Producto Agregado!, Favor de Asignar Productos!')
         return redirect(request.META['HTTP_REFERER'])
     return redirect('/')
 
-def RetiroProductoEliminar(request,prod_id):
+def RetiroProductoEliminar(request,id):
     if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        instacia= RetiroProducto.objects.get(id=prod_id)
+        instacia= RetiroProducto.objects.get(id=id)
         instacia.delete()
-        messages.warning(request, f'El Producto {instacia.nombre} Se Ha Eliminado!')
-        return redirect('/retiro_producto/listar') 
+        messages.warning(request, f'Retiro De Producto Eliminado!')
+        return redirect(request.META['HTTP_REFERER']) 
     return redirect('/')
 
-#Producto Solicitado    
+#Producto Solicitado
+def ProductoSolicitadoListar(request,id_EP):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        productos = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_EP)
+        return render(request, 'retiro_producto/producto_solicitado/listar-producto-solicitud.html', {'productos' : productos,'id_EP':id_EP}) 
+    return redirect('/producto/listar')
+
+def ProductoSolicitadoAgregar(request,id_EP):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        if request.method == 'POST':
+            form = ProductosSolicitadosForm(request.POST)
+            if form.is_valid():
+                form.save()            
+                messages.success(request, f'El Producto Se Ha Agregado!')
+                next = request.POST.get('next','/')
+                return HttpResponseRedirect(next)
+        else:
+            form = ProductosSolicitadosForm()
+        return render(request, 'retiro_producto/producto_solicitado/agregar-producto-solicitud.html', {'form': form,'id_EP':id_EP})
+    return redirect('/')
+
+def ProductoSolicitadoEditar(request,id_PS):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instancia= ProductosSolicitados.objects.get(id=id_PS)
+        form=  ProductosSolicitadosForm(instance=instancia)
+        if request.method=="POST":
+            form= ProductosSolicitadosForm(request.POST, instance=instancia)
+            if form.is_valid():
+                instancia= form.save(commit=False)
+                instancia.save()
+                messages.success(request, f'El Producto Se Ha Editado!')
+                next = request.POST.get('next','/')
+                return HttpResponseRedirect(next)
+        return render(request, 'retiro_producto/producto_solicitado/editar-producto-solicitud.html', {'form': form,})
+    return redirect('/producto/listar')
+
+def ProductoSolicitadoEliminar(request,id_PS):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= ProductosSolicitados.objects.get(id=id_PS)
+        instacia.delete()
+        messages.warning(request, f'El Producto Se Ha Eliminado!')
+        return redirect('/producto/listar') 
+    return redirect('/producto/listar')

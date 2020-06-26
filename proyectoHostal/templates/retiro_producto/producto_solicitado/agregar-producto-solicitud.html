@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Agregar Producto A La Solicitud{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
+{% block content %}
+<div id="form_wrap" class="bg-dark pt-5">
+    <form method="POST" class="text-light">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <h1 class="text-center pt-2">Agregar Producto</h1>
+        <div class="form-group p-5">
+            {% for field in form %}
+            {{ field.label_tag }}
+            <div class="text-danger">
+                {{ field.errors }}
+            </div>
+            <div class="form-row p-1">
+                {% if field.label == "Retiro FK" %}
+                <input type="number" name="fk_retiro_producto" class="form-control" readonly="readonly" id="id_fk_retiro_producto" value="{{ id_EP }}">
+                {% else %}
+                {{ field }}
+                {% endif %}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Editar</button>
+            <a class="btn btn-danger px-2 float-right" href="{{ request.GET.next }}" >
+                Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

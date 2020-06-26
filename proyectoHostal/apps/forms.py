@@ -187,3 +187,22 @@ class TipoProductoForm(forms.ModelForm):
         widgets = {
             'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class ProductosSolicitadosForm(forms.ModelForm):
+    class Meta:
+        model= ProductosSolicitados
+        fields = [
+            'fk_id_producto',
+            'cantidad',
+            'fk_retiro_producto',
+        ]
+        labels = {
+            'fk_id_producto' : 'Producto',
+            'cantidad' : 'Cantidad',
+            'fk_retiro_producto' : 'Retiro FK',
+        }
+        widgets = {
+            'fk_id_producto' : forms.Select(attrs={'class': 'form-control'}),
+            'cantidad' : forms.NumberInput(attrs={'class': 'form-control'}),
+            'fk_retiro_producto' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+        }

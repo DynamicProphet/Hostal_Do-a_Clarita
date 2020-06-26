@@ -58,6 +58,12 @@ urlpatterns = [
     path('retiro-producto/', include([
         path('listar', RetiroProductoListar, name="listar-retiro-producto"),
         path('agregar', RetiroProductoAgregar , name="agregar-retiro-producto"),
-        path('eliminar/<int:menu_id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
+        path('eliminar/<int:id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
+    ])),
+    path('solicitud-producto/', include([
+        path('listar/<int:id_EP>', ProductoSolicitadoListar, name="listar-solicitud-producto"),
+        path('agregar/<int:id_EP>', ProductoSolicitadoAgregar , name="agregar-solicitud-producto"),
+        path('editar/<int:id_PS>', ProductoSolicitadoEditar , name="editar-solicitud-producto"),
+        path('eliminar/<int:id_PS>', RetiroProductoEliminar, name="eliminar-solicitud-producto"),
     ])),
 ]
