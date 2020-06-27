@@ -25,7 +25,8 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">FECHA</th>
-                    <th scope="col">HORA</th>
+                    <th scope="col">EMPLEADO</th>
+                    <th scope="col">ESTADO</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +35,21 @@
                 <tr>
                     <td>{{ RP.id }}</td>
                     <td>{{ RP.fecha }}</td>
-                    <td>{{ RP.hora }}</td>
+                    <td>{{ RP.fk_id_empleado }}</td>
+                    {% if RP.finalizada %}
+                    <td class="text-success">Terminada</td>
+                    {% else %}
+                    <td class="text-warning">Sin Terminar</td>
+                    {% endif %}
+                    {% if RP.finalizada %}
+                    <td><a class="btn btn-primary" href="/solicitud-producto/listar/{{ RP.id }}" role="button">Ver Detalles</a></td>
+                    {% else %}
                     <td>
                         <a class="btn btn-primary" href="/solicitud-producto/listar/{{ RP.id }}" role="button">Asignar Productos</a>
                         <a class="btn btn-danger" href="/retiro-producto/eliminar/{{ RP.id }}"
-                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Eliminar</a>
+                            onclick="return confirm('¿Seguro desea Cancelar?. Esta acción es permanente');" role="button">Eliminar</a>
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -60,21 +70,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                <p>- Desde esta ventana puede administrar los menús registrados:</p>
-                <p>- El botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea
-                    agregar una nueva minuta o
-                    editar la minuta de un Menú ya existente.</p>
-                <p>- Para agregar un nuevo menú presione el botón de 'Agregar Menú' y rellene el formulario.
+                <p>- Desde esta ventana puede realizar ordenes de retiro de pedido</p>
+                <p>- Para crear una nueva solicitud presione el boton de "Agregar Retiro Producto"</p>
+                <p>- Una vez creada la solicitud presione "Asignar Productos"
                 </p>
-                <p>- Para editar un menú presione el link de editar correspondiente al registro que desee
-                    editar.</p>
-                <p> - Para eliminar un menú presione el link de eliminar correspondiente al registro, para
-                    este paso hace falta aceptar el mensaje de confirmación.</p>
-                {% elif  user.groups.all.0|upper == "CLIENTE" %}
-                <p>- Desde Esta Ventana Puedes Ver Los Menus disponibles</p>
-                <p>- Si el menu tiene un Adjunto Minuta, puedes ver dicha minuta apretando "Ver."</p>
-                {% endif %}
+                <p>- Para ver el detalle de solicitudes pasadas presione "Ver Detalles"</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
