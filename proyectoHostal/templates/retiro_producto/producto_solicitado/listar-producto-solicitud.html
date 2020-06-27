@@ -11,21 +11,25 @@
 <div class="pt-5">
     <input id="path" type="hidden" name="next" value="{{ request.path }}">
     <div class="div px-5 pt-5" role="group">
+        {% if not RP_F %}
         <a class="btn btn-primary" href="/solicitud-producto/agregar/{{id_RP}}?next={{ request.path|urlencode }}">
             <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
             Agregar Producto
         </a>
-        <a class="btn btn-success float-center" href="/retiro-producto/finalizar/{{id_RP}}">
+        {% if productos %}
+        <a class="btn btn-success float-center" href="/retiro-producto/finalizar/{{id_RP}}" onclick="return confirm('¿Seguro desea Finalizar?. Esta acción es permanente');">
             <img src="{% static 'img/icono-check.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
             Finalizar
         </a>
+        {% endif %}
+        <a class="btn btn-danger float-center" href="/retiro-producto/eliminar/{{ id_RP }}" onclick="return confirm('¿Seguro desea Cancelar?. Esta acción es permanente');">
+            <img src="{% static 'img/icono-eliminar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Cancelar
+        </a>
+        {% endif %}
         <a class="btn btn-warning float-center" href="/retiro-producto/listar">
             <img src="{% static 'img/icono-volver.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
             Volver
-        </a>
-        <a class="btn btn-danger float-center" href="/retiro-producto/eliminar/{{ id_RP }}" onclick="return confirm('¿Esta seguro de borrar?');">
-            <img src="{% static 'img/icono-eliminar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
-            Cancelar
         </a>
         <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
             <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
@@ -46,11 +50,13 @@
                 <tr>
                     <td>{{ PRO.fk_id_producto }}</td>
                     <td>{{ PRO.cantidad }}</td>
+                    {% if not RP_F %}
                     <td>
                         <a class="btn btn-primary" href="/solicitud-producto/editar/{{ PRO.id }}?next={{ request.path|urlencode }}" role="button">Editar</a>
                         <a class="btn btn-danger" href="/solicitud-producto/eliminar/{{ PRO.id }}"
                             onclick="return confirm('¿Esta seguro de borrar?');" role="button">Quitar</a>
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -71,21 +77,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                <p>- Desde esta ventana puede administrar los menús registrados:</p>
-                <p>- El botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea
-                    agregar una nueva minuta o
-                    editar la minuta de un Menú ya existente.</p>
-                <p>- Para agregar un nuevo menú presione el botón de 'Agregar Menú' y rellene el formulario.
+                <p>- Desde esta ventana puede agregar productos a la solicitud previamente creada</p>
+                <p>- Para agregar productos presione "Agregar Producto"</p>
+                <p>- El siguiente paso sera selecionar el producto y la cantidad
                 </p>
-                <p>- Para editar un menú presione el link de editar correspondiente al registro que desee
-                    editar.</p>
-                <p> - Para eliminar un menú presione el link de eliminar correspondiente al registro, para
-                    este paso hace falta aceptar el mensaje de confirmación.</p>
-                {% elif  user.groups.all.0|upper == "CLIENTE" %}
-                <p>- Desde Esta Ventana Puedes Ver Los Menus disponibles</p>
-                <p>- Si el menu tiene un Adjunto Minuta, puedes ver dicha minuta apretando "Ver."</p>
-                {% endif %}
+                <p>- Para editar un producto en la lista acual presione "Editar"</p>
+                <p>- Para quitar un producto de la lista actual presione "Quitar" y acepte la confirmacion</p>
+                <p>- Para finalizar la solicitud presione "Finalizar" y acepte la confirmacion.
+                    ¡Esta acción es permanente!
+                </p>
+                <p>- Para cancelar la solicitud presione "Cancelar" y acepte la confirmacion.
+                    ¡Esta acción es permanente!</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

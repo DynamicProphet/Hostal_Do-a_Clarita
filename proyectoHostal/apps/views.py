@@ -367,7 +367,7 @@ def RetiroProductoAgregar(request):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         emp = Empleado.objects.get(rut='101010101')
         #request.user.id
-        rp = RetiroProducto(hora='20:01',fk_id_empleado=emp)
+        rp = RetiroProducto(finalizada=0,fk_id_empleado=emp)
         rp.save()
         messages.success(request, f'Retiro De Producto Agregado!, Favor de Asignar Productos!')
         return redirect(request.META['HTTP_REFERER'])
@@ -390,7 +390,9 @@ def RetiroProductoEliminar(request,id):
 def ProductoSolicitadoListar(request,id_RP):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         productos = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_RP)
-        return render(request, 'retiro_producto/producto_solicitado/listar-producto-solicitud.html', {'productos' : productos,'id_RP':id_RP}) 
+        retiro_prod = RetiroProducto.objects.get(id=id_RP)
+        RP_F = retiro_prod.finalizada
+        return render(request, 'retiro_producto/producto_solicitado/listar-producto-solicitud.html', {'productos' : productos,'id_RP':id_RP,'RP_F':RP_F}) 
     return redirect('/producto/listar')
 
 def ProductoSolicitadoAgregar(request,id_RP):
@@ -438,6 +440,10 @@ def ProductoSolicitadoEliminar(request,id_PS):
 def FinalizarRP(request,id_RP):
     if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         SP = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_RP)
+        retiro_prod = RetiroProducto.objects.get(id=id_RP)
+        retiro_prod.finalizada = 1
+        retiro_prod.save()
+        
         for x in SP:
             Prod = Producto.objects.get(id=x.fk_id_producto.id)
             Prod.stock = Prod.stock - x.cantidad

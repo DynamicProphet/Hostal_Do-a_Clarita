@@ -76,21 +76,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% if user.groups.all.0|upper == 'GERENTE COCINA' or user.groups.all.0|upper == 'ADMINISTRADOR' or user.is_superuser%}
-                <p>- Desde esta ventana puede administrar los menús registrados:</p>
-                <p>- El botón de 'Descargar Nueva Minuta' descargara una minuta vacía, necesaria si desea
-                    agregar una nueva minuta o
-                    editar la minuta de un Menú ya existente.</p>
-                <p>- Para agregar un nuevo menú presione el botón de 'Agregar Menú' y rellene el formulario.
+                <p>- Desde esta ventana puede administrar los productos registrados:</p>
+                <p>- Para agregar un nuevo producto presione el botón de 'Agregar producto' y rellene el formulario.
                 </p>
-                <p>- Para editar un menú presione el link de editar correspondiente al registro que desee
+                <p>- Para editar un producto presione el link de editar correspondiente al registro que desee
                     editar.</p>
-                <p> - Para eliminar un menú presione el link de eliminar correspondiente al registro, para
+                <p> - Para eliminar un producto presione el link de eliminar correspondiente al registro, para
                     este paso hace falta aceptar el mensaje de confirmación.</p>
-                {% elif  user.groups.all.0|upper == "CLIENTE" %}
-                <p>- Desde Esta Ventana Puedes Ver Los Menus disponibles</p>
-                <p>- Si el menu tiene un Adjunto Minuta, puedes ver dicha minuta apretando "Ver."</p>
-                {% endif %}
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

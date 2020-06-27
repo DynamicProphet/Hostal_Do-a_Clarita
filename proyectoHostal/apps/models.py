@@ -252,8 +252,8 @@ class Reserva(models.Model):
 
 
 class RetiroProducto(models.Model):
-    fecha = models.DateField(auto_now=True)
-    hora = models.CharField(max_length=5)
+    fecha = models.DateTimeField(auto_now=True)
+    finalizada = models.BooleanField()
     fk_id_empleado = models.ForeignKey(Empleado, models.DO_NOTHING, db_column='fk_id_empleado', blank=True, null=True)
 
     def __str__(self):
