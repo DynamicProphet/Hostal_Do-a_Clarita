@@ -48,12 +48,24 @@ urlpatterns = [
         path('id_fk_id_tipo/', include([
             path('agregar', TipoProductoAgregar , name="agregar-tipo-producto"),
             path('editar/<int:prod_tipo_id>', TipoProductoEditar, name="editar-tipo-producto"),
-            path('eliminar/<int:prod_tipo_id>', TipoProductoEliminar, name="eliminar-producto"),
+            #path('eliminar/<int:prod_tipo_id>', TipoProductoEliminar, name="eliminar-producto"),
         ])),
         path('id_fk_id_marca/', include([
             path('agregar', MarcaProductoAgregar , name="agregar-marca-producto"),
             path('editar/<int:prod_marca_id>', MarcaProductoEditar, name="editar-marca-producto"),
-            path('eliminar/<int:prod_marca_id>', MarcaProductoEliminar, name="eliminar-producto"),
+            #path('eliminar/<int:prod_marca_id>', MarcaProductoEliminar, name="eliminar-producto"),
         ])),
+    ])),
+    path('retiro-producto/', include([
+        path('listar', RetiroProductoListar, name="listar-retiro-producto"),
+        path('agregar', RetiroProductoAgregar , name="agregar-retiro-producto"),
+        path('eliminar/<int:id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
+        path('finalizar/<int:id_RP>', FinalizarRP, name="elifinalizar-retiro-producto"),
+    ])),
+    path('solicitud-producto/', include([
+        path('listar/<int:id_RP>', ProductoSolicitadoListar, name="listar-solicitud-producto"),
+        path('agregar/<int:id_RP>', ProductoSolicitadoAgregar , name="agregar-solicitud-producto"),
+        path('editar/<int:id_PS>', ProductoSolicitadoEditar , name="editar-solicitud-producto"),
+        path('eliminar/<int:id_PS>', ProductoSolicitadoEliminar, name="eliminar-solicitud-producto"),
     ])),
 ]

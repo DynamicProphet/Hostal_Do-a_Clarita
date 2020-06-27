@@ -9,22 +9,44 @@
 
 {% block content %}
 <div id="form_wrap" class="bg-dark pt-5">
-    <form method="POST" class="text-light" enctype="multipart/form-data">
+    <form method="POST" class="text-light">
         {% csrf_token %}
+        <input id="path" type="hidden" name="next" value="{{ request.path }}">
         <h1 class="text-center pt-2">Editar Producto</h1>
         <div class="form-group p-5">
             {% for field in form %}
             {{ field.label_tag }}
-            <div class="form-row p-1">
+            <div class="text-danger">
                 {{ field.errors }}
-                 {{ field }}
+            </div>
+            <div class="form-row p-1">
+                {% if field.label == "Marca" or field.label == "Tipo" %}
+                {{ field }}
+                <a class="btn btn-success px-2" href="/producto/{{ field.id_for_label }}/agregar?next={{ request.path|urlencode }}"" id="agregar{{ field.id_for_label }}">
+                    <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar {{ field.label }}" width="15px" height="15px">
+                </a>
+                <a class="btn btn-warning px-2" href="#" id="editar{{ field.id_for_label }}">
+                    <img src="{% static 'img/icono-editar.png' %}" alt="Editar {{ field.label }}" width="15px" height="15px">
+                </a>
+                <!--
+                <a class="btn btn-danger px-2" href="#" id="eliminar{{ field.id_for_label }}" onclick="return confirm('¿Esta seguro de borrar?');">
+                    <img src="{% static 'img/icono-eliminar.png' %}" alt="Eliminar {{ field.label }}" width="15px" height="15px">
+                </a>
+                -->
+                {% else %}
+                {{ field }}
+                {% endif %}
                 {% if field.help_text %}
                 <p class="help">{{ field.help_text|safe }}</p>
                 {% endif %}
             </div>
             {% endfor %}
             <button class="btn btn-primary" type="submit">Editar</button>
+            <a class="btn btn-danger px-2 float-right" href="/producto/listar" >
+                Volver
+            </a>
         </div>
     </form>
 </div>
+<script src="/static/js/script_cmb_prod.js"></script>
 {% endblock %}

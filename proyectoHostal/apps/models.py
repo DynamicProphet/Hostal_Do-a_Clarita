@@ -252,7 +252,7 @@ class Reserva(models.Model):
 
 
 class RetiroProducto(models.Model):
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now=True)
     hora = models.CharField(max_length=5)
     fk_id_empleado = models.ForeignKey(Empleado, models.DO_NOTHING, db_column='fk_id_empleado', blank=True, null=True)
 
