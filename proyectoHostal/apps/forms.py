@@ -203,6 +203,6 @@ class ProductosSolicitadosForm(forms.ModelForm):
         }
         widgets = {
             'fk_id_producto' : forms.Select(attrs={'class': 'form-control'}),
-            'cantidad' : forms.NumberInput(attrs={'class': 'form-control'}),
+            'cantidad' : forms.NumberInput(attrs={'class': 'form-control col-9'}),
             'fk_retiro_producto' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
         }

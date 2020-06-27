@@ -21,7 +21,11 @@
             </div>
             <div class="form-row p-1">
                 {% if field.label == "Retiro FK" %}
-                <input type="number" name="fk_retiro_producto" class="form-control" readonly="readonly" id="id_fk_retiro_producto" value="{{ id_EP }}">
+                <input type="number" name="fk_retiro_producto" class="form-control" readonly="readonly"
+                    id="id_fk_retiro_producto" value="{{ id_RP }}">
+                {% elif field.label == "Cantidad" %}
+                {{ field }}
+                <p class="col-3 text-danger" id="lbl_max"></p>
                 {% else %}
                 {{ field }}
                 {% endif %}
@@ -30,11 +34,39 @@
                 {% endif %}
             </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit">Editar</button>
-            <a class="btn btn-danger px-2 float-right" href="{{ request.GET.next }}" >
+            <button class="btn btn-primary" type="submit">Agregar</button>
+            <a class="btn btn-danger px-2 float-right" href="{{ request.GET.next }}">
                 Volver
             </a>
         </div>
     </form>
 </div>
+<script>
+    $(document).ready(function () {
+        var prod_list = {{ productos }};
+
+        id_tipo_fn();
+
+        function id_tipo_fn() {
+            prod_sele = $("#id_fk_id_producto").children("option:selected").val();
+            for (x in prod_list) {
+                if (prod_list[x][0] == prod_sele) {
+                    var max = prod_list[x][1];
+                    $("#id_cantidad").attr({
+                        "max": max,        
+                        "min": 1
+                    });
+                    document.getElementById("lbl_max").innerHTML = "Maximo: "+max;
+                }
+            }
+            if(prod_sele == ""){
+                document.getElementById("lbl_max").innerHTML = "Maximo: ";
+            }
+        };
+
+        $("#id_fk_id_producto").on("change", function (e) {
+            id_tipo_fn();
+        });
+    });
+</script>
 {% endblock %}

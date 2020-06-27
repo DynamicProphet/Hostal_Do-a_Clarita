@@ -8,6 +8,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from django.http import HttpResponseRedirect
+from django.core import serializers
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -372,21 +375,28 @@ def RetiroProductoAgregar(request):
 
 def RetiroProductoEliminar(request,id):
     if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        #producto solicitados asociados al retiro
+        productos = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id)
+        for x in productos:
+            x.delete() 
+        #Eliminar Retiro
         instacia= RetiroProducto.objects.get(id=id)
         instacia.delete()
         messages.warning(request, f'Retiro De Producto Eliminado!')
-        return redirect(request.META['HTTP_REFERER']) 
+        return redirect('/retiro-producto/listar') 
     return redirect('/')
 
 #Producto Solicitado
-def ProductoSolicitadoListar(request,id_EP):
+def ProductoSolicitadoListar(request,id_RP):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        productos = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_EP)
-        return render(request, 'retiro_producto/producto_solicitado/listar-producto-solicitud.html', {'productos' : productos,'id_EP':id_EP}) 
+        productos = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_RP)
+        return render(request, 'retiro_producto/producto_solicitado/listar-producto-solicitud.html', {'productos' : productos,'id_RP':id_RP}) 
     return redirect('/producto/listar')
 
-def ProductoSolicitadoAgregar(request,id_EP):
+def ProductoSolicitadoAgregar(request,id_RP):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        productos = Producto.objects.all().values_list('id','stock')
+        prod_json = json.dumps(list(productos), cls=DjangoJSONEncoder)
         if request.method == 'POST':
             form = ProductosSolicitadosForm(request.POST)
             if form.is_valid():
@@ -396,11 +406,13 @@ def ProductoSolicitadoAgregar(request,id_EP):
                 return HttpResponseRedirect(next)
         else:
             form = ProductosSolicitadosForm()
-        return render(request, 'retiro_producto/producto_solicitado/agregar-producto-solicitud.html', {'form': form,'id_EP':id_EP})
+        return render(request, 'retiro_producto/producto_solicitado/agregar-producto-solicitud.html', {'form': form,'id_RP':id_RP,'productos':prod_json})
     return redirect('/')
 
 def ProductoSolicitadoEditar(request,id_PS):
     if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        productos = Producto.objects.all().values_list('id','stock')
+        prod_json = json.dumps(list(productos), cls=DjangoJSONEncoder)
         instancia= ProductosSolicitados.objects.get(id=id_PS)
         form=  ProductosSolicitadosForm(instance=instancia)
         if request.method=="POST":
@@ -411,13 +423,24 @@ def ProductoSolicitadoEditar(request,id_PS):
                 messages.success(request, f'El Producto Se Ha Editado!')
                 next = request.POST.get('next','/')
                 return HttpResponseRedirect(next)
-        return render(request, 'retiro_producto/producto_solicitado/editar-producto-solicitud.html', {'form': form,})
-    return redirect('/producto/listar')
+        return render(request, 'retiro_producto/producto_solicitado/editar-producto-solicitud.html', {'form': form,'productos':prod_json})
+    return redirect('/')
 
 def ProductoSolicitadoEliminar(request,id_PS):
     if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         instacia= ProductosSolicitados.objects.get(id=id_PS)
         instacia.delete()
         messages.warning(request, f'El Producto Se Ha Eliminado!')
-        return redirect('/producto/listar') 
-    return redirect('/producto/listar')
+        return redirect(request.META['HTTP_REFERER']) 
+    return redirect('/')
+
+#Finalizar Retiro Producto
+def FinalizarRP(request,id_RP):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        SP = ProductosSolicitados.objects.all().filter(fk_retiro_producto=id_RP)
+        for x in SP:
+            Prod = Producto.objects.get(id=x.fk_id_producto.id)
+            Prod.stock = Prod.stock - x.cantidad
+            Prod.save()
+            messages.warning(request, f'Se Han Descontado {x.cantidad} Unidades Al Producto {Prod.nombre}, El Stock Actual es de {Prod.stock}')
+        return redirect('/retiro-producto/listar') 

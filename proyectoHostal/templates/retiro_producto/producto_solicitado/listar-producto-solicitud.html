@@ -11,9 +11,21 @@
 <div class="pt-5">
     <input id="path" type="hidden" name="next" value="{{ request.path }}">
     <div class="div px-5 pt-5" role="group">
-        <a class="btn btn-primary" href="/solicitud-producto/agregar/{{id_EP}}?next={{ request.path|urlencode }}">
+        <a class="btn btn-primary" href="/solicitud-producto/agregar/{{id_RP}}?next={{ request.path|urlencode }}">
             <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
             Agregar Producto
+        </a>
+        <a class="btn btn-success float-center" href="/retiro-producto/finalizar/{{id_RP}}">
+            <img src="{% static 'img/icono-check.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Finalizar
+        </a>
+        <a class="btn btn-warning float-center" href="/retiro-producto/listar">
+            <img src="{% static 'img/icono-volver.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Volver
+        </a>
+        <a class="btn btn-danger float-center" href="/retiro-producto/eliminar/{{ id_RP }}" onclick="return confirm('¿Esta seguro de borrar?');">
+            <img src="{% static 'img/icono-eliminar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Cancelar
         </a>
         <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
             <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
