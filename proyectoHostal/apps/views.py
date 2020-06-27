@@ -89,6 +89,25 @@ def RegistrarHabitacionReserva(request):
 def RegistrarHabitacion(request):
     return render(request, 'reserva/registrar_habitacion.html', {})
 
+def VerEstadoReserva(request, id_reserva):
+    orden_compra = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
+    facturas = Factura.objects.all()
+    isPagada = True
+    idReserva = id_reserva 
+    for orden in orden_compra:
+        orden_id = str(orden.id)
+    for factura in facturas:
+        fact = str(factura.fk_id_orden_compra)
+        if fact != orden_id:
+            print(fact)
+            isPagada = False
+        else:
+            isPagada = True
+            print("Pagada: " + fact)
+            break
+    print(isPagada)
+    return render(request, 'reserva/ver_estado_reserva.html', {'orden_compra':orden_compra, 'facturas':facturas, 'isPagada': isPagada, 'idReserva': idReserva })
+
 def ListarReservas(request):
     reservas = Reserva.objects.all().order_by('id')
     user = request.user
@@ -222,7 +241,8 @@ def PagarReserva(request, id_reserva):
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
     habitaciones_reserva = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_reserva)
-    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva})
+    idReserva = id_reserva
+    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva})
 
 def PagoExitoso(request):
     return render(request, "reserva/pago_exitoso.html", {})
