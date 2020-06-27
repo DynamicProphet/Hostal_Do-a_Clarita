@@ -24,6 +24,7 @@ urlpatterns = [
         path('editar/<int:id_reserva>/', EditarReserva, name='editar-reservas'),
         path('cancelar/<int:id_reserva>/', CancelarReserva, name='cancelar-reservas'),
         path('registrar-habitacion-reserva/', RegistrarHabitacionReserva, name='registrar-habitacion-reserva'),
+        path('ver-estado-reserva/<int:id_reserva>/', VerEstadoReserva, name='ver-estado-reserva'),
         path('realizar-pago/<int:id_reserva>/', PagarReserva, name='pagar-reserva'),
         path('pago-exitoso/', PagoExitoso, name='pago-exitoso'),
     ])),
