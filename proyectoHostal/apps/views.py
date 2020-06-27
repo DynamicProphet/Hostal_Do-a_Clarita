@@ -102,13 +102,10 @@ def VerEstadoReserva(request, id_reserva):
     for factura in facturas:
         fact = str(factura.fk_id_orden_compra)
         if fact != orden_id:
-            print(fact)
             isPagada = False
         else:
             isPagada = True
-            print("Pagada: " + fact)
             break
-    print(isPagada)
     return render(request, 'reserva/ver_estado_reserva.html', {'orden_compra':orden_compra, 'facturas':facturas, 'isPagada': isPagada, 'idReserva': idReserva })
 
 def ListarReservas(request):
@@ -244,11 +241,19 @@ def PagarReserva(request, id_reserva):
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
     habitaciones_reserva = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_reserva)
+    facturas = Factura.objects.all()
     idReserva = id_reserva
-    return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva})
-
-def PagoExitoso(request):
-    return render(request, "reserva/pago_exitoso.html", {})
+    if request.user.groups.filter(name = "SECRETARIA" ).exists():
+        if request.method == 'POST':
+            form = FacturaForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/reserva/ver-estado-reserva/'+str(id_reserva)+'/')
+        else:
+            form = FacturaForms()
+        return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva, 'forms': forms})
+    else:
+        return redirect('/')
 
 #CU11: Administrar Productos
 def ProductoListar(request):

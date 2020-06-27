@@ -206,3 +206,15 @@ class ProductosSolicitadosForm(forms.ModelForm):
             'cantidad' : forms.NumberInput(attrs={'class': 'form-control col-9'}),
             'fk_retiro_producto' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
         }
+
+class FacturaForms(forms.ModelForm):
+	class Meta:
+		model = Factura
+		fields = [
+				'rut_empresa',
+				'fk_id_orden_compra',
+		]
+		labels = {
+				'rut_empresa': 'Rut Empresa',
+				'fk_id_orden_compra': 'ID Orden Compra',
+		}

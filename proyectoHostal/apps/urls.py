@@ -26,7 +26,6 @@ urlpatterns = [
         path('registrar-habitacion-reserva/', RegistrarHabitacionReserva, name='registrar-habitacion-reserva'),
         path('ver-estado-reserva/<int:id_reserva>/', VerEstadoReserva, name='ver-estado-reserva'),
         path('realizar-pago/<int:id_reserva>/', PagarReserva, name='pagar-reserva'),
-        path('pago-exitoso/', PagoExitoso, name='pago-exitoso'),
     ])),
     path('habitacion/', include([
         path('habitacion-agregar/', AgregarHabitacion, name='habitacion-agregar'),
