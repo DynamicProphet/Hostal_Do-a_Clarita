@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reset{% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-qsomos.jpg' %})" {% endblock %}
+
+{% block content %}
+
+    <form method="post" class="d-flex justify-content-center align-items-center h-720" id="form_rest" style="height: 720px">
+        {% csrf_token %}
+        <div class="card border-dark mb-3">
+            <table class="table table-responsive" id="tabla_crud_productos">
+		<thead>
+			<tr class="linea1">
+				<td>Id</td>	
+				<td>Nombre</td>
+				<td>Monto</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% if ordenes %}
+			{% for o in ordenes %}
+			<tr class="linea_producto">
+				<td>{{ o.id }}</td>
+				<td>{{ o.fk_id_reserva.fk_id_empresa.nombre }}</td>
+				<td>{{ o.monto_pago }}</td>
+			</tr>
+			{% endfor %}
+			
+			{% else %}
+			<h1>No hay registros de productos</h1>
+			{% endif %}
+		</tbody>
+	</table>
+        </div>
+    </form>
+
+{% endblock %}

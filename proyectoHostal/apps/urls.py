@@ -53,4 +53,7 @@ urlpatterns = [
             path('editar/<int:prod_marca_id>', MarcaProductoEditar, name="editar-marca-producto"),
         ])),
     ])),
+    path('orden/', include([
+        path('listar', OrdenListar, name="listar-orden"),
+    ])),
 ]

@@ -331,3 +331,24 @@ def MarcaProductoEditar(request,prod_marca_id):
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         return render(request, 'producto/cu-marca-producto.html', {'form': form,'tipo':tipo})
     return redirect('/producto/listar')
+
+def OrdenListar(request):
+    ordenes = OrdenCompra.objects.all().order_by('id')
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        for o in ordenes:
+            total = 0
+            res = HabitacionesReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
+            for r in res:
+                hab = Habitacion.objects.all().filter(id=r.fk_id_huesped.id)
+                for h in hab:
+                    total=total+h.precio
+            res2 = ServiciosReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
+            for r2 in res2:
+                ser = Servicio.objects.all().filter(id=r2.fk_id_servicio.id)
+                for s in ser:
+                    total=total+s.precio
+            o.monto_pago=total
+            o.save()
+        return render(request, 'orden/orden-listar.html', {'ordenes':ordenes})
+    else:
+        return redirect('/') 
