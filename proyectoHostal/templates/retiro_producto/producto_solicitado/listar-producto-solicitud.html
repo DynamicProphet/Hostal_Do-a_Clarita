@@ -1,0 +1,98 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Producto Solicitar Listar{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
+{% block content %}
+<div class="pt-5">
+    <input id="path" type="hidden" name="next" value="{{ request.path }}">
+    <div class="div px-5 pt-5" role="group">
+        {% if not RP_F %}
+        <a class="btn btn-primary" href="/solicitud-producto/agregar/{{id_RP}}?next={{ request.path|urlencode }}">
+            <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Agregar Producto
+        </a>
+        {% if productos %}
+        <a class="btn btn-success float-center" href="/retiro-producto/finalizar/{{id_RP}}" onclick="return confirm('¿Seguro desea Finalizar?. Esta acción es permanente');">
+            <img src="{% static 'img/icono-check.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Finalizar
+        </a>
+        {% endif %}
+        <a class="btn btn-danger float-center" href="/retiro-producto/eliminar/{{ id_RP }}" onclick="return confirm('¿Seguro desea Cancelar?. Esta acción es permanente');">
+            <img src="{% static 'img/icono-eliminar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Cancelar
+        </a>
+        {% endif %}
+        <a class="btn btn-warning float-center" href="/retiro-producto/listar">
+            <img src="{% static 'img/icono-volver.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
+            Volver
+        </a>
+        <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
+            <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+            Ayuda
+        </a>        
+    </div>
+    <div class="table-responsive px-5 pt-2">
+        <table class="table table-striped table-dark text-light">
+            <thead>
+                <tr>
+                    <th scope="col">PRODUCTO</th>
+                    <th scope="col">CANTIDAD</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if productos %}
+                {% for PRO in productos %}
+                <tr>
+                    <td>{{ PRO.fk_id_producto }}</td>
+                    <td>{{ PRO.cantidad }}</td>
+                    {% if not RP_F %}
+                    <td>
+                        <a class="btn btn-primary" href="/solicitud-producto/editar/{{ PRO.id }}?next={{ request.path|urlencode }}" role="button">Editar</a>
+                        <a class="btn btn-danger" href="/solicitud-producto/eliminar/{{ PRO.id }}"
+                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Quitar</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <h1>No Hay Productos En La Solicitud De Productos</h1>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ayuda:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>- Desde esta ventana puede agregar productos a la solicitud previamente creada</p>
+                <p>- Para agregar productos presione "Agregar Producto"</p>
+                <p>- El siguiente paso sera selecionar el producto y la cantidad
+                </p>
+                <p>- Para editar un producto en la lista acual presione "Editar"</p>
+                <p>- Para quitar un producto de la lista actual presione "Quitar" y acepte la confirmacion</p>
+                <p>- Para finalizar la solicitud presione "Finalizar" y acepte la confirmacion.
+                    ¡Esta acción es permanente!
+                </p>
+                <p>- Para cancelar la solicitud presione "Cancelar" y acepte la confirmacion.
+                    ¡Esta acción es permanente!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

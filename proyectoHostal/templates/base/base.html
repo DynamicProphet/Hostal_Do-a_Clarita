@@ -3,41 +3,62 @@
 <html lang="es" class="h-100">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <!-- Page Title -->
-    <title> Hostal Doña Clarita - {% block title %} {% endblock %}</title>
+  <!-- Page Title -->
+  <title> Hostal Doña Clarita - {% block title %} {% endblock %}</title>
 
-    <!-- Compressed Styles -->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
+  <!-- Compressed Styles -->
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
 
-    <!--Boostrap link-->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <!--Jquery script-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!--Boostrap link-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <!--Jquery script-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <!--Boostrap script-->
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
+  <!--Boostrap script-->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
-    <!--JQuery + Jquery validate-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+  <!--JQuery + Jquery validate-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 
 </head>
+
 <body class="h-100 bg-dark" {% block img_bg %} {% endblock %}>
+
+  <!--Navbar-->
   {% block navbar %} {% endblock %}
+
+  <!--Alertas-->
+  {% if messages %}
+  {% for message in messages %}
+  <div class="message alert alert-{{ message.tags }} mx-5" id="mensaje">
+    {{ message }}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!--Content-->
   {% block content %} {% endblock %}
+
+  <!--Java Script-->
   {% block javascript %} {% endblock %}
+
+  <!--Script para las alertas-->
+  <script>
+    $(document).ready(function () {
+      setTimeout(function () {
+        $('.message').fadeOut('slow');
+      }, 5000
+      );
+    });
+  </script>
 </body>
+
 </html>

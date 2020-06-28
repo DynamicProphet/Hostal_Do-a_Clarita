@@ -1,4 +1,3 @@
-
 {% extends 'base/base.html' %}
 {% load static %}
 
@@ -6,21 +5,32 @@
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
+
 <div class="container h-100">
   <div class="row justify-content-center h-100">
     <div class="col-sm-8 align-self-center text-center">  
       <section>
           <div class="card border-dark mb-3">
             <div class="card-header">
-              <h3>Pago Realizado</h3>	
-            </div> 
+              <h1>Reserva</h1>
+            </div>
             <div class="card-body">
-                <p>El pago se ha efectuado con exito.</p>
-                <a class="btn btn-success" href="/reserva/listar/">Aceptar</a>
+                {% if isPagada %}
+                    <h4 style="color:Green">Pago Realizado</h4>
+                {% else %}
+                    <h4 style="color:Red">No hay pago registrado</h4>
+                    <br>
+                    <a class ="btn btn-success" href="/reserva/realizar-pago/{{idReserva}}/"><b>Gestionar Pago</b></a>
+                {% endif %}
+                <br>
+                <br>
+                <br>
+                <p>Aca muchas weas para</p>
+                <p>Gestionar los checkin y checkout</p>
             </div>
           </div>
       </section>
     </div>
   </div>
 </div>
-{% endblock  %}
+{% endblock %}

@@ -9,12 +9,16 @@
 
 {% block content %}
 <div id="form_wrap" class="bg-dark pt-5">
-    <form method="POST" class="text-light" enctype="multipart/form-data">
+    <form method="POST" class="text-light" >
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <h1 class="text-center pt-2">{{tipo}} Marca</h1>
         <div class="form-group p-5">
             {{ form.as_p }}
             <button class="btn btn-primary" type="submit">{{tipo}}</button>
+            <a class="btn btn-danger px-2 float-right" href="{{ request.GET.next }}" >
+                Volver
+            </a>
         </div>
     </form>
 </div>

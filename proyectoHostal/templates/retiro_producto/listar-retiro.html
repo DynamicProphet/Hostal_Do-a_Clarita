@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Producto Listar{% endblock %}
+{% block title %}Retiro Producto Listar{% endblock %}
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
@@ -10,9 +10,9 @@
 {% block content %}
 <div class="pt-5">
     <div class="div px-5 pt-5" role="group">
-        <a class="btn btn-primary" href="/producto/agregar">
+        <a class="btn btn-primary" href="/retiro-producto/agregar">
             <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
-            Agregar Producto
+            Agregar Retiro Producto
         </a>
         <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
             <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
@@ -23,43 +23,37 @@
         <table class="table table-striped table-dark text-light">
             <thead>
                 <tr>
-                    <th scope="col">NOMBRE</th>
-                    <th scope="col">PRECIO</th>
-                    <th scope="col">STOCK</th>
-                    <th scope="col">FECHA VENC.</th>
-                    <th scope="col">MARCA</th>
-                    <th scope="col">TIPO</th>
-                    <th scope="col">PROVEEDOR</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">FECHA</th>
+                    <th scope="col">EMPLEADO</th>
+                    <th scope="col">ESTADO</th>
                 </tr>
             </thead>
             <tbody>
-                {% if productos %}
-                {% for prod in productos %}
+                {% if retiroproducto %}
+                {% for RP in retiroproducto %}
                 <tr>
-                    <td>{{ prod.nombre }}</td>
-                    <td>{{ prod.precio }}</td>
-                    {% if prod.stock < 10 %}
-                    <td class="text-danger">{{ prod.stock }}</td>                  
+                    <td>{{ RP.id }}</td>
+                    <td>{{ RP.fecha }}</td>
+                    <td>{{ RP.fk_id_empleado }}</td>
+                    {% if RP.finalizada %}
+                    <td class="text-success">Terminada</td>
                     {% else %}
-                    <td>{{ prod.stock }}</td>
+                    <td class="text-warning">Sin Terminar</td>
                     {% endif %}
-                    {% if prod.fecha_venc %}
-                    <td>{{ prod.fecha_venc }}</td>                    
+                    {% if RP.finalizada %}
+                    <td><a class="btn btn-primary" href="/solicitud-producto/listar/{{ RP.id }}" role="button">Ver Detalles</a></td>
                     {% else %}
-                    <td>N/A</td>
-                    {% endif %}                    
-                    <td>{{ prod.fk_id_marca }}</td>
-                    <td>{{ prod.fk_id_tipo }}</td>
-                    <td>{{ prod.fk_id_proveedor }}</td>
                     <td>
-                        <a class="btn btn-primary" href="/producto/editar/{{ prod.id }}" role="button">Editar</a>
-                        <a class="btn btn-danger" href="/producto/eliminar/{{ prod.id }}"
-                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Eliminar</a>
+                        <a class="btn btn-primary" href="/solicitud-producto/listar/{{ RP.id }}" role="button">Asignar Productos</a>
+                        <a class="btn btn-danger" href="/retiro-producto/eliminar/{{ RP.id }}"
+                            onclick="return confirm('¿Seguro desea Cancelar?. Esta acción es permanente');" role="button">Eliminar</a>
                     </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                 {% else %}
-                <h1>No hay registros de Productos</h1>
+                <h1>No hay registros de Retiro Productos</h1>
                 {% endif %}
             </tbody>
         </table>
@@ -76,14 +70,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>- Desde esta ventana puede administrar los productos registrados:</p>
-                <p>- Para agregar un nuevo producto presione el botón de 'Agregar producto' y rellene el formulario.
+                <p>- Desde esta ventana puede realizar ordenes de retiro de pedido</p>
+                <p>- Para crear una nueva solicitud presione el boton de "Agregar Retiro Producto"</p>
+                <p>- Una vez creada la solicitud presione "Asignar Productos"
                 </p>
-                <p>- Para editar un producto presione el link de editar correspondiente al registro que desee
-                    editar.</p>
-                <p> - Para eliminar un producto presione el link de eliminar correspondiente al registro, para
-                    este paso hace falta aceptar el mensaje de confirmación.</p>
-
+                <p>- Para ver el detalle de solicitudes pasadas presione "Ver Detalles"</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

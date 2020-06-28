@@ -148,7 +148,7 @@ class ProductoForms(forms.ModelForm):
             'precio': 'Precio',
             'fecha_venc': 'Fecha Vencimiento',
             'fk_id_marca': 'Marca',
-            'fk_id_tipo': 'Tipo Producto',
+            'fk_id_tipo': 'Tipo',
             'fk_id_proveedor' : 'Proveedor',
         }
         widgets = {
@@ -187,3 +187,34 @@ class TipoProductoForm(forms.ModelForm):
         widgets = {
             'descripcion' : forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class ProductosSolicitadosForm(forms.ModelForm):
+    class Meta:
+        model= ProductosSolicitados
+        fields = [
+            'fk_id_producto',
+            'cantidad',
+            'fk_retiro_producto',
+        ]
+        labels = {
+            'fk_id_producto' : 'Producto',
+            'cantidad' : 'Cantidad',
+            'fk_retiro_producto' : 'Retiro FK',
+        }
+        widgets = {
+            'fk_id_producto' : forms.Select(attrs={'class': 'form-control'}),
+            'cantidad' : forms.NumberInput(attrs={'class': 'form-control col-9'}),
+            'fk_retiro_producto' : forms.NumberInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+        }
+
+class FacturaForms(forms.ModelForm):
+	class Meta:
+		model = Factura
+		fields = [
+				'rut_empresa',
+				'fk_id_orden_compra',
+		]
+		labels = {
+				'rut_empresa': 'Rut Empresa',
+				'fk_id_orden_compra': 'ID Orden Compra',
+		}

@@ -174,8 +174,8 @@ pass
 admin.site.register(Reserva,ReservaAdmin)
 
 class RetiroProductoAdmin(admin.ModelAdmin):
-    list_display = ('id','fecha','hora','Empleado')
-    list_display_links = ('id','fecha','hora','Empleado')
+    list_display = ('id','fecha','finalizada','Empleado')
+    list_display_links = ('id','fecha','finalizada','Empleado')
 
     def Empleado(self,obj):
         return obj.fk_id_empleado

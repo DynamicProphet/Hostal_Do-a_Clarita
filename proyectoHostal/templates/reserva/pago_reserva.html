@@ -36,13 +36,16 @@
                             <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 1 %}</td>
                           </tr>
                         {% endfor %}
+                        
+                        {% for habitacion_reserva in habitaciones_reserva %}
+                          <tr>
+                            <td>TIPO CAMA - {{habitacion_reserva.fk_id_habitaciones.tipo_cama|upper}} </td> 
+                            <td>${{habitacion_reserva.fk_id_habitaciones.precio}}</td>       
+                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 1 %}</td>       
+                          </tr>
+                        {% endfor %}
                         <tr>
-                          <td>Reserva</td>
-                          <td>$Falta valor</td> 
-                          <td>$Falta valor</td>       
-                        </tr>
-                        <tr>
-                          <td>Total:</td>
+                          <td>TOTAL</td>
                           <td>${{orden.monto_pago}}</td>
                           <td>${% widthratio orden.monto_pago 750 1 %}</td>       
                         </tr>
@@ -50,8 +53,15 @@
                     </tbody>
                   </table>
                   <br>
-                  <a class="btn btn-secondary" href="/reserva/listar/">Volver</a>
-                  <a class="btn btn-success" href="/reserva/pago-exitoso/">Pagado</a>
+                  <form method="POST" class="formulario" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for orden in orden_compras %}
+                      <input class="form-control" id="rut_empresa" type="text" name="rut_empresa" value="{{ orden.fk_id_reserva.fk_id_empresa.rut }}" hidden>
+                      <input class="form-control" id="fk_id_orden_compra" type="text" name="fk_id_orden_compra" value="{{ orden.id }}" hidden>
+                    {% endfor %}
+                    <a class="btn btn-secondary" href="/reserva/ver-estado-reserva/{{idReserva}}/" style="width:100px;">Volver</a>&nbsp&nbsp&nbsp&nbsp
+                    <button class="btn btn-success" type="submit" style="width:100px;">Pagar</button>
+                  </form>
                 </div>
               </div>
             </div>
