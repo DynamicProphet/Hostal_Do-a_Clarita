@@ -524,3 +524,13 @@ def ModificarProveedor(request, id_proveedor):
         return render(request, 'proveedor/modificar_proveedor.html', {'form': form} )
     else:
         return redirect('/') 
+        return redirect('/retiro-producto/listar') 
+    return redirect('/')
+
+#CU5: Administracion Huepedes
+def AdmHuespedesListar(request,id_res):
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        HR = HuespedesReserva.objects.all().filter(fk_id_reserva=id_res)
+        reserva = Reserva.objects.get(id=id_res)
+        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'reserva':reserva}) 
+    return redirect('/')
