@@ -474,4 +474,53 @@ def FinalizarRP(request,id_RP):
             Prod.stock = Prod.stock - x.cantidad
             Prod.save()
             messages.warning(request, f'Se Han Descontado {x.cantidad} Unidades Al Producto {Prod.nombre}, El Stock Actual es de {Prod.stock}')
-        return redirect('/retiro-producto/listar') 
+        return redirect('/retiro-producto/listar')
+
+#Cu9 Ordenes de Pedido
+
+def AgregarProveedor(request):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            form = ProveedorForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/proveedor/listar/')
+        else:
+            form = ProveedorForms()
+        return render(request, 'proveedor/agregar_proveedor.html', {'form':form})
+    else:
+        return redirect('/')
+
+def EliminarProveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id=id_proveedor)
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            proveedor.delete()
+            return redirect('/proveedor/listar/')
+        return render(request, 'proveedor/eliminar_proveedor.html', {'proveedor': proveedor})
+    else:
+        return redirect('/')
+    
+
+def ListarProveedor(request):
+    proveedores = Proveedor.objects.all().order_by('id')
+    if  request.user.groups.filter(name='EMPLEADO BODEGA').exists():
+        return render(request, 'proveedor/listar_proveedor.html', {'proveedores': proveedores})
+    else:
+        return redirect('/')
+
+def ModificarProveedor(request, id_proveedor):
+    proveedor = Proveedor.objects.get(id=id_proveedor)
+    user = request.user
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = ProveedorForms(instance=proveedor)
+        else:
+            form = ProveedorForms(request.POST, instance=proveedor)
+            if form.is_valid():
+                proveedor = form.save(commit=False)
+                proveedor.save()
+            return redirect('/proveedor/listar/')
+        return render(request, 'proveedor/modificar_proveedor.html', {'form': form} )
+    else:
+        return redirect('/') 

@@ -218,3 +218,19 @@ class FacturaForms(forms.ModelForm):
 				'rut_empresa': 'Rut Empresa',
 				'fk_id_orden_compra': 'ID Orden Compra',
 		}
+
+class ProveedorForms(forms.ModelForm):
+	class Meta:
+		model = Proveedor
+		fields = [
+				'nombre',
+				'rubro',
+				'numero',
+				'email',
+		]
+		labels = {
+				'nombre': 'Nombre ',
+				'rubro': 'Rubro',
+				'numero': 'Numero',
+				'email': 'Email',
+		}

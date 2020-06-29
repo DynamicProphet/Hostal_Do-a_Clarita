@@ -67,4 +67,10 @@ urlpatterns = [
         path('editar/<int:id_PS>', ProductoSolicitadoEditar , name="editar-solicitud-producto"),
         path('eliminar/<int:id_PS>', ProductoSolicitadoEliminar, name="eliminar-solicitud-producto"),
     ])),
+    path('proveedor/', include([
+        path('listar/', ListarProveedor, name="listar-proveedor"),
+        path('agregar/', AgregarProveedor, name="agregar-proveedor"),
+        path('editar/<int:id_proveedor>/', ModificarProveedor, name="editar-proveedor"),
+        path('eliminar/<int:id_proveedor>/', EliminarProveedor, name="eliminar-proveedor"),
+    ])),
 ]
