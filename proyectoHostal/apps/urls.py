@@ -57,7 +57,7 @@ urlpatterns = [
     ])),
     path('retiro-producto/', include([
         path('listar', RetiroProductoListar, name="listar-retiro-producto"),
-        path('agregar', RetiroProductoAgregar , name="agregar-retiro-producto"),
+        path('agregar/<int:emp_rut>', RetiroProductoAgregar , name="agregar-retiro-producto"),
         path('eliminar/<int:id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
         path('finalizar/<int:id_RP>', FinalizarRP, name="elifinalizar-retiro-producto"),
     ])),

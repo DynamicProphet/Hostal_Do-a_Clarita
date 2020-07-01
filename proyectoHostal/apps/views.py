@@ -386,15 +386,15 @@ def MarcaProductoEliminar(request,prod_marca_id):
 def RetiroProductoListar(request):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         retiroproducto = RetiroProducto.objects.all().order_by('-id')
-        return render(request, 'retiro_producto/listar-retiro.html', {'retiroproducto' : retiroproducto}) 
+        empleados = Empleado.objects.all()
+        return render(request, 'retiro_producto/listar-retiro.html', {'retiroproducto' : retiroproducto,'empleados':empleados}) 
 
-def RetiroProductoAgregar(request):
+def RetiroProductoAgregar(request,emp_rut):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        emp = Empleado.objects.get(rut='101010101')
-        #request.user.id
+        emp = Empleado.objects.get(rut=emp_rut)
         rp = RetiroProducto(finalizada=0,fk_id_empleado=emp)
         rp.save()
-        messages.success(request, f'Retiro De Producto Agregado!, Favor de Asignar Productos!')
+        messages.success(request, f'Retiro De Producto Para El Empleado {emp.nombre} Agregado!, Favor de Asignar Productos!')
         return redirect(request.META['HTTP_REFERER'])
     return redirect('/')
 
