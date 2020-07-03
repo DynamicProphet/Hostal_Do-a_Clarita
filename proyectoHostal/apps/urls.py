@@ -43,7 +43,7 @@ urlpatterns = [
         path('listar', ProductoListar, name="listar-producto"),
         path('agregar', ProductoAgregar , name="agregar-producto"),
         path('editar/<int:prod_id>', ProductoEditar, name="editar-producto"),
-        path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
+        #path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
         path('id_fk_id_tipo/', include([
             path('agregar', TipoProductoAgregar , name="agregar-tipo-producto"),
             path('editar/<int:prod_tipo_id>', TipoProductoEditar, name="editar-tipo-producto"),
