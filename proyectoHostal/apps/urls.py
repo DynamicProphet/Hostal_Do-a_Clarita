@@ -43,7 +43,7 @@ urlpatterns = [
         path('listar', ProductoListar, name="listar-producto"),
         path('agregar', ProductoAgregar , name="agregar-producto"),
         path('editar/<int:prod_id>', ProductoEditar, name="editar-producto"),
-        path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
+        #path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
         path('id_fk_id_tipo/', include([
             path('agregar', TipoProductoAgregar , name="agregar-tipo-producto"),
             path('editar/<int:prod_tipo_id>', TipoProductoEditar, name="editar-tipo-producto"),
@@ -57,7 +57,7 @@ urlpatterns = [
     ])),
     path('retiro-producto/', include([
         path('listar', RetiroProductoListar, name="listar-retiro-producto"),
-        path('agregar', RetiroProductoAgregar , name="agregar-retiro-producto"),
+        path('agregar/<int:emp_rut>', RetiroProductoAgregar , name="agregar-retiro-producto"),
         path('eliminar/<int:id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
         path('finalizar/<int:id_RP>', FinalizarRP, name="elifinalizar-retiro-producto"),
     ])),
