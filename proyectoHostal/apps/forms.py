@@ -234,3 +234,19 @@ class ProveedorForms(forms.ModelForm):
 				'numero': 'Numero',
 				'email': 'Email',
 		}
+
+class PedidoForms(forms.ModelForm):
+	class Meta:
+		model = Pedido
+		fields = [
+                'id',
+				'monto_total',
+				'estado',
+				'fk_id_proveedor',
+		]
+		labels = {
+                'id': 'ID',
+				'monto_total': 'Monto Total',
+				'estado': 'Estado',
+				'fk_id_proveedor': 'Fk Proveedor',
+		}

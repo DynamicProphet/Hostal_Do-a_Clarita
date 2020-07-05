@@ -76,4 +76,11 @@ urlpatterns = [
     path('adm_huespedes/', include([
         path('listar/<int:id_res>', AdmHuespedesListar, name="listar-adm-huesped"),
     ])),
+    path('pedido/', include([
+        path('listar/', ListarPedido, name="listar-pedido"),
+        path('agregar/<int:id_proveedor>/', AgregarPedido, name="agregar-pedido"),
+        path('agregar/<int:id_proveedor>/productos/<int:id_pedido>/', AgregarProductosPedido, name="agregar-productos_pedido"),
+        path('editar/<int:id_proveedor>/', ModificarPedido, name="editar-pedido"),
+        path('eliminar/<int:id_proveedor>/', EliminarPedido, name="eliminar-pedido"),
+    ])),
 ]

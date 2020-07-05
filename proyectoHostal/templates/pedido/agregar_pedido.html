@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Pedido{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
+{% block content %}
+
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h1>Realizar Pedido</h1>
+            </div>
+            <div class="card-body">   
+              <form method="POST" class="formulario" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if proveedores%}
+                    {% for proveedor in proveedores %}
+                        <h4 style="color:green">Proveedor seleccionado: {{proveedor.nombre}}</h4>
+                    {% endfor %}
+                {% endif %}
+                <br>
+                <h5><b>Listado de precio</b></h5>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 550px !important">
+                    <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th><b>PRODUCTO</b></th>
+                                <th><b>PRECIO</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if productos %}
+                                {% for producto in productos %}
+                                    {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
+                                        <tr>
+                                            <td>{{ producto.nombre }}</td>
+                                            <td>{{ producto.precio }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                            <h1>El proveedor seleccionado no tiene productos asignados.</h1>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <input class="form-control" id="id" type="text" name="id" value="{{idPedido}}">
+                <input class="form-control" id="monto_total" type="text" name="monto_total" value="" hidden>
+                <input class="form-control" id="estado" type="text" name="estado" value="solicitado" hidden>
+                <input class="form-control" id="fk_id_proveedor" type="text" name="fk_id_proveedor" value="{{ idProveedor }}"hidden>
+                <button class="btn btn-dark" type="submit">Continuar</button>
+              </form>
+            </div>
+          </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
