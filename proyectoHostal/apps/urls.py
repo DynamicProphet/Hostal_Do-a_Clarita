@@ -80,7 +80,7 @@ urlpatterns = [
         path('listar/', ListarPedido, name="listar-pedido"),
         path('agregar/<int:id_proveedor>/', AgregarPedido, name="agregar-pedido"),
         path('agregar/<int:id_proveedor>/productos/<int:id_pedido>/', AgregarProductosPedido, name="agregar-productos_pedido"),
-        path('editar/<int:id_proveedor>/', ModificarPedido, name="editar-pedido"),
-        path('eliminar/<int:id_proveedor>/', EliminarPedido, name="eliminar-pedido"),
+        path('editar/<int:id_pedido>/', ModificarPedido, name="editar-pedido"),
+        path('recibir/<int:id_pedido>/', RecibirPedido, name="recibir-pedido"),
     ])),
 ]

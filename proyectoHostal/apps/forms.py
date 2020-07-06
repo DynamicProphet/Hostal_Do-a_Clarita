@@ -250,3 +250,17 @@ class PedidoForms(forms.ModelForm):
 				'estado': 'Estado',
 				'fk_id_proveedor': 'Fk Proveedor',
 		}
+
+class ProductosPedidoForms(forms.ModelForm):
+	class Meta:
+		model = ProductosPedidos
+		fields = [
+				'cantidad',
+				'fk_id_producto',
+				'fk_id_pedido',
+		]
+		labels = {
+				'cantidad': 'Cantidad',
+				'fk_id_producto': 'FK Producto',
+				'fk_id_pedido': 'FK Pedido',
+		}

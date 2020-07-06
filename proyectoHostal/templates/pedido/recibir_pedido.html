@@ -18,9 +18,14 @@
               <form method="POST" enctype="multipart/form-data" class="formulario">
                     <div class="formulario">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <a class="btn btn-dark" href="/pedido/listar/">volver</a>
-                        <button class="btn btn-success" type="submit">Editar</button>
+                        <h2>¿El pedido fue recibido correctamente?</h2>
+                        <div hidden>
+                            {{form.as_p}}
+                        </div>
+                        <input class="form-control" id="estado" type="text" name="estado" value="recibido" hidden>
+                        <br>
+                        <a class="btn btn-dark" href="/pedido/listar/">Volver</a>
+                        <button class="btn btn-success" type="submit">Aceptar</button>
                     </div>
                 </form>
             </div>

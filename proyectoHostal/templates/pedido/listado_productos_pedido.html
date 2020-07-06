@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Pedido{% endblock %}
+{% block title %}Productos Pedido{% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} class= "fondo" style="background-image:url({% static 'img/background/img-home2.jpg' %}); background-repeat: no-repeat;" {% endblock %}
 {% block content %}
@@ -32,11 +32,7 @@
                                     <tr>
                                         <td>{{ pedido.id }}</td>
                                         <td>{{ pedido.monto_total }}</td>
-                                        {% if pedido.estado|lower == "solicitado" %}
-                                            <td style="color:red">{{ pedido.estado }}</td>
-                                        {% else %}
-                                            <td style="color:green">{{ pedido.estado }}</td>
-                                        {% endif%}
+                                        <td>{{ pedido.estado }}</td>
                                         {% if pedido.factura %}
                                             <td>Si</td>
                                         {% else %}
@@ -45,9 +41,7 @@
                                         <td>{{ pedido.fk_id_proveedor }}</td>
                                         <td>
                                             <a class="btn btn-success" href="/pedido/editar/{{pedido.id}}/">Modificar</a>
-                                            {% if pedido.estado|lower == "solicitado" %}
-                                                <a class="btn btn-primary" style="width: 93px" href="/pedido/recibir/{{pedido.id}}/">Recibir</a>
-                                            {% endif%}
+                                            <a class="btn btn-primary" style="width: 93px" href="">Recibir</a>
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -67,47 +61,4 @@
         </section>
     </div>
 </div>
-<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content bg-dark text-light">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">Proveedor</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {% if proveedores %}
-                    <select class= "custom-select" id="proveedor_id" onchange="agregarPedido()">
-                        <option selected value="0">Escoger un proveedor</option>
-                        {% for proveedor in proveedores %}
-                            <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
-                        {% endfor %}
-                    </select>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
-
-{% block javascript %}
-<script>
-    function agregarPedido() {
-        var x = document.getElementById("proveedor_id").value;
-        if (x>0){
-            console.log(x);
-            var pagina = "/pedido/agregar/" + x + "/";
-            window.location.href = pagina;
-        } else {
-            console.log("Es menor a 0");
-        }
-       
-        //document.getElementById("demo").innerHTML = "You selected: " + x;
-    }
-</script>
-{% endblock%}
