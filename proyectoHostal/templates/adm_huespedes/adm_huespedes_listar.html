@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Producto Listar{% endblock %}
+{% block title %}Administrar Huespedes Listar{% endblock %}
 
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 
@@ -10,60 +10,40 @@
 {% block content %}
 <div class="pt-5">
     <div class="div px-5 pt-5" role="group">
-        <a class="btn btn-primary" href="/producto/agregar">
+        <a class="btn btn-primary" href="#">
             <img src="{% static 'img/icono-agregar.png' %}" alt="Agregar Producto" width="30px" height="30px"><br>
-            Agregar Producto
+            Agregar Huesped (?
         </a>
         <a class="btn btn-primary text-light float-right" role="button" data-toggle="modal" data-target="#ayudaModal">
             <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
             Ayuda
         </a>        
     </div>
+        
     <div class="table-responsive px-5 pt-2">
+        <p class=" px-5 bg-dark text-light text-center">Reserva Cliente {{ reserva.fk_id_empresa }} Del {{ reserva.fecha_inicio }} Hasta {{ reserva.fecha_termino }}</p>
         <table class="table table-striped table-dark text-light">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">NOMBRE</th>
-                    <th scope="col">PRECIO</th>
-                    <th scope="col">STOCK</th>
-                    <th scope="col">FECHA VENC.</th>
-                    <th scope="col">MARCA</th>
-                    <th scope="col">TIPO</th>
-                    <th scope="col">PROVEEDOR</th>
+                    <th scope="col">RUT</th>
                 </tr>
             </thead>
             <tbody>
-                {% if productos %}
-                {% for prod in productos %}
+                {% if HR %}
+                {% for hr in HR %}
                 <tr>
-                    <td>{{ prod.id }}</td>
-                    <td>{{ prod.nombre }}</td>
-                    <td>{{ prod.precio }}</td>
-                    {% if prod.stock < 10 %}
-                    <td class="text-danger">{{ prod.stock }}</td>                  
-                    {% else %}
-                    <td>{{ prod.stock }}</td>
-                    {% endif %}
-                    {% if prod.fecha_venc %}
-                    <td>{{ prod.fecha_venc }}</td>                    
-                    {% else %}
-                    <td>N/A</td>
-                    {% endif %}                    
-                    <td>{{ prod.fk_id_marca }}</td>
-                    <td>{{ prod.fk_id_tipo }}</td>
-                    <td>{{ prod.fk_id_proveedor }}</td>
+                    <td>{{ hr.fk_id_huesped.nombre }}</td>
+                    <td>{{ hr.fk_id_huesped.rut }}</td>                    
                     <td>
-                        <a class="btn btn-primary" href="/producto/editar/{{ prod.id }}" role="button">Editar</a>
-                        <!--
-                            <a class="btn btn-danger" href="/producto/eliminar/{{ prod.id }}"
-                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Eliminar</a>
-                        -->
+                        <a class="btn btn-primary" href="/producto/editar/{{ prod.id }}" role="button">Editar (?</a>
+                        <a class="btn btn-danger" href="/producto/eliminar/{{ prod.id }}"
+                            onclick="return confirm('¿Esta seguro de borrar?');" role="button">Eliminar (?</a>
                     </td>
                 </tr>
                 {% endfor %}
                 {% else %}
-                <h1>No hay registros de Productos</h1>
+                <h1>No hay registros de Huespedes para esta Reserva</h1>
                 {% endif %}
             </tbody>
         </table>

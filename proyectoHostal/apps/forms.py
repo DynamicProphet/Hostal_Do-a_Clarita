@@ -218,3 +218,49 @@ class FacturaForms(forms.ModelForm):
 				'rut_empresa': 'Rut Empresa',
 				'fk_id_orden_compra': 'ID Orden Compra',
 		}
+
+class ProveedorForms(forms.ModelForm):
+	class Meta:
+		model = Proveedor
+		fields = [
+				'nombre',
+				'rubro',
+				'numero',
+				'email',
+		]
+		labels = {
+				'nombre': 'Nombre ',
+				'rubro': 'Rubro',
+				'numero': 'Numero',
+				'email': 'Email',
+		}
+
+class PedidoForms(forms.ModelForm):
+	class Meta:
+		model = Pedido
+		fields = [
+                'id',
+				'monto_total',
+				'estado',
+				'fk_id_proveedor',
+		]
+		labels = {
+                'id': 'ID',
+				'monto_total': 'Monto Total',
+				'estado': 'Estado',
+				'fk_id_proveedor': 'Fk Proveedor',
+		}
+
+class ProductosPedidoForms(forms.ModelForm):
+	class Meta:
+		model = ProductosPedidos
+		fields = [
+				'cantidad',
+				'fk_id_producto',
+				'fk_id_pedido',
+		]
+		labels = {
+				'cantidad': 'Cantidad',
+				'fk_id_producto': 'FK Producto',
+				'fk_id_pedido': 'FK Pedido',
+		}

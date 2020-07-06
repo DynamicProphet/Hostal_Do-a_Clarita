@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Proveedor{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} class= "fondo" style="background-image:url({% static 'img/background/img-home2.jpg' %}); background-repeat: no-repeat;" {% endblock %}
+{% block content %}
+<div class="container h-100">
+    <div class="row w-100">
+        <div class="col-6">
+            <h1 style="margin-bottom: 15px; color:white;"><b>Proveedores</b></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center  ">
+        <section class="w-100" style="">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="width: 55px;"><b>ID</b></th>	
+                            <th><b>NOMBRE</b></th>
+                            <th><b>RUBRO</b></th>
+                            <th><b>NUMERO</b></th>
+                            <th><b>EMAIL</b></th>
+                            <th><b>Acciones</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if proveedores %}
+                            {% for proveedor in proveedores %}
+                                {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
+                                    <tr>
+                                        <td>{{ proveedor.id }}</td>
+                                        <td>{{ proveedor.nombre }}</td>
+                                        <td>{{ proveedor.rubro }}</td>
+                                        <td>{{ proveedor.numero }}</td>
+                                        <td>{{ proveedor.email }}</td>
+                                        <td>
+                                            <a class="btn btn-success" href="/proveedor/editar/{{proveedor.id}}/">Editar</a>
+                                            <a class="btn btn-danger" href="/proveedor/eliminar/{{proveedor.id}}/">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        <h1>No hay registros de proveedores</h1>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {% if user.groups.all.0|upper == "EMPLEADO BODEGA" %}
+                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/proveedor/agregar/">
+                    <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Proveedor" width="30px" height="30px"><br>
+                    Agregar Proveedor
+                </a>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -43,7 +43,7 @@ urlpatterns = [
         path('listar', ProductoListar, name="listar-producto"),
         path('agregar', ProductoAgregar , name="agregar-producto"),
         path('editar/<int:prod_id>', ProductoEditar, name="editar-producto"),
-        path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
+        #path('eliminar/<int:prod_id>', ProductoEliminar, name="eliminar-producto"),
         path('id_fk_id_tipo/', include([
             path('agregar', TipoProductoAgregar , name="agregar-tipo-producto"),
             path('editar/<int:prod_tipo_id>', TipoProductoEditar, name="editar-tipo-producto"),
@@ -57,7 +57,7 @@ urlpatterns = [
     ])),
     path('retiro-producto/', include([
         path('listar', RetiroProductoListar, name="listar-retiro-producto"),
-        path('agregar', RetiroProductoAgregar , name="agregar-retiro-producto"),
+        path('agregar/<int:emp_rut>', RetiroProductoAgregar , name="agregar-retiro-producto"),
         path('eliminar/<int:id>', RetiroProductoEliminar, name="eliminar-retiro-producto"),
         path('finalizar/<int:id_RP>', FinalizarRP, name="elifinalizar-retiro-producto"),
     ])),
@@ -66,6 +66,22 @@ urlpatterns = [
         path('agregar/<int:id_RP>', ProductoSolicitadoAgregar , name="agregar-solicitud-producto"),
         path('editar/<int:id_PS>', ProductoSolicitadoEditar , name="editar-solicitud-producto"),
         path('eliminar/<int:id_PS>', ProductoSolicitadoEliminar, name="eliminar-solicitud-producto"),
+    ])),
+    path('proveedor/', include([
+        path('listar/', ListarProveedor, name="listar-proveedor"),
+        path('agregar/', AgregarProveedor, name="agregar-proveedor"),
+        path('editar/<int:id_proveedor>/', ModificarProveedor, name="editar-proveedor"),
+        path('eliminar/<int:id_proveedor>/', EliminarProveedor, name="eliminar-proveedor"),
+    ])),
+    path('adm_huespedes/', include([
+        path('listar/<int:id_res>', AdmHuespedesListar, name="listar-adm-huesped"),
+    ])),
+    path('pedido/', include([
+        path('listar/', ListarPedido, name="listar-pedido"),
+        path('agregar/<int:id_proveedor>/', AgregarPedido, name="agregar-pedido"),
+        path('agregar/<int:id_proveedor>/productos/<int:id_pedido>/', AgregarProductosPedido, name="agregar-productos_pedido"),
+        path('editar/<int:id_pedido>/', ModificarPedido, name="editar-pedido"),
+        path('recibir/<int:id_pedido>/', RecibirPedido, name="recibir-pedido"),
     ])),
     path('orden/', include([
         path('listar', OrdenListar, name="listar-orden"),
