@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reset{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-qsomos.jpg' %})" {% endblock %}
+
+{% block content %}
+
+<form method="post" class="d-flex justify-content-center align-items-center h-720" id="form_rest" style="height: 720px">
+    {% csrf_token %}
+    <div class="card border-dark mt-5">
+        
+    </div>
+</form>
+
+{% endblock %}

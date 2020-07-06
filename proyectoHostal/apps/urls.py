@@ -69,5 +69,9 @@ urlpatterns = [
     ])),
     path('orden/', include([
         path('listar', OrdenListar, name="listar-orden"),
+        path('ver/<int:id>', OrdenVer, name="ver-orden"),
+    ])),
+    path('informe/', include([
+        path('crear', InformeCrear, name="crear-informe"),
     ])),
 ]

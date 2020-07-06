@@ -477,13 +477,13 @@ def FinalizarRP(request,id_RP):
         return redirect('/retiro-producto/listar') 
 
 def OrdenListar(request):
-    ordenes = OrdenCompra.objects.all().order_by('id')
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        ordenes = OrdenCompra.objects.all().order_by('id')
         for o in ordenes:
             total = 0
             res = HabitacionesReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
             for r in res:
-                hab = Habitacion.objects.all().filter(id=r.fk_id_huesped.id)
+                hab = Habitacion.objects.all().filter(id=r.fk_id_habitaciones.id)
                 for h in hab:
                     total=total+h.precio
             res2 = ServiciosReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
@@ -496,3 +496,27 @@ def OrdenListar(request):
         return render(request, 'orden/orden-listar.html', {'ordenes':ordenes})
     else:
         return redirect('/') 
+
+def OrdenVer(request, id):
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        o = OrdenCompra.objects.get(id=id)
+        th = 0
+        ts = 0
+        habs = HabitacionesReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva.id)
+        for h in habs:
+            x = Habitacion.objects.get(id=h.fk_id_habitaciones.id)
+            th = th + x.precio
+        sers = ServiciosReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva.id)
+        for s in sers:
+            x = Servicio.objects.get(id=s.fk_id_servicio.id)
+            ts = ts + x.precio
+        return render(request, 'orden/orden-ver.html', {'orden':o, 'habs':len(habs), 'habitaciones':habs, 'totalh':th, 'sers':len(sers), 'servicios':sers, 'totals':ts})
+
+    else:
+        return redirect('/')
+
+def InformeCrear(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        return render(request, 'informes/informe-crear.html')
+    else:
+        return redirect('/')
