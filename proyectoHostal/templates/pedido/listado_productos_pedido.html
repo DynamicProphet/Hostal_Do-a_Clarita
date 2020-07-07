@@ -8,40 +8,40 @@
 <div class="container h-100">
     <div class="row w-100">
         <div class="col-6">
-            <h1 style="margin-bottom: 15px; color:white;"><b>Pedidos</b></h1>
+            <h1 style="margin-bottom: 15px; color:white;"><b>Productos del Pedido </b></h1>
         </div>
     </div>
-    <div class="row justify-content-center  ">
+    <form method="POST" enctype="multipart/form-data" class="formulario">
+        {% csrf_token %}
+        <div hidden>
+            {{form}}
+        </div>
+        <a class="btn btn-primary" style="margin-bottom: 7px; color:white" href="/pedido/agregar/{{idProveedor}}/productos/{{idPedido}}/">Agregar Producto</a>
+        <button class="btn btn-success" style="margin-bottom: 7px;" type= "submit" onclick="setMontoTotal({{montoTotal}})">Finalizar Pedido</button>
+    </form>
+    <div class="row justify-content-center">
         <section class="w-100" style="">
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
                 <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
                     <thead class="thead-dark">
                         <tr>
                             <th style="width: 55px;"><b>ID</b></th>	
-                            <th><b>MONTO TOTAL</b></th>
-                            <th><b>ESTADO</b></th>
-                            <th><b>TIENE FACTURA</b></th>
-                            <th><b>ID PROVEEDOR</b></th>
+                            <th><b>CANTIDAD</b></th>
+                            <th><b>NOMBRE PRODUCTO</b></th>
                             <th><b>ACCIONES</b></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% if pedidos %}
-                            {% for pedido in pedidos %}
+                        {% if productos_pedido %}
+                            {% for pd in productos_pedido %}
                                 {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
                                     <tr>
-                                        <td>{{ pedido.id }}</td>
-                                        <td>{{ pedido.monto_total }}</td>
-                                        <td>{{ pedido.estado }}</td>
-                                        {% if pedido.factura %}
-                                            <td>Si</td>
-                                        {% else %}
-                                            <td>No</td>
-                                        {% endif %}
-                                        <td>{{ pedido.fk_id_proveedor }}</td>
+                                        <td>{{ pd.id }}</td>
+                                        <td>{{ pd.cantidad }}</td>
+                                        <td>{{ pd.fk_id_producto }}</td>
                                         <td>
-                                            <a class="btn btn-success" href="/pedido/editar/{{pedido.id}}/">Modificar</a>
-                                            <a class="btn btn-primary" style="width: 93px" href="">Recibir</a>
+                                            <a class="btn btn-success" href="/pedido/listado-productos/{{idPedido}}/modificar/{{pd.id}}/">Modificar</a>
+                                            <a class="btn btn-danger" style="width: 93px" href="/pedido/listado-productos/{{idPedido}}/eliminar/{{pd.id}}/">Eliminar</a>
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -53,12 +53,17 @@
                 </table>
             </div>
             {% if user.groups.all.0|upper == "EMPLEADO BODEGA" %}
-                <a class="btn btn-dark w-100" style="margin-top: 3px;" role="button" data-toggle="modal" data-target="#ayudaModal" href="/pedido/agregar/">
-                    <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Pedido" width="30px" height="30px"><br>
-                    Agregar Pedido
-                </a>
+                
             {% endif %}
         </section>
     </div>
 </div>
 {% endblock %}
+{% block javascript %}
+<script>
+    function setMontoTotal(montoTotal) {
+        document.getElementById("id_monto_total").value = montoTotal;
+        console.log(montoTotal);
+    }
+</script>
+{% endblock%}

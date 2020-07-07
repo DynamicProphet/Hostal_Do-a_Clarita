@@ -567,20 +567,16 @@ def AgregarProductosPedido(request, id_proveedor, id_pedido):
     idPedido = id_pedido
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
         if request.method == 'POST':
-            print("1")
             form = ProductosPedidoForms(request.POST)
-            print(form.is_valid())
             if form.is_valid():
-                print("Llega!!")
                 form.save()
-            #return redirect('/pedido/listar/')
+            return redirect('/pedido/listado-productos/'+ str(idPedido) +'/')
         else:
             form = ProductosPedidoForms()
         return render(request, 'pedido/agregar_productos_pedido.html', {'form':form, 'productos': productos, 'proveedores': proveedores, 'idPedido': idPedido})
     else:
         return redirect('/')
     
-
 def ListarPedido(request):
     pedidos = Pedido.objects.all().order_by('id')
     proveedores = Proveedor.objects.all()
@@ -618,6 +614,55 @@ def RecibirPedido(request, id_pedido):
                 pedido.save()
             return redirect('/pedido/listar/')
         return render(request, 'pedido/recibir_pedido.html', {'form': form} )
+    else:
+        return redirect('/')
+
+def ListarProductosPedido(request, id_pedido):
+    pedido = Pedido.objects.get(id=id_pedido)
+    productos_pedido = ProductosPedidos.objects.all().filter(fk_id_pedido=id_pedido).order_by('id')
+    montoTotal = 0
+    idPedido = id_pedido
+    for pd in productos_pedido:
+        idProveedor = pd.fk_id_pedido.fk_id_proveedor.id
+        montoTotal = montoTotal + (pd.cantidad*pd.fk_id_producto.precio)
+
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = PedidoForms(instance=pedido)
+        else:
+            form = PedidoForms(request.POST, instance=pedido)
+            if form.is_valid():
+                pedido = form.save(commit=False)
+                pedido.save()
+            #return redirect('/pedido/listar/')
+        return render(request, 'pedido/listado_productos_pedido.html', {'form': form, 'pedido': 'pedido','productos_pedido': productos_pedido, 'idProveedor': idProveedor, 'montoTotal': montoTotal, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+
+def EliminarProductosPedido(request, id_pedido, id_prod_pedido):
+    producto_pedido = ProductosPedidos.objects.get(id=id_prod_pedido)
+    idPedido = id_pedido
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            producto_pedido.delete()
+            return redirect('/pedido/listado-productos/'+str(id_pedido)+'/')
+        return render(request, 'pedido/eliminar_productos_pedido.html', {'producto_pedido': producto_pedido, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+
+def ModificarProductoPedido(request, id_pedido, id_prod_pedido):
+    producto_pedido = ProductosPedidos.objects.get(id=id_prod_pedido)
+    idPedido = id_pedido
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = ProductosPedidoForms(instance=producto_pedido)
+        else:
+            form = ProductosPedidoForms(request.POST, instance=producto_pedido)
+            if form.is_valid():
+                producto_pedido = form.save(commit=False)
+                producto_pedido.save()
+            return redirect('/pedido/listado-productos/'+str(id_pedido)+'/')
+        return render(request, 'pedido/modificar_productos_pedido.html', {'form': form, 'idPedido': idPedido} )
     else:
         return redirect('/')
 

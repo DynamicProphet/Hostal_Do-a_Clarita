@@ -2,7 +2,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block title %}Pedido{% endblock %}
+{% block title %}Productos Pedido{% endblock %}
 {% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
 {% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
 {% block content %}
@@ -12,14 +12,16 @@
       <section>
           <div class="card border-dark mb-3">
             <div class="card-header">
-              <h1>Editar Pedido</h1>
+              <h1>Editar Producto del Pedido</h1>
             </div>
             <div class="card-body">    
               <form method="POST" enctype="multipart/form-data" class="formulario">
                     <div class="formulario">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <a class="btn btn-dark" href="/pedido/listar/">Volver</a>
+                        <div class="formulario-productos_pedido">
+                            {{ form.as_p }}
+                        </div>
+                        <a class="btn btn-dark" href="/pedido/listado-productos/{{idPedido}}/">Volver</a>
                         <button class="btn btn-success" type="submit">Editar</button>
                     </div>
                 </form>
@@ -30,3 +32,9 @@
   </div>
 </div>
 {% endblock %}
+{% block javascript %}
+<script>
+     $('#id_fk_id_pedido').attr('disabled', 'disabled');
+     
+</script>
+{% endblock%}

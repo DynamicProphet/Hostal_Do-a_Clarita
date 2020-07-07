@@ -79,9 +79,12 @@ urlpatterns = [
     path('pedido/', include([
         path('listar/', ListarPedido, name="listar-pedido"),
         path('agregar/<int:id_proveedor>/', AgregarPedido, name="agregar-pedido"),
-        path('agregar/<int:id_proveedor>/productos/<int:id_pedido>/', AgregarProductosPedido, name="agregar-productos_pedido"),
         path('editar/<int:id_pedido>/', ModificarPedido, name="editar-pedido"),
         path('recibir/<int:id_pedido>/', RecibirPedido, name="recibir-pedido"),
+        path('agregar/<int:id_proveedor>/productos/<int:id_pedido>/', AgregarProductosPedido, name="agregar-productos_pedido"),
+        path('listado-productos/<int:id_pedido>/', ListarProductosPedido, name="listado-productos-pedido"),
+        path('listado-productos/<int:id_pedido>/eliminar/<int:id_prod_pedido>/', EliminarProductosPedido, name="eliminar-productos-pedido"),
+        path('listado-productos/<int:id_pedido>/modificar/<int:id_prod_pedido>/', ModificarProductoPedido, name="modificar-productos-pedido"),
     ])),
     path('orden/', include([
         path('listar', OrdenListar, name="listar-orden"),
