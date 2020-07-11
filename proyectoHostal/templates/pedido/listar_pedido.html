@@ -1,0 +1,116 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Pedido{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} class= "fondo" style="background-image:url({% static 'img/background/img-home2.jpg' %}); background-repeat: no-repeat;" {% endblock %}
+{% block content %}
+<div class="container h-100">
+    <div class="row w-100">
+        <div class="col-6">
+            <h1 style="margin-bottom: 15px; color:white;"><b>Pedidos</b></h1>
+        </div>
+    </div>
+    <div class="row justify-content-center  ">
+        <section class="w-100" style="">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="width: 55px;"><b>ID</b></th>	
+                            <th><b>MONTO TOTAL</b></th>
+                            <th><b>ESTADO</b></th>
+                            <th><b>TIENE FACTURA</b></th>
+                            <th><b>ID PROVEEDOR</b></th>
+                            <th><b>ACCIONES</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pedidos %}
+                            {% for pedido in pedidos %}
+                                {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
+                                    <tr>
+                                        <td>{{ pedido.id }}</td>
+                                        <td>{{ pedido.monto_total }}</td>
+                                        {% if pedido.estado|lower == "solicitado" %}
+                                            <td style="color:red">{{ pedido.estado }}</td>
+                                        {% else %}
+                                            <td style="color:green">{{ pedido.estado }}</td>
+                                        {% endif%}
+                                        {% if pedido.factura %}
+                                            <td>Si</td>
+                                        {% else %}
+                                            <td>No</td>
+                                        {% endif %}
+                                        <td>{{ pedido.fk_id_proveedor }}</td>
+                                        <td>
+                                            {% if pedido.estado|lower == "solicitado" %}
+                                                <a class="btn btn-success" href="/pedido/editar/{{pedido.id}}/">Modificar</a>
+                                                <a class="btn btn-primary" style="width: 93px" href="/pedido/recibir/{{pedido.id}}/">Recibir</a>
+                                            {% else %}
+                                                <button class="btn btn-success" sstyle="width: 93px" disabled>Modificar</button>
+                                                <button class="btn btn-primary" sstyle="width: 93px" disabled>Recibir</button>
+                                            {% endif%}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                        <h1>No hay registros de pedido</h1>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {% if user.groups.all.0|upper == "EMPLEADO BODEGA" %}
+                <a class="btn btn-dark w-100" style="margin-top: 3px;" role="button" data-toggle="modal" data-target="#ayudaModal" href="/pedido/agregar/">
+                    <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Pedido" width="30px" height="30px"><br>
+                    Agregar Pedido
+                </a>
+            {% endif %}
+        </section>
+    </div>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-align:center">Proveedor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if proveedores %}
+                    <select class= "custom-select" id="proveedor_id" onchange="agregarPedido()">
+                        <option selected value="0">Escoger un proveedor</option>
+                        {% for proveedor in proveedores %}
+                            <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function agregarPedido() {
+        var x = document.getElementById("proveedor_id").value;
+        if (x>0){
+            console.log(x);
+            var pagina = "/pedido/agregar/" + x + "/";
+            window.location.href = pagina;
+        } else {
+            console.log("Es menor a 0");
+        }
+       
+        //document.getElementById("demo").innerHTML = "You selected: " + x;
+    }
+</script>
+{% endblock%}

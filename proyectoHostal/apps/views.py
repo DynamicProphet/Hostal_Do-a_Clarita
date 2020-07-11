@@ -474,9 +474,9 @@ def FinalizarRP(request,id_RP):
             Prod.stock = Prod.stock - x.cantidad
             Prod.save()
             messages.warning(request, f'Se Han Descontado {x.cantidad} Unidades Al Producto {Prod.nombre}, El Stock Actual es de {Prod.stock}')
-        return redirect('/retiro-producto/listar')
+        return redirect('/retiro-producto/listar') 
 
-#Cu9 Ordenes de Pedido
+#Cu9 Ordenes de Pedido(Proveedores)
 
 def AgregarProveedor(request):
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
@@ -524,7 +524,7 @@ def ModificarProveedor(request, id_proveedor):
         return render(request, 'proveedor/modificar_proveedor.html', {'form': form} )
     else:
         return redirect('/') 
-        return redirect('/retiro-producto/listar') 
+        #return redirect('/retiro-producto/listar') 
     return redirect('/')
 
 #CU5: Administracion Huepedes
@@ -534,3 +534,178 @@ def AdmHuespedesListar(request,id_res):
         reserva = Reserva.objects.get(id=id_res)
         return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'reserva':reserva}) 
     return redirect('/')
+
+#CU9: Ordenes de Pedido(Pedidos)
+
+def AgregarPedido(request, id_proveedor):
+    productos = Producto.objects.all().filter(fk_id_proveedor=id_proveedor)
+    proveedores = Proveedor.objects.all().filter(id=id_proveedor)
+    pedidos = Pedido.objects.all().order_by('-id')
+    idProveedor = id_proveedor
+
+    for pedido in pedidos:
+        idPedido = pedido.id + 1
+        break
+    
+    print(idPedido)
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            form = PedidoForms(request.POST)
+            if form.is_valid():
+                form.save()
+                urlReturn = '/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/'
+            return redirect(urlReturn)
+        else:
+            form = PedidoForms()
+        return render(request, 'pedido/agregar_pedido.html', {'form':form, 'productos': productos, 'proveedores': proveedores, 'idProveedor': idProveedor, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+
+def AgregarProductosPedido(request, id_proveedor, id_pedido):
+    productos = Producto.objects.all().filter(fk_id_proveedor=id_proveedor)
+    proveedores = Proveedor.objects.all().filter(id=id_proveedor)
+    idPedido = id_pedido
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            form = ProductosPedidoForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/pedido/listado-productos/'+ str(idPedido) +'/')
+        else:
+            form = ProductosPedidoForms()
+        return render(request, 'pedido/agregar_productos_pedido.html', {'form':form, 'productos': productos, 'proveedores': proveedores, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+    
+def ListarPedido(request):
+    pedidos = Pedido.objects.all().order_by('id')
+    proveedores = Proveedor.objects.all()
+    if  request.user.groups.filter(name='EMPLEADO BODEGA').exists():
+        return render(request, 'pedido/listar_pedido.html', {'pedidos': pedidos, 'proveedores': proveedores})
+    else:
+        return redirect('/')
+
+def ModificarPedido(request, id_pedido):
+    pedido = Pedido.objects.get(id=id_pedido)
+    user = request.user
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = PedidoForms(instance=pedido)
+        else:
+            form = PedidoForms(request.POST, instance=pedido)
+            if form.is_valid():
+                pedido = form.save(commit=False)
+                pedido.save()
+            return redirect('/pedido/listar/')
+        return render(request, 'pedido/modificar_pedido.html', {'form': form} )
+    else:
+        return redirect('/')
+
+def RecibirPedido(request, id_pedido):
+    pedido = Pedido.objects.get(id=id_pedido)
+    user = request.user
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = PedidoForms(instance=pedido)
+        else:
+            form = PedidoForms(request.POST, instance=pedido)
+            if form.is_valid():
+                pedido = form.save(commit=False)
+                pedido.save()
+            return redirect('/pedido/listar/')
+        return render(request, 'pedido/recibir_pedido.html', {'form': form} )
+    else:
+        return redirect('/')
+
+def ListarProductosPedido(request, id_pedido):
+    pedido = Pedido.objects.get(id=id_pedido)
+    productos_pedido = ProductosPedidos.objects.all().filter(fk_id_pedido=id_pedido).order_by('id')
+    montoTotal = 0
+    idPedido = id_pedido
+    for pd in productos_pedido:
+        idProveedor = pd.fk_id_pedido.fk_id_proveedor.id
+        montoTotal = montoTotal + (pd.cantidad*pd.fk_id_producto.precio)
+
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = PedidoForms(instance=pedido)
+        else:
+            form = PedidoForms(request.POST, instance=pedido)
+            if form.is_valid():
+                pedido = form.save(commit=False)
+                pedido.save()
+            #return redirect('/pedido/listar/')
+        return render(request, 'pedido/listado_productos_pedido.html', {'form': form, 'pedido': 'pedido','productos_pedido': productos_pedido, 'idProveedor': idProveedor, 'montoTotal': montoTotal, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+
+def EliminarProductosPedido(request, id_pedido, id_prod_pedido):
+    producto_pedido = ProductosPedidos.objects.get(id=id_prod_pedido)
+    idPedido = id_pedido
+    if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
+        if request.method == 'POST':
+            producto_pedido.delete()
+            return redirect('/pedido/listado-productos/'+str(id_pedido)+'/')
+        return render(request, 'pedido/eliminar_productos_pedido.html', {'producto_pedido': producto_pedido, 'idPedido': idPedido})
+    else:
+        return redirect('/')
+
+def ModificarProductoPedido(request, id_pedido, id_prod_pedido):
+    producto_pedido = ProductosPedidos.objects.get(id=id_prod_pedido)
+    idPedido = id_pedido
+    if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
+        if request.method == "GET":
+            form = ProductosPedidoForms(instance=producto_pedido)
+        else:
+            form = ProductosPedidoForms(request.POST, instance=producto_pedido)
+            if form.is_valid():
+                producto_pedido = form.save(commit=False)
+                producto_pedido.save()
+            return redirect('/pedido/listado-productos/'+str(id_pedido)+'/')
+        return render(request, 'pedido/modificar_productos_pedido.html', {'form': form, 'idPedido': idPedido} )
+    else:
+        return redirect('/')
+
+
+def OrdenListar(request):
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        ordenes = OrdenCompra.objects.all().order_by('id')
+        for o in ordenes:
+            total = 0
+            res = HabitacionesReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
+            for r in res:
+                hab = Habitacion.objects.all().filter(id=r.fk_id_habitaciones.id)
+                for h in hab:
+                    total=total+h.precio
+            res2 = ServiciosReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva)
+            for r2 in res2:
+                ser = Servicio.objects.all().filter(id=r2.fk_id_servicio.id)
+                for s in ser:
+                    total=total+s.precio
+            o.monto_pago=total
+            o.save()
+        return render(request, 'orden/orden-listar.html', {'ordenes':ordenes})
+    else:
+        return redirect('/') 
+
+def OrdenVer(request, id):
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        o = OrdenCompra.objects.get(id=id)
+        th = 0
+        ts = 0
+        habs = HabitacionesReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva.id)
+        for h in habs:
+            x = Habitacion.objects.get(id=h.fk_id_habitaciones.id)
+            th = th + x.precio
+        sers = ServiciosReserva.objects.all().filter(fk_id_reserva=o.fk_id_reserva.id)
+        for s in sers:
+            x = Servicio.objects.get(id=s.fk_id_servicio.id)
+            ts = ts + x.precio
+        return render(request, 'orden/orden-ver.html', {'orden':o, 'habs':len(habs), 'habitaciones':habs, 'totalh':th, 'sers':len(sers), 'servicios':sers, 'totals':ts})
+
+    else:
+        return redirect('/')
+
+def InformeCrear(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        return render(request, 'informes/informe-crear.html')

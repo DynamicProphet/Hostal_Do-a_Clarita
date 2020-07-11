@@ -1,0 +1,49 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reset{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-qsomos.jpg' %})" {% endblock %}
+
+{% block content %}
+
+<form method="post" class="d-flex justify-content-center align-items-center h-720" id="form_rest" style="height: 720px">
+	{% csrf_token %}
+	<div>
+		<h3 class="mt-3 ml-3 mb-3 text-light">Ordenes de compra</h3>
+		<table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+		<thead>
+			<tr class="linea1">
+				<td>Id</td>	
+				<td>Nombre</td>
+				<td>Fecha de Inicio</td>
+				<td>Fecha de Termino</td>
+				<td>Monto</td>
+				<td>Boton</td>
+			</tr>
+		</thead>
+		<tbody>
+			{% if ordenes %}
+
+			{% for o in ordenes %}
+			<tr class="linea_producto">
+				<td>{{ o.id }}</td>
+				<td>{{ o.fk_id_reserva.fk_id_empresa.nombre }}</td>
+				<td>{{ o.fk_id_reserva.fecha_inicio }}</td>
+				<td>{{ o.fk_id_reserva.fecha_termino }}</td>
+				<td>{{ o.monto_pago }}</td>
+				<td>
+					<a class="btn btn-primary" href="/orden/ver/{{o.id}}">Ver</a>
+				</td>
+			</tr>
+			{% endfor %}
+			
+			{% else %}
+			<h1>No hay registros de productos</h1>
+			{% endif %}
+		</tbody>
+	</table>
+	</div>
+</form>
+
+{% endblock %}

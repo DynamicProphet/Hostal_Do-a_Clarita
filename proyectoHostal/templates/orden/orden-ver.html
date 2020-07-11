@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reset{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-qsomos.jpg' %})" {% endblock %}
+
+{% block content %}
+<form method="post" class="d-flex justify-content-center align-items-center h-720" id="form_rest" style="height: 720px">
+    {% csrf_token %}
+    <div class="card border-dark mb-3 col-6 align-items-center">
+        <div class="mt-3">
+            <h3>Orden de Compra</h3>
+            <h6 class="mt-1">Empresa: {{orden.fk_id_reserva.fk_id_empresa.nombre}}</h6>
+            <h6>Cantidad de Habitaciones: {{habs}}</h6>
+            <h6>Cantidad de Servicios: {{sers}}</h6>
+            <h6>Fecha de Inicio: {{orden.fk_id_reserva.fecha_inicio}}</h6>
+            <h6>Fecha de Termino: {{orden.fk_id_reserva.fecha_termino}}</h6>
+            <h6>Total: ${{orden.monto_pago}}</h6>
+        </div>
+        <div class="mt-5 col-8 d-flex justify-content-between">
+            <div>
+                Habitaciones
+                <table class="table table-responsive">
+                    <thead>
+                        <tr class="linea1">
+                            <td>Habitación</td>	
+                            <td>Precio</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in habitaciones %}
+                        <tr class="linea_hab">
+                            <td>{{ h.fk_id_habitaciones.numero_habitacion }}</td>
+                            <td>{{ h.fk_id_habitaciones.precio }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="linea_hab">
+                            <td>Total:</td>
+                            <td>{{ totalh }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                Servicios
+                <table class="table table-responsive">
+                    <thead>
+                        <tr class="linea1">
+                            <td>Servicio</td>	
+                            <td>Precio</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in servicios %}
+                        <tr class="linea_ser">
+                            <td>{{ s.fk_id_servicio.nombre }}</td>
+                            <td>{{ s.fk_id_servicio.precio }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="linea_ser">
+                            <td>Total:</td>
+                            <td>{{ totals }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mb-3 col-12">
+            <a class="btn btn-secondary" href="/orden/listar">Volver</a>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

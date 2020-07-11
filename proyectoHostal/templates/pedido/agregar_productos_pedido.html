@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Pedido{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-home2.jpg' %})" {% endblock %}
+{% block content %}
+
+<div class="container h-100">
+  <div class="row justify-content-center h-100">
+    <div class="col-sm-8 align-self-center text-center">  
+      <section>
+          <div class="card border-dark mb-3">
+            <div class="card-header">
+              <h1>Agregar Productos Pedido</h1>
+            </div>
+            <div class="card-body">
+                {% if proveedores%}
+                    {% for proveedor in proveedores %}
+                        <h4 style="color:green">Proveedor seleccionado: {{proveedor.nombre}}</h4>
+                    {% endfor %}
+                {% endif %}
+                <br>
+
+                <select class= "custom-select" id="producto_id" onchange="setIdProducto()">
+                    {% if productos %}
+                        <option selected value="0">Escoger un producto</option>
+                        {% for producto in productos %}
+                            <option value="{{producto.id}}">{{producto.nombre}}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option selected value="0">El proveedor seleccionado no tiene productos</option>
+                    {% endif %}
+                </select>
+                &nbsp
+                <form method="POST" class="formulario" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="form-control" id="cantidad" type="text" name="cantidad" placeholder="Cantidad del producto">
+                    <input class="form-control" id="fk_id_producto" type="text" name="fk_id_producto" hidden>
+                    <input class="form-control" id="fk_id_pedido" type="text" name="fk_id_pedido" value="{{idPedido}}" hidden>
+                    <br>
+                    <button class="btn btn-dark" type="submit">Agregar</button>
+                </form>
+            </div>
+          </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+    function setIdProducto() {
+        var x = document.getElementById("producto_id").value;
+        document.getElementById("fk_id_producto").value = x;
+        console.log(x);
+    }
+</script>
+{% endblock%}
