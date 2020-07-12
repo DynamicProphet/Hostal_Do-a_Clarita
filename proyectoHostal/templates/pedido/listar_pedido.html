@@ -17,7 +17,6 @@
                 <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
                     <thead class="thead-dark">
                         <tr>
-                            <th style="width: 55px;"><b>ID</b></th>	
                             <th><b>MONTO TOTAL</b></th>
                             <th><b>ESTADO</b></th>
                             <th><b>TIENE FACTURA</b></th>
@@ -30,7 +29,6 @@
                             {% for pedido in pedidos %}
                                 {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
                                     <tr>
-                                        <td>{{ pedido.id }}</td>
                                         <td>{{ pedido.monto_total }}</td>
                                         {% if pedido.estado|lower == "solicitado" %}
                                             <td style="color:red">{{ pedido.estado }}</td>

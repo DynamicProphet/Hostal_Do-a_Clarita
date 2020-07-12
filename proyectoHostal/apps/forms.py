@@ -242,12 +242,14 @@ class PedidoForms(forms.ModelForm):
                 'id',
 				'monto_total',
 				'estado',
+                'adjuntar_factura',
 				'fk_id_proveedor',
 		]
 		labels = {
                 'id': 'ID',
 				'monto_total': 'Monto Total',
 				'estado': 'Estado',
+                'adjuntar_factura': 'Adjuntar Factura',
 				'fk_id_proveedor': 'Fk Proveedor',
 		}
 

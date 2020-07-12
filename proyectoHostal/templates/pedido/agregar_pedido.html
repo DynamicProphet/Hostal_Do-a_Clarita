@@ -23,35 +23,38 @@
                     {% endfor %}
                 {% endif %}
                 <br>
-                <h5><b>Listado de precio</b></h5>
-                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 550px !important">
+                {% if productos %}
+                  <h5><b>Listado de precio</b></h5>
+                  <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 550px !important">
                     <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th><b>PRODUCTO</b></th>
-                                <th><b>PRECIO</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if productos %}
-                                {% for producto in productos %}
-                                    {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
-                                        <tr>
-                                            <td>{{ producto.nombre }}</td>
-                                            <td>{{ producto.precio }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                            <h1>El proveedor seleccionado no tiene productos asignados.</h1>
-                            {% endif %}
-                        </tbody>
+                      <thead class="thead-dark">
+                          <tr>
+                              <th><b>PRODUCTO</b></th>
+                              <th><b>PRECIO</b></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                              {% for producto in productos %}
+                                  {% if user.groups.all.0|upper == 'EMPLEADO BODEGA' %}
+                                      <tr>
+                                          <td>{{ producto.nombre }}</td>
+                                          <td>{{ producto.precio }}</td>
+                                      </tr>
+                                  {% endif %}
+                              {% endfor %}
+                          
+                      </tbody>
                     </table>
-                </div>
+                  </div>
+                {% else %}
+                  <h2 style="color:red;">El proveedor seleccionado no tiene productos asignados, favor elija otro.</h2>
+                {% endif %}
+                <br>
                 <input class="form-control" id="id" type="text" name="id" value="{{idPedido}}" hidden>
                 <input class="form-control" id="monto_total" type="text" name="monto_total" value="" hidden>
                 <input class="form-control" id="estado" type="text" name="estado" value="solicitado" hidden>
                 <input class="form-control" id="fk_id_proveedor" type="text" name="fk_id_proveedor" value="{{ idProveedor }}"hidden>
+                <a class="btn btn-danger" href="/pedido/listar/">Volver</a>
                 <button class="btn btn-dark" type="submit">Continuar</button>
               </form>
             </div>

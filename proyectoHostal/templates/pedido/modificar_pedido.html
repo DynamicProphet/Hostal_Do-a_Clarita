@@ -8,25 +8,36 @@
 {% block content %}
 <div class="container h-100">
   <div class="row justify-content-center h-100">
-    <div class="col-sm-8 align-self-center text-center">  
+    <div class="col-sm-8 align-self-center text-center">
       <section>
-          <div class="card border-dark mb-3">
-            <div class="card-header">
-              <h1>Editar Pedido</h1>
-            </div>
-            <div class="card-body">    
-              <form method="POST" enctype="multipart/form-data" class="formulario">
-                    <div class="formulario">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <a class="btn btn-dark" href="/pedido/listar/">Volver</a>
-                        <button class="btn btn-success" type="submit">Editar</button>
-                    </div>
-                </form>
-            </div>
+        {% for p in pedidos %}
+          <a class="btn btn-success" href="/pedido/listado-productos/{{p.fk_id_proveedor.id}}/" style="margin-bottom: 5px; display: flex; width: 130px;">Ver productos pedido</a>
+        {% endfor %}
+        <div class="card border-dark mb-3">
+          <div class="card-header">
+            <h1>Editar Pedido</h1>
           </div>
+          <div class="card-body">    
+            <form method="POST" enctype="multipart/form-data" class="formulario">
+                  <div class="formulario">
+                      {% csrf_token %}
+                      {{ form.as_p }}
+                      <a class="btn btn-dark" href="/pedido/listar/">Volver</a>
+                      <button class="btn btn-success" type="submit">Editar</button>
+                  </div>
+              </form>
+          </div>
+        </div>
       </section>
     </div>
   </div>
 </div>
 {% endblock %}
+{% block javascript %}
+<script>
+     $('#id_fk_id_proveedor').attr('disabled', 'disabled');
+     $('#id_estado').attr('disabled', 'disabled');
+     $('#id_id').attr('disabled', 'disabled');
+     $('#id_monto_total').attr('disabled', 'disabled');
+</script>
+{% endblock%}

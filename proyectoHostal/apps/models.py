@@ -166,9 +166,10 @@ class OrdenCompra(models.Model):
 
 
 class Pedido(models.Model):
+    id = models.BigIntegerField(primary_key=True)
     monto_total = models.BigIntegerField(blank=True, null=True)
     estado = models.CharField(max_length=20)
-    adjuntar_factura = models.FileField(max_length=100, blank=True, null=True)
+    adjuntar_factura = models.FileField(max_length=100, blank=True, null=True, upload_to='Pedido/')
     fk_id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='fk_id_proveedor', blank=True, null=True)
 
     def __str__(self):

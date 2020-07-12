@@ -19,7 +19,7 @@
                     <div class="formulario">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <a class="btn btn-dark" href="/reserva/listar/">volver</a>
+                        <a class="btn btn-dark" href="/reserva/listar/">Volver</a>
                         <button class="btn btn-success" type="submit">Editar</button>
                     </div>
                 </form>
@@ -30,3 +30,8 @@
   </div>
 </div>
 {% endblock %}
+{% block javascript %}
+<script>
+     $('#id_fk_id_empresa').attr('disabled', 'disabled');
+</script>
+{% endblock%}

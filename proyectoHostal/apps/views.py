@@ -553,8 +553,8 @@ def AgregarPedido(request, id_proveedor):
             form = PedidoForms(request.POST)
             if form.is_valid():
                 form.save()
-                urlReturn = '/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/'
-            return redirect(urlReturn)
+                print('/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/')
+            return redirect('/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/')
         else:
             form = PedidoForms()
         return render(request, 'pedido/agregar_pedido.html', {'form':form, 'productos': productos, 'proveedores': proveedores, 'idProveedor': idProveedor, 'idPedido': idPedido})
@@ -578,7 +578,7 @@ def AgregarProductosPedido(request, id_proveedor, id_pedido):
         return redirect('/')
     
 def ListarPedido(request):
-    pedidos = Pedido.objects.all().order_by('id')
+    pedidos = Pedido.objects.all().order_by('-estado', 'id')
     proveedores = Proveedor.objects.all()
     if  request.user.groups.filter(name='EMPLEADO BODEGA').exists():
         return render(request, 'pedido/listar_pedido.html', {'pedidos': pedidos, 'proveedores': proveedores})
@@ -587,17 +587,18 @@ def ListarPedido(request):
 
 def ModificarPedido(request, id_pedido):
     pedido = Pedido.objects.get(id=id_pedido)
+    pedidos = Pedido.objects.all().filter(id=id_pedido)
     user = request.user
     if request.user.groups.filter(name = 'EMPLEADO BODEGA').exists():
         if request.method == "GET":
             form = PedidoForms(instance=pedido)
         else:
-            form = PedidoForms(request.POST, instance=pedido)
+            form = PedidoForms(request.POST, request.FILES, instance=pedido)
             if form.is_valid():
                 pedido = form.save(commit=False)
                 pedido.save()
             return redirect('/pedido/listar/')
-        return render(request, 'pedido/modificar_pedido.html', {'form': form} )
+        return render(request, 'pedido/modificar_pedido.html', {'form': form, 'pedidos': pedidos} )
     else:
         return redirect('/')
 
@@ -634,7 +635,7 @@ def ListarProductosPedido(request, id_pedido):
             if form.is_valid():
                 pedido = form.save(commit=False)
                 pedido.save()
-            #return redirect('/pedido/listar/')
+            return redirect('/pedido/listar/')
         return render(request, 'pedido/listado_productos_pedido.html', {'form': form, 'pedido': 'pedido','productos_pedido': productos_pedido, 'idProveedor': idProveedor, 'montoTotal': montoTotal, 'idPedido': idPedido})
     else:
         return redirect('/')
