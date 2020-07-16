@@ -710,3 +710,15 @@ def OrdenVer(request, id):
 def InformeCrear(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
         return render(request, 'informes/informe-crear.html')
+
+#CU 7
+
+def AdministracionHabitaciones(request):
+    if True:
+        habitaciones = Habitacion.objects.all().order_by('id')
+        return render(request, 'adm_habitaciones/administracion-habitaciones.html', {'habitaciones': habitaciones})
+    else:
+        return redirect('/')
+
+
+    

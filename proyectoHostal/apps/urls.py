@@ -93,4 +93,7 @@ urlpatterns = [
     path('informe/', include([
         path('crear', InformeCrear, name="crear-informe"),
     ])),
+    path('adm_habitaciones/', include([
+        path('administracion-habitaciones/', AdministracionHabitaciones, name="administrar-habitaciones"),
+    ])),
 ]
