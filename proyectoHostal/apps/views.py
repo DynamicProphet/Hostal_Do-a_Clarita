@@ -220,7 +220,7 @@ def ListarHabitacion(request):
     habitaciones = Habitacion.objects.all().order_by('id')
     return render(request, 'habitacion/habitacion-listar.html', {'habitaciones': habitaciones})
 
-def EditarHabitacion(request,id):
+def EditarHabitacion(request, id_habitacion):
     habitacion = Habitacion.objects.get(id=id_habitacion)
     user = request.user
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
@@ -232,7 +232,7 @@ def EditarHabitacion(request,id):
                 habitacion = form.save(commit=False)
                 habitacion.save()
             return redirect('habitacion/habitacion-listar/')
-        return render(request, "habitacion/habitacion-listar.html", {'form': form})
+        return render(request, "habitacion/habitacion-editar.html", {'form': form})
     else:
         return redirect('/') 
         
