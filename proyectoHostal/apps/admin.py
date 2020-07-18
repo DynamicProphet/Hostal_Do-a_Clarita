@@ -62,11 +62,11 @@ pass
 admin.site.register(Habitacion,HabitacionAdmin)
 
 class HabitacionesReservaAdmin(admin.ModelAdmin):
-    list_display = ('id','reserva','huesped')
-    list_display_links = ('id','reserva','huesped')
+    list_display = ('id','reserva','habitacion')
+    list_display_links = ('id','reserva','habitacion')
 
-    def huesped(self,obj):
-        return obj.fk_id_huesped
+    def habitacion(self,obj):
+        return obj.fk_id_habitaciones
     def reserva(self,obj):
         return obj.fk_id_reserva
         

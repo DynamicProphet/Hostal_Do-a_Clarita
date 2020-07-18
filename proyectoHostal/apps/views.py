@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from datetime import datetime
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -721,4 +722,77 @@ def AdministracionHabitaciones(request):
         return redirect('/')
 
 
-    
+#Reserva V2
+def RealizarReserva1(request):
+    form = Reserva1Form(request.POST)
+    cant_hab= 0
+    if request.method == 'POST':
+        if form.is_valid():
+            f_ini = str(form.cleaned_data.get('fecha_inicio'))
+            f_ter = str(form.cleaned_data.get('fecha_termino'))
+            lista = validarHabitaciones(f_ini,f_ter)
+            cant_hab = len(lista)
+            if '_Continuar' in request.POST:
+                return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
+        else:
+            form = Reserva1Form()
+    return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
+
+def RealizarReserva2(request,f_ini,f_ter):
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        lista = validarHabitaciones(f_ini,f_ter)
+        cant_hab = len(lista)
+        if request.method == 'POST':
+            form = ReservaForms(request.POST, request.FILES)
+            if form.is_valid():
+                new_reserva = form.save() 
+            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}')
+        else:
+            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter})
+        return render(request, 'reserva2/realizar_reserva_2.html', {'form': form,'cant_hab':cant_hab,'f_ini':f_ini,'f_ter':f_ter})
+    return redirect('/')
+
+
+def ReservaValidar(request,id,cant_hab):
+    cant_huespedes = vCantHuespExcel(id)
+    Valida = False
+
+    if cant_huespedes > cant_hab:
+        Valida = False
+        #instacia= Reserva.objects.get(id=id)
+        #instacia.delete()
+        #instacia.save()
+
+
+    return render(request, 'reserva2/realizar_reserva_confirmacion.html', {'Valida':Valida})
+
+
+def validarHabitaciones(f_ini,f_ter):
+    reservas = Reserva.objects.all()
+    habitaciones_ocupadas = []
+    f_ini_d = datetime.strptime(f_ini, "%Y-%m-%d")
+    f_ter_d = datetime.strptime(f_ter, "%Y-%m-%d")
+
+    for res in reservas:
+        if res.fecha_inicio <= f_ini_d.date() <= res.fecha_termino or res.fecha_inicio <= f_ter_d.date() <= res.fecha_termino:
+            habitaciones = HabitacionesReserva.objects.all().filter(fk_id_reserva=res.id)
+            for hab in habitaciones:
+                habitaciones_ocupadas.insert(1,Habitacion.objects.get(id=hab.fk_id_habitaciones.id).id)
+
+    print(habitaciones_ocupadas)
+
+    habitaciones_libres = Habitacion.objects.all()
+    for a in habitaciones_ocupadas:
+        habitaciones_libres = habitaciones_libres.exclude(id=a)
+
+    print(habitaciones_libres)
+    #retorna los id's de las habitaciones ocupadas
+    return habitaciones_libres
+
+def vCantHuespExcel(id):
+    instacia= Reserva.objects.get(id=id)
+    excel = pd.read_excel(instacia.plantilla_huespedes.path)
+
+    index = excel.index
+    number_of_rows = len(index)
+    return number_of_rows

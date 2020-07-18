@@ -96,4 +96,9 @@ urlpatterns = [
     path('adm_habitaciones/', include([
         path('administracion-habitaciones/', AdministracionHabitaciones, name="administrar-habitaciones"),
     ])),
+    path('reserva2/', include([
+        path('', RealizarReserva1, name=""),
+        path('realizar/<str:f_ini>/<str:f_ter>', RealizarReserva2, name=""),
+        path('validar/<int:id>/<int:cant_hab>', ReservaValidar, name=""),
+    ])),
 ]

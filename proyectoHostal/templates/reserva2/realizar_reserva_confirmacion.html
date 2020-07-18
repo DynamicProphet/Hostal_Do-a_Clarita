@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reserva{% endblock %}
+
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+
+{% block img_bg %} style="background-image:url({% static 'img/background/img-cocina.jpg' %})" {% endblock %}
+
+{% block content %}
+<div class="bg-dark text-light m-5 p-5">
+    <p class="text-center">Confirmacion Reserva</p>
+    {% if Valida %}
+    <p>Reservacion Realizada Correctamente</p>
+    {% else %}
+    <p>Su Reservacion A Sido Cancelada:</p>
+    <p>Razon: La Cantidad de Huespdes excede la cantidad de habitaciones disponibles</p>
+    {% endif %}
+</div>
+{% endblock %}

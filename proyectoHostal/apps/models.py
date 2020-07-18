@@ -241,7 +241,7 @@ class Proveedor(models.Model):
 class Reserva(models.Model):
     fecha_inicio = models.DateField()
     fecha_termino = models.DateField()
-    plantilla_huespedes = models.FileField(max_length=100, blank=True, null=True, upload_to='Reserva/')
+    plantilla_huespedes = models.FileField(max_length=100, blank=False, null=False, upload_to='Reserva/')
     fk_id_empresa = models.ForeignKey(Empresa, models.DO_NOTHING, db_column='fk_id_empresa', blank=True, null=True)
 
     def __str__(self):
