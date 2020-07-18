@@ -756,13 +756,14 @@ def RealizarReserva2(request,f_ini,f_ter):
 def ReservaValidar(request,id,cant_hab):
     cant_huespedes = vCantHuespExcel(id)
     Valida = False
-
+    FromExcelToModel(id)
     if cant_huespedes > cant_hab:
-        Valida = False
-        #instacia= Reserva.objects.get(id=id)
+        instacia= Reserva.objects.get(id=id)
         #instacia.delete()
         #instacia.save()
-
+    else:
+        FromExcelToModel(id)
+        Valida = True
 
     return render(request, 'reserva2/realizar_reserva_confirmacion.html', {'Valida':Valida})
 
@@ -792,3 +793,24 @@ def vCantHuespExcel(id):
     index = excel.index
     number_of_rows = len(index)
     return number_of_rows
+
+def FromExcelToModel(id):
+    instacia= Reserva.objects.get(id=id)
+    empresa = instacia.fk_id_empresa
+    excel = pd.read_excel(instacia.plantilla_huespedes.path)
+    json_excel = excel.to_json(orient='values')
+    obj = json.loads(json_excel)
+
+    for objs in obj:
+        #huespedes
+        new_huesped = Huesped()
+        new_huesped.nombre = objs[0]
+        new_huesped.rut = objs[1]
+        new_huesped.fk_id_empresa = empresa
+        new_huesped.save()
+
+        #huespedes_reserva
+        new_hr = HuespedesReserva()
+        new_hr.fk_id_huesped = new_huesped
+        new_hr.fk_id_reserva = instacia
+        new_hr.save()
