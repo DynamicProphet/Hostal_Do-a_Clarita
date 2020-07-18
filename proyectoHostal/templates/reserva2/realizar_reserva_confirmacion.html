@@ -9,12 +9,26 @@
 
 {% block content %}
 <div class="bg-dark text-light m-5 p-5">
-    <p class="text-center">Confirmacion Reserva</p>
+    <h1 class="text-center p-3">Confirmacion Reserva</h1>
     {% if Valida %}
-    <p>Reservacion Realizada Correctamente</p>
+    <div class="text-center">
+        <img src="{% static 'img/success.png' %}" width="50px" height="50px">
+        <p class="p-3">Reservacion Realizada Correctamente</p>
+        <a class="btn btn-success px-2" href="/">
+            Finalizar
+        </a>
+    </div>
     {% else %}
-    <p>Su Reservacion A Sido Cancelada:</p>
-    <p>Razon: La Cantidad de Huespdes excede la cantidad de habitaciones disponibles</p>
+    <div class="text-center">
+        <img src="{% static 'img/error.png' %}" width="50px" height="50px">
+        <p class="pt-3">Su Reservacion A Sido Cancelada:</p>
+        <p>Razon: La Cantidad de Huespdes excede la cantidad de habitaciones disponibles</p>
+        <a class="btn btn-danger px-2" href="/reserva2/">
+            Volver
+        </a>
+    </div>
+
     {% endif %}
+
 </div>
 {% endblock %}

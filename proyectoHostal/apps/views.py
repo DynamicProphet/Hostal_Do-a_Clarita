@@ -779,14 +779,10 @@ def validarHabitaciones(f_ini,f_ter):
             for hab in habitaciones:
                 habitaciones_ocupadas.insert(1,Habitacion.objects.get(id=hab.fk_id_habitaciones.id).id)
 
-    print(habitaciones_ocupadas)
-
     habitaciones_libres = Habitacion.objects.all()
     for a in habitaciones_ocupadas:
         habitaciones_libres = habitaciones_libres.exclude(id=a)
 
-    print(habitaciones_libres)
-    #retorna los id's de las habitaciones ocupadas
     return habitaciones_libres
 
 def vCantHuespExcel(id):
