@@ -845,8 +845,11 @@ def FromExcelToModel(id,f_ini,f_ter):
         new_habres.save()
         index += 1
 
+    f_ini_d = datetime.strptime(f_ini, "%Y-%m-%d")
+    f_ter_d = datetime.strptime(f_ter, "%Y-%m-%d")
+
     new_orden_compra = OrdenCompra()
-    new_orden_compra.monto_pago = precio_habs
+    new_orden_compra.monto_pago = precio_habs*((f_ter_d-f_ini_d).days+1)
     new_orden_compra.fk_id_reserva = instacia
     new_orden_compra.save()
 
