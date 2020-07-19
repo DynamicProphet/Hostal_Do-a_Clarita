@@ -70,14 +70,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>- Desde esta ventana puede administrar los productos registrados:</p>
-                <p>- Para agregar un nuevo producto presione el botón de 'Agregar producto' y rellene el formulario.
-                </p>
-                <p>- Para editar un producto presione el link de editar correspondiente al registro que desee
-                    editar.</p>
-                <p> - Para eliminar un producto presione el link de eliminar correspondiente al registro, para
-                    este paso hace falta aceptar el mensaje de confirmación.</p>
-
+                {% if not isPagada %}
+                <p>- Desde esta ventana puede revisar el detalle de huéspedes de reservas ya finalizadas:</p>
+                {% else %}
+                <p>- Desde esta ventana se puede realizar el check-in:</p>
+                <p>- Cada huésped tiene una habitación asignada, para hacer el Check-In a dicha persona seleccione "Check-In"</p>
+                {% endif%}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

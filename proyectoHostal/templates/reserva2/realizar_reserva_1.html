@@ -11,6 +11,10 @@
 <div id="form_wrap" class="bg-dark pt-5">
     <form method="POST" class="text-light">
         {% csrf_token %}
+        <a class="btn btn-primary text-light float-right mr-3" role="button" data-toggle="modal" data-target="#ayudaModal">
+            <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+            Ayuda
+        </a> 
         <h1 class="text-center pt-2">Realizar Reserva</h1>
         <p class="text-center pt-2">Seleccione fecha de inicio y termino de la reserva que desea realizar</p>
         <div class="form-group p-3">
@@ -30,5 +34,28 @@
             <button class="btn btn-primary" type="submit" name="_Continuar">Continuar</button>
         </div>
     </form>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ayuda:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>- Desde esta ventana se puede realizar una reserva:</p>
+                <p>- El primer paso será seleccionar las fechas en que desea reservar habitaciones.</p>
+                <p>- Presione "Revisar Disponibilidad" una vez ingresadas las fechas para consultar las habitaciones disponibles.
+                </p>
+                <p>- Para continuar presioné "Continuar"</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

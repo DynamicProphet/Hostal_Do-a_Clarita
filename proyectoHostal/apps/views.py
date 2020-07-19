@@ -745,7 +745,7 @@ def RealizarReserva1(request):
                 lista = validarHabitaciones(f_ini,f_ter)
                 cant_hab = len(lista)
                 if '_Continuar' in request.POST:
-                    return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
+                    return redirect(f'/reserva/realizar-2/{f_ini}/{f_ter}')
             else:
                 form = Reserva1Form()
         return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
@@ -758,12 +758,14 @@ def RealizarReserva2(request,f_ini,f_ter):
         if request.method == 'POST':
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
-                new_reserva = form.save() 
+                new_reserva = form.save(commit=False)
                 new_reserva.fk_id_empresa = Empresa.objects.get(nombre=request.user.first_name)
                 new_reserva.save()
-            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
+
+            return redirect(f'/reserva/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
         else:
-            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter})
+            emp = Empresa.objects.get(nombre=request.user.first_name)
+            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter,'fk_id_empresa':emp.id})
         return render(request, 'reserva2/realizar_reserva_2.html', {'form': form,'cant_hab':cant_hab,'f_ini':f_ini,'f_ter':f_ter})
     return redirect('/')
 
@@ -774,7 +776,6 @@ def ReservaValidar(request,id,cant_hab,f_ini,f_ter):
     if cant_huespedes > cant_hab or cant_huespedes == 0:
         instacia= Reserva.objects.get(id=id)
         instacia.delete()
-        instacia.save()
     else:
         FromExcelToModel(id,f_ini,f_ter)
         Valida = True
