@@ -250,11 +250,18 @@ def EditarHabitacion(request, id_habitacion):
         
 #CU10: Factura
 def PagarReserva(request, id_reserva):
+    reserva = Reserva.objects.all().filter(id=id_reserva)
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
     habitaciones_reserva = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_reserva)
     facturas = Factura.objects.all()
     idReserva = id_reserva
+
+    for re in reserva:
+        days = ((re.fecha_termino-re.fecha_inicio).days+1)
+        print(days)
+
+
     if request.user.groups.filter(name = "SECRETARIA" ).exists():
         if request.method == 'POST':
             form = FacturaForms(request.POST)
@@ -265,7 +272,7 @@ def PagarReserva(request, id_reserva):
             return redirect('/reserva/ver-estado-reserva/'+str(id_reserva)+'/')
         else:
             form = FacturaForms()
-        return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva, 'forms': forms})
+        return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva, 'forms': forms, 'days': days})
     else:
         return redirect('/')
 
