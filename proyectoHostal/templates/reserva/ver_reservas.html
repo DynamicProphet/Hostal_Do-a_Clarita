@@ -45,16 +45,15 @@
                                             <td>{{ reserva.fecha_termino }}</td>
                                             {% if reserva.plantilla_huespedes %}
                                                 <td>Si</td>
+                                                <td>
+                                                    <a class="btn btn-success" href="/servicio/listar/{{reserva.id}}/">Contratar Servicios</a>
+                                                </td>
                                             {% else %}
                                                 <td>No</td>
-                                            {% endif %}
-                                            <!-- 
                                                 <td>
-                                                <a class="btn btn-success" href="/reserva/editar/{{reserva.id}}/">Editar</a>
-                                                <a class="btn btn-danger" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
-                                            </td>
-                                            -->
-                                            
+                                                    <button class="btn btn-success" disabled>Contratar Servicios</button>
+                                                </td>
+                                            {% endif %}
                                         </tr>
                                     {% endif %}
                                 {% else %}

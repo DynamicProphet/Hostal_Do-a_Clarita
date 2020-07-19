@@ -136,4 +136,8 @@ urlpatterns = [
         path('in/<int:id_hab>', CheckIn, name=""),
         path('out/<int:id_res>', CheckOut, name=""),
     ])),
+
+    path('servicio/', include([
+        path('listar/<int:id_reserva>/', Servicios, name=""),
+    ])),
 ]

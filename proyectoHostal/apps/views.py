@@ -147,6 +147,9 @@ def EditarReserva(request, id_reserva):
     else:
         return redirect('/') 
 
+def Servicios(request, id_reserva):
+    return render(request, "servicio/listar_servicio.html")
+
 def CancelarReserva(request, id_reserva):
     reserva = Reserva.objects.get(id=id_reserva)
     user = request.user

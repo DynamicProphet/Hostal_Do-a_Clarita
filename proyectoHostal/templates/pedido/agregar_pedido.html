@@ -55,7 +55,9 @@
                 <input class="form-control" id="estado" type="text" name="estado" value="solicitado" hidden>
                 <input class="form-control" id="fk_id_proveedor" type="text" name="fk_id_proveedor" value="{{ idProveedor }}"hidden>
                 <a class="btn btn-danger" href="/pedido/listar/">Volver</a>
-                <button class="btn btn-dark" type="submit">Continuar</button>
+                {% if productos %}
+                  <button class="btn btn-dark" type="submit">Continuar</button>
+                {% endif %}
               </form>
             </div>
           </div>
