@@ -92,7 +92,7 @@ urlpatterns = [
              EliminarProveedor, name="eliminar-proveedor"),
     ])),
     path('adm_huespedes/', include([
-        path('listar/<int:id_res>', AdmHuespedesListar,
+        path('listar/<int:id_res>/<int:isPagada>', AdmHuespedesListar,
              name="listar-adm-huesped"),
     ])),
     path('pedido/', include([

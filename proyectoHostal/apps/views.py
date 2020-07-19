@@ -255,6 +255,8 @@ def PagarReserva(request, id_reserva):
             form = FacturaForms(request.POST)
             if form.is_valid():
                 form.save()
+                #check-out
+                CheckOut(id_reserva)
             return redirect('/reserva/ver-estado-reserva/'+str(id_reserva)+'/')
         else:
             form = FacturaForms()
@@ -535,12 +537,12 @@ def ModificarProveedor(request, id_proveedor):
     return redirect('/')
 
 #CU5: Administracion Huepedes
-def AdmHuespedesListar(request,id_res):
+def AdmHuespedesListar(request,id_res,isPagada):
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         HR = HuespedesReserva.objects.all().filter(fk_id_reserva=id_res)
         HR2 = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
         reserva = Reserva.objects.get(id=id_res)
-        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'HR2':HR2,'reserva':reserva}) 
+        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'HR2':HR2,'reserva':reserva,'isPagada':isPagada}) 
     return redirect('/')
 
 #CU9: Ordenes de Pedido(Pedidos)
@@ -731,20 +733,22 @@ def AdministracionHabitaciones(request):
 
 #Reserva V2
 def RealizarReserva1(request):
-    form = Reserva1Form(request.POST)
-    cant_hab= 0
-    if request.method == 'POST':
-        if form.is_valid():
-            f_ini = str(form.cleaned_data.get('fecha_inicio'))
-            f_ter = str(form.cleaned_data.get('fecha_termino'))
-            lista = validarHabitaciones(f_ini,f_ter)
-            cant_hab = len(lista)
-            if '_Continuar' in request.POST:
-                return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
-        else:
-            form = Reserva1Form()
-    return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
-
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        form = Reserva1Form(request.POST)
+        cant_hab= 0
+        if request.method == 'POST':
+            if form.is_valid():
+                f_ini = str(form.cleaned_data.get('fecha_inicio'))
+                f_ter = str(form.cleaned_data.get('fecha_termino'))
+                lista = validarHabitaciones(f_ini,f_ter)
+                cant_hab = len(lista)
+                if '_Continuar' in request.POST:
+                    return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
+            else:
+                form = Reserva1Form()
+        return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
+    return redirect('/')
+    
 def RealizarReserva2(request,f_ini,f_ter):
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         lista = validarHabitaciones(f_ini,f_ter)
@@ -843,12 +847,9 @@ def CheckIn(request,id_hab):
         return redirect(request.META['HTTP_REFERER'])
     return redirect('/retiro-producto/listar')  
     
-def CheckOut(request,id_res):
+def CheckOut(id_res):
     instacia = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
-    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        for x in instacia:
-            hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
-            hab.estado = 'disponible'
-            hab.save()
-        return redirect(request.META['HTTP_REFERER'])
-    return redirect('/retiro-producto/listar') 
+    for x in instacia:
+        hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
+        hab.estado = 'disponible'
+        hab.save()
