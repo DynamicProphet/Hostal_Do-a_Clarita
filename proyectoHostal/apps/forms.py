@@ -47,6 +47,7 @@ class ReservaForms(forms.ModelForm):
             'fecha_termino': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
             'plantilla_huespedes': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
             'fk_id_empresa': forms.Select(attrs={'class': 'form-control col-auto'})
+            #'disabled':'disabled'
         }
 #forms.HiddenInput()
 
