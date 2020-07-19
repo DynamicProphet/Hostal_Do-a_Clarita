@@ -11,8 +11,12 @@
 <div id="form_wrap" class="bg-dark pt-5">
     <form method="POST" class="text-light" enctype="multipart/form-data">
         {% csrf_token %}
+        <a class="btn btn-primary text-light float-right mr-3" role="button" data-toggle="modal" data-target="#ayudaModal">
+            <img src="{% static 'img/icono-help.png' %}" alt="Ayuda" width="30px" height="30px"><br>
+            Ayuda
+        </a>
         <h1 class="text-center pt-2">Realizar Reserva</h1>
-        <p class="text-center pt-2 text-success">Habitaciones Dispoibles Para Esta Fecha: {{cant_hab}}</p>
+        <p class="text-center pt-2 text-success">Habitaciones Disponibles Para Esta Fecha: {{cant_hab}}</p>
         <div class="form-group px-5 pb-5">
             {{ form.as_p }}
             <button class="btn btn-primary" type="submit">Continuar</button>
@@ -23,5 +27,29 @@
             </a>
         </div>
     </form>
+</div>
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ayuda:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>- Desde esta ventana se continúa la reserva:</p>
+                <p>- Para completar la reserva seleccioné "Nueva Plantilla".</p>
+                <p>- Se descargará una plantilla.
+                </p>
+                <p>- Rellene la plantilla con los datos suyos y de sus empleados.</p>
+                <p>- La cantidad de empleados debe ser menor o igual a la cantidad de habitaciones disponibles.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

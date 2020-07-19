@@ -17,10 +17,12 @@
             <div class="card-body">
                 {% if isPagada %}
                     <h4 style="color:Green">Pago Realizado</h4>
+                    <a class ="btn btn-primary " href="/reserva/listar"><b>Volver</b></a>
                     <a class ="btn btn-success " href="/adm_huespedes/listar/{{idReserva}}/1"><b>Ver Detalle Huespedes</b></a>
                 {% else %}
                     <h4 style="color:Red">No hay pago registrado</h4>
                     <br>
+                    <a class ="btn btn-primary " href="/reserva/listar"><b>Volver</b></a>
                     <a class ="btn btn-success " href="/adm_huespedes/listar/{{idReserva}}/0"><b>Check-In</b></a>
                     <a class ="btn btn-success" href="/reserva/realizar-pago/{{idReserva}}/"><b>Gestionar Pago</b></a>
                     <br>

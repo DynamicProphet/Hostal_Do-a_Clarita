@@ -243,7 +243,7 @@ def EditarHabitacion(request, id_habitacion):
             if form.is_valid():
                 habitacion = form.save(commit=False)
                 habitacion.save()
-            return redirect('habitacion/habitacion-listar/')
+            return redirect('/habitacion/habitacion-listar/')
         return render(request, "habitacion/habitacion-editar.html", {'form': form})
     else:
         return redirect('/') 
@@ -748,7 +748,7 @@ def RealizarReserva1(request):
                 lista = validarHabitaciones(f_ini,f_ter)
                 cant_hab = len(lista)
                 if '_Continuar' in request.POST:
-                    return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
+                    return redirect(f'/reserva/realizar-2/{f_ini}/{f_ter}')
             else:
                 form = Reserva1Form()
         return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
@@ -761,10 +761,14 @@ def RealizarReserva2(request,f_ini,f_ter):
         if request.method == 'POST':
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
-                new_reserva = form.save() 
-            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
+                new_reserva = form.save(commit=False)
+                new_reserva.fk_id_empresa = Empresa.objects.get(nombre=request.user.first_name)
+                new_reserva.save()
+
+            return redirect(f'/reserva/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
         else:
-            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter})
+            emp = Empresa.objects.get(nombre=request.user.first_name)
+            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter,'fk_id_empresa':emp.id})
         return render(request, 'reserva2/realizar_reserva_2.html', {'form': form,'cant_hab':cant_hab,'f_ini':f_ini,'f_ter':f_ter})
     return redirect('/')
 
@@ -772,10 +776,9 @@ def RealizarReserva2(request,f_ini,f_ter):
 def ReservaValidar(request,id,cant_hab,f_ini,f_ter):
     cant_huespedes = vCantHuespExcel(id)
     Valida = False
-    if cant_huespedes > cant_hab:
+    if cant_huespedes > cant_hab or cant_huespedes == 0:
         instacia= Reserva.objects.get(id=id)
         instacia.delete()
-        instacia.save()
     else:
         FromExcelToModel(id,f_ini,f_ter)
         Valida = True
@@ -817,8 +820,8 @@ def FromExcelToModel(id,f_ini,f_ter):
     excel = pd.read_excel(instacia.plantilla_huespedes.path)
     json_excel = excel.to_json(orient='values')
     obj = json.loads(json_excel)
-    print(len(obj))
 
+    precio_habs = 0
     index = 0
     for objs in obj:
         #huespedes
@@ -837,11 +840,21 @@ def FromExcelToModel(id,f_ini,f_ter):
         #habitaciones_reserva
         hab = habs_libres[index]
 
+        precio_habs = precio_habs + hab.precio
+
         new_habres = HabitacionesReserva()
         new_habres.fk_id_habitaciones = hab
         new_habres.fk_id_reserva = instacia
         new_habres.save()
         index += 1
+
+    f_ini_d = datetime.strptime(f_ini, "%Y-%m-%d")
+    f_ter_d = datetime.strptime(f_ter, "%Y-%m-%d")
+
+    new_orden_compra = OrdenCompra()
+    new_orden_compra.monto_pago = precio_habs*((f_ter_d-f_ini_d).days+1)
+    new_orden_compra.fk_id_reserva = instacia
+    new_orden_compra.save()
 
 def CheckIn(request,id_hab):
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
