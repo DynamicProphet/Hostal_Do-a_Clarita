@@ -19,7 +19,7 @@
     <div class="table-responsive px-5 pt-2">
         <p class=" px-5 bg-dark text-light text-center">Detalle Reserva Cliente {{ reserva.fk_id_empresa }} Del
             {{ reserva.fecha_inicio }} Hasta {{ reserva.fecha_termino }}</p>
-            {% if not isPagada %}
+            {% if isPagada %}
             <p class=" px-5 bg-dark text-danger text-center">Reserva Finalizada</p>
             {% endif %}
         <table class="table table-striped table-dark text-light">
@@ -39,7 +39,7 @@
                     {% for hr2 in HR2 %}
                     {% if forloop.counter == forloop.parentloop.counter %}
                     <td>{{ hr2.fk_id_habitaciones.numero_habitacion }}</td>
-                    {% if isPagada %}
+                    {% if not isPagada %}
                         {% if hr2.fk_id_habitaciones.estado == 'reservada' or hr2.fk_id_habitaciones.estado == 'mantenimiento' %}
                         <td>
                             <p class="text-danger">Habitacion Ya Asignada</p>
@@ -70,7 +70,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                {% if not isPagada %}
+                {% if isPagada %}
                 <p>- Desde esta ventana puede revisar el detalle de huéspedes de reservas ya finalizadas:</p>
                 {% else %}
                 <p>- Desde esta ventana se puede realizar el check-in:</p>
