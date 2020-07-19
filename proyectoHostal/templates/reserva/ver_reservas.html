@@ -48,10 +48,13 @@
                                             {% else %}
                                                 <td>No</td>
                                             {% endif %}
-                                            <td>
+                                            <!-- 
+                                                <td>
                                                 <a class="btn btn-success" href="/reserva/editar/{{reserva.id}}/">Editar</a>
                                                 <a class="btn btn-danger" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
                                             </td>
+                                            -->
+                                            
                                         </tr>
                                     {% endif %}
                                 {% else %}
@@ -79,7 +82,7 @@
                 </table>
             </div>
             {% if user.groups.all.0|upper == "CLIENTE" %}
-                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-reserva/">
+                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-1">
                     <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Reserva" width="30px" height="30px"><br>
                     Agregar Reserva
                 </a>

@@ -733,7 +733,7 @@ def AdministracionHabitaciones(request):
 
 #Reserva V2
 def RealizarReserva1(request):
-    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+    if request.user.groups.filter(name = "CLIENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         form = Reserva1Form(request.POST)
         cant_hab= 0
         if request.method == 'POST':
@@ -748,9 +748,9 @@ def RealizarReserva1(request):
                 form = Reserva1Form()
         return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
     return redirect('/')
-    
+
 def RealizarReserva2(request,f_ini,f_ter):
-    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+    if request.user.groups.filter(name = "CLIENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         lista = validarHabitaciones(f_ini,f_ter)
         cant_hab = len(lista)
         if request.method == 'POST':
@@ -839,7 +839,7 @@ def FromExcelToModel(id,f_ini,f_ter):
         index += 1
 
 def CheckIn(request,id_hab):
-    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         instacia= Habitacion.objects.get(id=id_hab)
         instacia.estado = 'reservada'
         instacia.save()
@@ -853,3 +853,4 @@ def CheckOut(id_res):
         hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
         hab.estado = 'disponible'
         hab.save()
+
