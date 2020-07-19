@@ -95,12 +95,17 @@ def RegistrarHabitacion(request):
     return render(request, 'reserva/registrar_habitacion.html', {})
 
 def VerEstadoReserva(request, id_reserva):
-    orden_compra = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
+    orden_compra = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva).first()
     facturas = Factura.objects.all()
     isPagada = True
     idReserva = id_reserva 
-    for orden in orden_compra:
-        orden_id = str(orden.id)
+
+    if orden_compra:
+        orden_id = orden_compra.id
+    else: 
+        orden_id = 0
+    #for orden in orden_compra:
+    #    orden_id = str(orden.id)
     for factura in facturas:
         fact = str(factura.fk_id_orden_compra)
         if fact != orden_id:
