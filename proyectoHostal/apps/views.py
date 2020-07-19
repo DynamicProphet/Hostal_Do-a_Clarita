@@ -12,6 +12,7 @@ from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from datetime import datetime
+from itertools import chain
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -532,8 +533,9 @@ def ModificarProveedor(request, id_proveedor):
 def AdmHuespedesListar(request,id_res):
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         HR = HuespedesReserva.objects.all().filter(fk_id_reserva=id_res)
+        HR2 = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
         reserva = Reserva.objects.get(id=id_res)
-        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'reserva':reserva}) 
+        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'HR2':HR2,'reserva':reserva}) 
     return redirect('/')
 
 #CU9: Ordenes de Pedido(Pedidos)
@@ -746,23 +748,22 @@ def RealizarReserva2(request,f_ini,f_ter):
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
                 new_reserva = form.save() 
-            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}')
+            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
         else:
             form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter})
         return render(request, 'reserva2/realizar_reserva_2.html', {'form': form,'cant_hab':cant_hab,'f_ini':f_ini,'f_ter':f_ter})
     return redirect('/')
 
 
-def ReservaValidar(request,id,cant_hab):
+def ReservaValidar(request,id,cant_hab,f_ini,f_ter):
     cant_huespedes = vCantHuespExcel(id)
     Valida = False
-    FromExcelToModel(id)
     if cant_huespedes > cant_hab:
         instacia= Reserva.objects.get(id=id)
-        #instacia.delete()
-        #instacia.save()
+        instacia.delete()
+        instacia.save()
     else:
-        FromExcelToModel(id)
+        FromExcelToModel(id,f_ini,f_ter)
         Valida = True
 
     return render(request, 'reserva2/realizar_reserva_confirmacion.html', {'Valida':Valida})
@@ -794,13 +795,17 @@ def vCantHuespExcel(id):
     number_of_rows = len(index)
     return number_of_rows
 
-def FromExcelToModel(id):
+def FromExcelToModel(id,f_ini,f_ter):
     instacia= Reserva.objects.get(id=id)
     empresa = instacia.fk_id_empresa
+    habs_libres = validarHabitaciones(f_ini,f_ter)
+
     excel = pd.read_excel(instacia.plantilla_huespedes.path)
     json_excel = excel.to_json(orient='values')
     obj = json.loads(json_excel)
+    print(len(obj))
 
+    index = 0
     for objs in obj:
         #huespedes
         new_huesped = Huesped()
@@ -810,7 +815,35 @@ def FromExcelToModel(id):
         new_huesped.save()
 
         #huespedes_reserva
-        new_hr = HuespedesReserva()
-        new_hr.fk_id_huesped = new_huesped
-        new_hr.fk_id_reserva = instacia
-        new_hr.save()
+        new_huesres = HuespedesReserva()
+        new_huesres.fk_id_huesped = new_huesped
+        new_huesres.fk_id_reserva = instacia
+        new_huesres.save()
+
+        #habitaciones_reserva
+        hab = habs_libres[index]
+
+        new_habres = HabitacionesReserva()
+        new_habres.fk_id_habitaciones = hab
+        new_habres.fk_id_reserva = instacia
+        new_habres.save()
+        index += 1
+
+def CheckIn(request,id_hab):
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        instacia= Habitacion.objects.get(id=id_hab)
+        instacia.estado = 'reservada'
+        instacia.save()
+
+        return redirect(request.META['HTTP_REFERER'])
+    return redirect('/retiro-producto/listar')  
+    
+def CheckOut(request,id_res):
+    instacia = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
+    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        for x in instacia:
+            hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
+            hab.estado = 'disponible'
+            hab.save()
+        return redirect(request.META['HTTP_REFERER'])
+    return redirect('/retiro-producto/listar') 

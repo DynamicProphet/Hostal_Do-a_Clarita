@@ -15,7 +15,12 @@
         <p class="text-center pt-2 text-success">Habitaciones Dispoibles Para Esta Fecha: {{cant_hab}}</p>
         <div class="form-group px-5 pb-5">
             {{ form.as_p }}
-            <button class="btn btn-primary" type="submit">asd</button>
+            <button class="btn btn-primary" type="submit">Continuar</button>
+            <a class="btn btn-secondary float-right" target="_blank" href="/media/Reserva/plantilla_huespedes_base.xlsx">
+                <img src="{% static 'img/icono-descargar.png' %}" alt="Descargar Nueva Plantilla" width="30px"
+                    height="30px"><br>
+                Nueva Plantilla
+            </a>
         </div>
     </form>
 </div>
