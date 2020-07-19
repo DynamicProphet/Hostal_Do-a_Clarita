@@ -37,7 +37,7 @@
                         {% if reservas %}
                             {% for reserva in reservas %}
                                 {% if empresa and user.groups.all.0|upper == 'CLIENTE' %}
-                                    {% if reserva.fk_id_empresa.nombre == empresa|upper %}
+                                    {% if reserva.fk_id_empresa.nombre|upper == empresa|upper %}
                                         <tr>
                                             <td>{{ reserva.id }}</td>
                                             <td>{{ reserva.fk_id_empresa.nombre }}</td>

@@ -240,7 +240,7 @@ def EditarHabitacion(request, id_habitacion):
             if form.is_valid():
                 habitacion = form.save(commit=False)
                 habitacion.save()
-            return redirect('habitacion/habitacion-listar/')
+            return redirect('/habitacion/habitacion-listar/')
         return render(request, "habitacion/habitacion-editar.html", {'form': form})
     else:
         return redirect('/') 
