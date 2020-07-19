@@ -101,9 +101,11 @@ def VerEstadoReserva(request, id_reserva):
     idReserva = id_reserva 
 
     if orden_compra:
-        orden_id = orden_compra.id
+        orden_id = str(orden_compra.id)
     else: 
-        orden_id = 0
+        orden_id = str(0)
+
+    print (orden_id)
     #for orden in orden_compra:
     #    orden_id = str(orden.id)
     for factura in facturas:
