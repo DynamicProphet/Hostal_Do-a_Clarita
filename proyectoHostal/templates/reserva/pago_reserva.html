@@ -35,7 +35,7 @@
                           <tr>
                             <td>{{servicio_reserva.fk_id_servicio.nombre}}</td>
                             <td>${% widthratio servicio_reserva.fk_id_servicio.precio 1 days %}</td>
-                            <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 3 %}</td>
+                            <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 days %}</td>
                           </tr>
                         {% endfor %}
                         
@@ -43,7 +43,7 @@
                           <tr>
                             <td>TIPO CAMA - {{habitacion_reserva.fk_id_habitaciones.tipo_cama|upper}} </td> 
                             <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 1 days %}</td>       
-                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 3 %}</td>       
+                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 days %}</td>       
                           </tr>
                         {% endfor %}
                         <tr>

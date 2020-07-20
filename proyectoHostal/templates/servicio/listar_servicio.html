@@ -15,7 +15,43 @@
               <h1>Servicio</h1>
             </div>
             <div class="card-body">
-                
+                <h4 style="color:green;">Cantidad de dias reserva: {{days}}</h4>
+                {% if noServicios %}
+                  <h6 style="color:red;">No quedan servicios que contratar</h6>
+                {% endif %}
+                <form method="POST" class="formulario" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th><b>SERVICIO</b></th>
+                            <th><b>DESCRIPCION</b></th>
+                            <th><b>PRECIO</b></th>
+                            <th><b>PRECIO TOTAL</b></th>
+                            <th><b>ACCIÓN</b></th>
+                        </tr>
+                    </thead>
+                      {% if servicios %}
+                        {% for se in servicios %}
+                          <tr>
+                            <td>{{se.nombre}}</td>
+                            <td>{{se.descripcion}}</td>
+                            <td>{{se.precio}}</td>
+                            <td>{% widthratio se.precio 1 days %}</td>
+                            <td>
+                              <button class="btn btn-success" type="submit" onclick="llenarValores({{se.id}}, {{idReserva}})">Contratar</button>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      {% endif %}
+                    <tbody>
+                    </tbody>
+                  </table>
+                  <br>
+                  <input class="form-control" id="fk_id_servicio" type="text" name="fk_id_servicio" hidden>
+                  <input class="form-control" id="fk_id_reserva" type="text" name="fk_id_reserva" hidden>
+                  <a class="btn btn-primary" href="/reserva/listar/">Volver</a>
+                </form>
             </div>
           </div>
       </section>
@@ -23,3 +59,14 @@
   </div>
 </div>
 {% endblock %}
+{% block javascript %}
+<script>
+    function llenarValores(val1, val2) {
+        //var x = document.getElementById("producto_id").value;
+        document.getElementById("fk_id_servicio").value = val1;
+        document.getElementById("fk_id_reserva").value = val2;
+        console.log(val1);
+        console.log(val2);
+    }
+</script>
+{% endblock%}

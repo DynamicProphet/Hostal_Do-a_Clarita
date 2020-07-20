@@ -288,3 +288,15 @@ class ProductosPedidoForms(forms.ModelForm):
 class Reserva1Form(forms.Form):
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget(attrs={'class': 'form-control col-4'}))
     fecha_termino = forms.DateField(widget=forms.SelectDateWidget(attrs={'class': 'form-control col-4'}))
+
+class ServicioReservaForms(forms.ModelForm):
+    class Meta:
+        model = ServiciosReserva
+        fields = [
+            'fk_id_servicio',
+            'fk_id_reserva',
+        ]
+        labels = {
+            'fk_id_servicio': 'FK Servicio',
+            'fk_id_reserva': 'FK Reserva',
+        }
