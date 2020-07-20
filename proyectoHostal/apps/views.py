@@ -737,26 +737,47 @@ def InformeCrear(request):
 
 def InformeCrearFacuras(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
-        facturas = Factura.objects.all().order_by('id') 
+        facturas = Factura.objects.all().order_by('id')
+        lista = []
         for f in facturas:
-            n = 0
+            n=0
             if date.today()>f.fk_id_orden_compra.fk_id_reserva.fecha_termino:
-                print('ahora: ')
-                print(date.today())
-                print('fecha: ')
-                print(f.fk_id_orden_compra.fk_id_reserva.fecha_termino)
-                n = int(date.today().strftime("%d")) - int(f.fk_id_orden_compra.fk_id_reserva.fecha_termino.strftime("%d"))
-                print(n)
-                print('es mayor')
-        print(date.today())
-        return render(request, 'informes/informe-facturas.html', {'facturas':facturas})
+                n = (date.today() - f.fk_id_orden_compra.fk_id_reserva.fecha_termino).days
+            if n>0 and n<30:
+                lista.append(f)
+        return render(request, 'informes/informe-facturas.html', {'facturas':lista})
 
 def ExcelFacturas(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
         facturas = Factura.objects.all().order_by('id')
+        lista = []
+        for f in facturas:
+            n=0
+            if date.today()>f.fk_id_orden_compra.fk_id_reserva.fecha_termino:
+                n = (date.today() - f.fk_id_orden_compra.fk_id_reserva.fecha_termino).days
+            if n>0 and n<30:
+                lista.append(f)
+
         wb = Workbook()
         ws = wb.active
-        ws['A1'] = "funca"
+        ws['A1'] = "RUT cliente"
+        ws['B1'] = "Desde"
+        ws['C1'] = "Hasta"
+        ws['D1'] = "Total Pago"
+        
+        cont=2
+        total=0
+
+        for f in lista:
+            ws.cell(row = cont, column = 1).value = f.fk_id_orden_compra.fk_id_reserva.fk_id_empresa.rut
+            ws.cell(row = cont, column = 2).value = f.fk_id_orden_compra.fk_id_reserva.fecha_inicio
+            ws.cell(row = cont, column = 3).value = f.fk_id_orden_compra.fk_id_reserva.fecha_termino
+            ws.cell(row = cont, column = 4).value = f.fk_id_orden_compra.monto_pago
+            total = total + f.fk_id_orden_compra.monto_pago
+            cont+=1
+
+        ws.cell(row = cont, column = 1).value = 'Total :'
+        ws.cell(row = cont, column = 2).value = total
 
         nombre = "ReporteFactura.xlsx"
         response = HttpResponse(content_type = "application/ms-excel")
