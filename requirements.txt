@@ -4,3 +4,4 @@ djangorestframework
 cx-Oracle
 pandas
 xlrd
+openpyxl
