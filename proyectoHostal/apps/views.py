@@ -11,8 +11,10 @@ from django.http import HttpResponseRedirect
 from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from datetime import datetime
+from datetime import datetime, date
 from itertools import chain
+from openpyxl import Workbook
+from django.http.response import HttpResponse
 # Create your views here.
 
 #CU13: Administrar La Página
@@ -713,6 +715,37 @@ def OrdenVer(request, id):
 def InformeCrear(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
         return render(request, 'informes/informe-crear.html')
+
+def InformeCrearFacuras(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        facturas = Factura.objects.all().order_by('id') 
+        for f in facturas:
+            n = 0
+            if date.today()>f.fk_id_orden_compra.fk_id_reserva.fecha_termino:
+                print('ahora: ')
+                print(date.today())
+                print('fecha: ')
+                print(f.fk_id_orden_compra.fk_id_reserva.fecha_termino)
+                n = int(date.today().strftime("%d")) - int(f.fk_id_orden_compra.fk_id_reserva.fecha_termino.strftime("%d"))
+                print(n)
+                print('es mayor')
+        print(date.today())
+        return render(request, 'informes/informe-facturas.html', {'facturas':facturas})
+
+def ExcelFacturas(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        facturas = Factura.objects.all().order_by('id')
+        wb = Workbook()
+        ws = wb.active
+        ws['A1'] = "funca"
+
+        nombre = "ReporteFactura.xlsx"
+        response = HttpResponse(content_type = "application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre)
+        response['Content-Disposition'] = content
+        wb.save(response)
+
+        return response
 
 #CU 7
 

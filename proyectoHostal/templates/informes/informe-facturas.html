@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Reset{% endblock %}
+{% block navbar %} {% include 'base/navbar.html' %} {% endblock %}
+{% block img_bg %} style="background-image:url({% static 'img/background/img-qsomos.jpg' %})" {% endblock %}
+
+{% block content %}
+
+<form method="post" class="d-flex justify-content-center align-items-center h-720" id="form_rest" style="height: 720px">
+	{% csrf_token %}
+	<div>
+        <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
+			<thead>
+				<tr class="linea1">
+					<td>#</td>	
+					<td>emp</td>
+					<td>OC</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% if facturas %}
+
+				{% for f in facturas %}
+				<tr class="linea_producto">
+					<td>{{ f.id }}</td>
+					<td>{{ f.rut_empresa }}</td>
+					<td>{{ f.fk_id_orden_compra }}</td>
+				</tr>
+				{% endfor %}
+				
+				{% else %}
+				<h1>No hay registros de facturas por el momento</h1>
+				{% endif %}
+			</tbody>
+		</table>
+        <a class="btn btn-primary" href="/informe/ExcelFac">Esportar a Excel</a>
+	</div>
+</form>
+
+{% endblock %}

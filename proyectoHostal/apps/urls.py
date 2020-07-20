@@ -116,6 +116,8 @@ urlpatterns = [
     ])),
     path('informe/', include([
         path('crear', InformeCrear, name="crear-informe"),
+        path('facturas', InformeCrearFacuras, name="facturas-informe"),
+        path('ExcelFac', ExcelFacturas, name="facturas-excel"),
     ])),
     path('adm_habitaciones/', include([
         path('administracion-habitaciones/', AdministracionHabitaciones,
