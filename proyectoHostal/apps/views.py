@@ -107,9 +107,6 @@ def VerEstadoReserva(request, id_reserva):
     else: 
         orden_id = str(0)
 
-    print (orden_id)
-    #for orden in orden_compra:
-    #    orden_id = str(orden.id)
     for factura in facturas:
         fact = str(factura.fk_id_orden_compra)
         if fact != orden_id:
@@ -150,7 +147,42 @@ def EditarReserva(request, id_reserva):
         return redirect('/') 
 
 def Servicios(request, id_reserva):
-    return render(request, "servicio/listar_servicio.html")
+    reserva = Reserva.objects.all().filter(id=id_reserva)
+    servicio_reserva = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva).order_by("fk_id_servicio")
+    idReserva = id_reserva
+    isServicio = False
+    noServicios = False
+    for re in reserva:
+        days = ((re.fecha_termino-re.fecha_inicio).days+1)
+
+    if servicio_reserva:
+        for se in servicio_reserva:
+            if se.fk_id_servicio.id == 1:
+                servicios = Servicio.objects.all().filter(id=2)
+                isServicio = True
+            if (se.fk_id_servicio.id == 2 and isServicio):
+                servicios = Servicio.objects.all().filter(id=3)
+                noServicios = True
+                break
+            if se.fk_id_servicio.id == 2 and isServicio==False:
+                servicios = Servicio.objects.all().filter(id=1)
+    else:
+        servicios = Servicio.objects.all()
+        
+
+    if request.user.groups.filter(name = "CLIENTE").exists():
+        if request.method == 'POST':
+            form = ServicioReservaForms(request.POST)
+            if form.is_valid():
+                form.save()
+            return redirect('/servicio/listar/'+str(idReserva) + '/')
+        else:
+            form = ServicioReservaForms()
+        return render(request, "servicio/listar_servicio.html", {'days': days, 'servicios': servicios, 'form': form, 'idReserva': idReserva, 'servicio_reserva': servicio_reserva, 'noServicios': noServicios})
+    else:
+        return redirect('/')
+
+    
 
 def CancelarReserva(request, id_reserva):
     reserva = Reserva.objects.get(id=id_reserva)
@@ -261,7 +293,6 @@ def PagarReserva(request, id_reserva):
 
     for re in reserva:
         days = ((re.fecha_termino-re.fecha_inicio).days+1)
-        print(days)
 
 
     if request.user.groups.filter(name = "SECRETARIA" ).exists():
@@ -571,13 +602,12 @@ def AgregarPedido(request, id_proveedor):
         idPedido = pedido.id + 1
         break
     
-    print(idPedido)
     if request.user.groups.filter(name = "EMPLEADO BODEGA").exists():
         if request.method == 'POST':
             form = PedidoForms(request.POST)
             if form.is_valid():
                 form.save()
-                print('/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/')
+                
             return redirect('/pedido/agregar/' + str(idProveedor) + '/productos/' + str(idPedido) + '/')
         else:
             form = PedidoForms()
