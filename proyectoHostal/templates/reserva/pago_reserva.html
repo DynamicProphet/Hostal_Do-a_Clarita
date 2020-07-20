@@ -22,26 +22,28 @@
                         <tr>
                             <th><b>SERVICIOS</b></th>	
                             <th><b>VALOR EN PESOS</b></th>
-                            <th><b>DOLARES</b></th>
+                            <th><b>VALOR EN DOLARES</b></th>
                         </tr>
                     </thead>
                     <tbody>
                       {% for orden in orden_compras %}
                         <h4>Titular Reserva: {{orden.fk_id_reserva.fk_id_empresa.nombre|title}}</h4>
+                        <h6 style="color:green;">Cantidad de dias reserva: {{days}}</h6>
+                        <p>Los valores son calculados en base a la cantidad de dias</p>
                         <br>
                         {% for servicio_reserva in servicios_reservas %}
                           <tr>
                             <td>{{servicio_reserva.fk_id_servicio.nombre}}</td>
-                            <td>${{servicio_reserva.fk_id_servicio.precio}}</td>
-                            <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 1 %}</td>
+                            <td>${% widthratio servicio_reserva.fk_id_servicio.precio 1 days %}</td>
+                            <td>${% widthratio servicio_reserva.fk_id_servicio.precio 750 3 %}</td>
                           </tr>
                         {% endfor %}
                         
                         {% for habitacion_reserva in habitaciones_reserva %}
                           <tr>
                             <td>TIPO CAMA - {{habitacion_reserva.fk_id_habitaciones.tipo_cama|upper}} </td> 
-                            <td>${{habitacion_reserva.fk_id_habitaciones.precio}}</td>       
-                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 1 %}</td>       
+                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 1 days %}</td>       
+                            <td>${% widthratio habitacion_reserva.fk_id_habitaciones.precio 750 3 %}</td>       
                           </tr>
                         {% endfor %}
                         <tr>

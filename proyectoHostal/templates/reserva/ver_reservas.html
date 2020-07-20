@@ -37,7 +37,7 @@
                         {% if reservas %}
                             {% for reserva in reservas %}
                                 {% if empresa and user.groups.all.0|upper == 'CLIENTE' %}
-                                    {% if reserva.fk_id_empresa.nombre == empresa|upper %}
+                                    {% if reserva.fk_id_empresa.nombre|upper == empresa|upper %}
                                         <tr>
                                             <td>{{ reserva.id }}</td>
                                             <td>{{ reserva.fk_id_empresa.nombre }}</td>
@@ -45,13 +45,15 @@
                                             <td>{{ reserva.fecha_termino }}</td>
                                             {% if reserva.plantilla_huespedes %}
                                                 <td>Si</td>
+                                                <td>
+                                                    <a class="btn btn-success" href="/servicio/listar/{{reserva.id}}/">Contratar Servicios</a>
+                                                </td>
                                             {% else %}
                                                 <td>No</td>
+                                                <td>
+                                                    <button class="btn btn-success" disabled>Contratar Servicios</button>
+                                                </td>
                                             {% endif %}
-                                            <td>
-                                                <a class="btn btn-success" href="/reserva/editar/{{reserva.id}}/">Editar</a>
-                                                <a class="btn btn-danger" href="/reserva/cancelar/{{reserva.id}}/">Cancelar</a>
-                                            </td>
                                         </tr>
                                     {% endif %}
                                 {% else %}
@@ -79,7 +81,7 @@
                 </table>
             </div>
             {% if user.groups.all.0|upper == "CLIENTE" %}
-                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-reserva/">
+                <a class="btn btn-dark w-100" style="margin-top: 3px;" href="/reserva/realizar-1">
                     <img src="{% static 'img/icono-agregar.png' %}" alt="Add-Reserva" width="30px" height="30px"><br>
                     Agregar Reserva
                 </a>

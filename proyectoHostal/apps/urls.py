@@ -20,18 +20,22 @@ urlpatterns = [
     ])),
     path('quienes-somos/', QuienesSomos, name='quienes-somos'),
     path('reserva/', include([
-        path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
-        path('listar/', ListarReservas, name='listar-reservas'),
-        path('editar/<int:id_reserva>/', EditarReserva, name='editar-reservas'),
-        path('cancelar/<int:id_reserva>/',
-             CancelarReserva, name='cancelar-reservas'),
-        path('registrar-habitacion-reserva/', RegistrarHabitacionReserva,
-             name='registrar-habitacion-reserva'),
-        path('ver-estado-reserva/<int:id_reserva>/',
-             VerEstadoReserva, name='ver-estado-reserva'),
-        path('realizar-pago/<int:id_reserva>/',
-             PagarReserva, name='pagar-reserva'),
-    ])),
+         path('realizar-1', RealizarReserva1, name=""),
+         path('realizar-2/<str:f_ini>/<str:f_ter>', RealizarReserva2, name=""),
+         path('validar/<int:id>/<int:cant_hab>/<str:f_ini>/<str:f_ter>',
+              ReservaValidar, name=""),
+         path('listar/', ListarReservas, name='listar-reservas'),
+         #path('realizar-reserva/', RealizarReserva, name='realizar-reserva'),
+         #path('editar/<int:id_reserva>/', EditarReserva, name='editar-reservas'),
+         # path('cancelar/<int:id_reserva>/',
+         #     CancelarReserva, name='cancelar-reservas'),
+         # path('registrar-habitacion-reserva/', RegistrarHabitacionReserva,
+         #     name='registrar-habitacion-reserva'),
+         path('ver-estado-reserva/<int:id_reserva>/',
+              VerEstadoReserva, name='ver-estado-reserva'),
+         path('realizar-pago/<int:id_reserva>/',
+              PagarReserva, name='pagar-reserva'),
+         ])),
     path('habitacion/', include([
         path('habitacion-agregar/', AgregarHabitacion, name='habitacion-agregar'),
         path('habitacion-listar/', ListarHabitacion, name='habitacion-listar'),
@@ -92,7 +96,7 @@ urlpatterns = [
              EliminarProveedor, name="eliminar-proveedor"),
     ])),
     path('adm_huespedes/', include([
-        path('listar/<int:id_res>', AdmHuespedesListar,
+        path('listar/<int:id_res>/<int:isPagada>', AdmHuespedesListar,
              name="listar-adm-huesped"),
     ])),
     path('pedido/', include([
@@ -133,5 +137,9 @@ urlpatterns = [
     path('check/', include([
         path('in/<int:id_hab>', CheckIn, name=""),
         path('out/<int:id_res>', CheckOut, name=""),
+    ])),
+
+    path('servicio/', include([
+        path('listar/<int:id_reserva>/', Servicios, name=""),
     ])),
 ]

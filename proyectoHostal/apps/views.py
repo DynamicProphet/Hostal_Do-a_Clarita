@@ -97,12 +97,19 @@ def RegistrarHabitacion(request):
     return render(request, 'reserva/registrar_habitacion.html', {})
 
 def VerEstadoReserva(request, id_reserva):
-    orden_compra = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
+    orden_compra = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva).first()
     facturas = Factura.objects.all()
     isPagada = True
     idReserva = id_reserva 
-    for orden in orden_compra:
-        orden_id = str(orden.id)
+
+    if orden_compra:
+        orden_id = str(orden_compra.id)
+    else: 
+        orden_id = str(0)
+
+    print (orden_id)
+    #for orden in orden_compra:
+    #    orden_id = str(orden.id)
     for factura in facturas:
         fact = str(factura.fk_id_orden_compra)
         if fact != orden_id:
@@ -141,6 +148,9 @@ def EditarReserva(request, id_reserva):
         return render(request, "reserva/modificar_reserva.html", {'form': form})
     else:
         return redirect('/') 
+
+def Servicios(request, id_reserva):
+    return render(request, "servicio/listar_servicio.html")
 
 def CancelarReserva(request, id_reserva):
     reserva = Reserva.objects.get(id=id_reserva)
@@ -235,27 +245,36 @@ def EditarHabitacion(request, id_habitacion):
             if form.is_valid():
                 habitacion = form.save(commit=False)
                 habitacion.save()
-            return redirect('habitacion/habitacion-listar/')
+            return redirect('/habitacion/habitacion-listar/')
         return render(request, "habitacion/habitacion-editar.html", {'form': form})
     else:
         return redirect('/') 
         
 #CU10: Factura
 def PagarReserva(request, id_reserva):
+    reserva = Reserva.objects.all().filter(id=id_reserva)
     orden_compras = OrdenCompra.objects.all().filter(fk_id_reserva=id_reserva)
     servicios_reservas = ServiciosReserva.objects.all().filter(fk_id_reserva=id_reserva)
     habitaciones_reserva = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_reserva)
     facturas = Factura.objects.all()
     idReserva = id_reserva
+
+    for re in reserva:
+        days = ((re.fecha_termino-re.fecha_inicio).days+1)
+        print(days)
+
+
     if request.user.groups.filter(name = "SECRETARIA" ).exists():
         if request.method == 'POST':
             form = FacturaForms(request.POST)
             if form.is_valid():
                 form.save()
+                #check-out
+                CheckOut(id_reserva)
             return redirect('/reserva/ver-estado-reserva/'+str(id_reserva)+'/')
         else:
             form = FacturaForms()
-        return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva, 'forms': forms})
+        return render(request, "reserva/pago_reserva.html", {'orden_compras': orden_compras, 'servicios_reservas' :servicios_reservas, 'habitaciones_reserva': habitaciones_reserva, 'idReserva': idReserva, 'forms': forms, 'days': days})
     else:
         return redirect('/')
 
@@ -532,12 +551,12 @@ def ModificarProveedor(request, id_proveedor):
     return redirect('/')
 
 #CU5: Administracion Huepedes
-def AdmHuespedesListar(request,id_res):
+def AdmHuespedesListar(request,id_res,isPagada):
     if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         HR = HuespedesReserva.objects.all().filter(fk_id_reserva=id_res)
         HR2 = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
         reserva = Reserva.objects.get(id=id_res)
-        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'HR2':HR2,'reserva':reserva}) 
+        return render(request, 'adm_huespedes/adm_huespedes_listar.html', {'HR':HR,'HR2':HR2,'reserva':reserva,'isPagada':isPagada}) 
     return redirect('/')
 
 #CU9: Ordenes de Pedido(Pedidos)
@@ -759,31 +778,37 @@ def AdministracionHabitaciones(request):
 
 #Reserva V2
 def RealizarReserva1(request):
-    form = Reserva1Form(request.POST)
-    cant_hab= 0
-    if request.method == 'POST':
-        if form.is_valid():
-            f_ini = str(form.cleaned_data.get('fecha_inicio'))
-            f_ter = str(form.cleaned_data.get('fecha_termino'))
-            lista = validarHabitaciones(f_ini,f_ter)
-            cant_hab = len(lista)
-            if '_Continuar' in request.POST:
-                return redirect(f'/reserva2/realizar/{f_ini}/{f_ter}')
-        else:
-            form = Reserva1Form()
-    return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
+    if request.user.groups.filter(name = "CLIENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+        form = Reserva1Form(request.POST)
+        cant_hab= 0
+        if request.method == 'POST':
+            if form.is_valid():
+                f_ini = str(form.cleaned_data.get('fecha_inicio'))
+                f_ter = str(form.cleaned_data.get('fecha_termino'))
+                lista = validarHabitaciones(f_ini,f_ter)
+                cant_hab = len(lista)
+                if '_Continuar' in request.POST:
+                    return redirect(f'/reserva/realizar-2/{f_ini}/{f_ter}')
+            else:
+                form = Reserva1Form()
+        return render(request, 'reserva2/realizar_reserva_1.html', {'form': form,'cant_hab':cant_hab})
+    return redirect('/')
 
 def RealizarReserva2(request,f_ini,f_ter):
-    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+    if request.user.groups.filter(name = "CLIENTE" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         lista = validarHabitaciones(f_ini,f_ter)
         cant_hab = len(lista)
         if request.method == 'POST':
             form = ReservaForms(request.POST, request.FILES)
             if form.is_valid():
-                new_reserva = form.save() 
-            return redirect(f'/reserva2/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
+                new_reserva = form.save(commit=False)
+                new_reserva.fk_id_empresa = Empresa.objects.get(nombre=request.user.first_name)
+                new_reserva.save()
+
+            return redirect(f'/reserva/validar/{new_reserva.pk}/{cant_hab}/{f_ini}/{f_ter}')
         else:
-            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter})
+            emp = Empresa.objects.get(nombre=request.user.first_name)
+            form = ReservaForms(initial={'fecha_inicio': f_ini,'fecha_termino':f_ter,'fk_id_empresa':emp.id})
         return render(request, 'reserva2/realizar_reserva_2.html', {'form': form,'cant_hab':cant_hab,'f_ini':f_ini,'f_ter':f_ter})
     return redirect('/')
 
@@ -791,10 +816,9 @@ def RealizarReserva2(request,f_ini,f_ter):
 def ReservaValidar(request,id,cant_hab,f_ini,f_ter):
     cant_huespedes = vCantHuespExcel(id)
     Valida = False
-    if cant_huespedes > cant_hab:
+    if cant_huespedes > cant_hab or cant_huespedes == 0:
         instacia= Reserva.objects.get(id=id)
         instacia.delete()
-        instacia.save()
     else:
         FromExcelToModel(id,f_ini,f_ter)
         Valida = True
@@ -836,8 +860,8 @@ def FromExcelToModel(id,f_ini,f_ter):
     excel = pd.read_excel(instacia.plantilla_huespedes.path)
     json_excel = excel.to_json(orient='values')
     obj = json.loads(json_excel)
-    print(len(obj))
 
+    precio_habs = 0
     index = 0
     for objs in obj:
         #huespedes
@@ -856,14 +880,24 @@ def FromExcelToModel(id,f_ini,f_ter):
         #habitaciones_reserva
         hab = habs_libres[index]
 
+        precio_habs = precio_habs + hab.precio
+
         new_habres = HabitacionesReserva()
         new_habres.fk_id_habitaciones = hab
         new_habres.fk_id_reserva = instacia
         new_habres.save()
         index += 1
 
+    f_ini_d = datetime.strptime(f_ini, "%Y-%m-%d")
+    f_ter_d = datetime.strptime(f_ter, "%Y-%m-%d")
+
+    new_orden_compra = OrdenCompra()
+    new_orden_compra.monto_pago = precio_habs*((f_ter_d-f_ini_d).days+1)
+    new_orden_compra.fk_id_reserva = instacia
+    new_orden_compra.save()
+
 def CheckIn(request,id_hab):
-    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
+    if request.user.groups.filter(name = "SECRETARIA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
         instacia= Habitacion.objects.get(id=id_hab)
         instacia.estado = 'reservada'
         instacia.save()
@@ -871,12 +905,10 @@ def CheckIn(request,id_hab):
         return redirect(request.META['HTTP_REFERER'])
     return redirect('/retiro-producto/listar')  
     
-def CheckOut(request,id_res):
+def CheckOut(id_res):
     instacia = HabitacionesReserva.objects.all().filter(fk_id_reserva=id_res)
-    if request.user.groups.filter(name = "EMPLEADO BODEGA" ).exists() or request.user.groups.filter(name = "ADMINISTRADOR" ).exists() or request.user.is_superuser:
-        for x in instacia:
-            hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
-            hab.estado = 'disponible'
-            hab.save()
-        return redirect(request.META['HTTP_REFERER'])
-    return redirect('/retiro-producto/listar') 
+    for x in instacia:
+        hab = Habitacion.objects.get(id=x.fk_id_habitaciones.id)
+        hab.estado = 'disponible'
+        hab.save()
+
