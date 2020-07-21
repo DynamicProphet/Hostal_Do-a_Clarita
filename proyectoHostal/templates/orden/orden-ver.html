@@ -16,6 +16,7 @@
             <h6>Cantidad de Servicios: {{sers}}</h6>
             <h6>Fecha de Inicio: {{orden.fk_id_reserva.fecha_inicio}}</h6>
             <h6>Fecha de Termino: {{orden.fk_id_reserva.fecha_termino}}</h6>
+            <h6>Cantidad de Dias: {{dias}}</h6>
             <h6>Total: ${{orden.monto_pago}}</h6>
         </div>
         <div class="mt-5 col-8 d-flex justify-content-between">
@@ -25,7 +26,7 @@
                     <thead>
                         <tr class="linea1">
                             <td>Habitación</td>	
-                            <td>Precio</td>
+                            <td>Valor Dia</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +49,7 @@
                     <thead>
                         <tr class="linea1">
                             <td>Servicio</td>	
-                            <td>Precio</td>
+                            <td>Valor Dia</td>
                         </tr>
                     </thead>
                     <tbody>

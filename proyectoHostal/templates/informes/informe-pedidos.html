@@ -9,26 +9,26 @@
 
 <form method="post" class="d-flex justify-content-center align-items-center h-720 flex-column" id="form_rest" style="height: 720px">
 	{% csrf_token %}
-	<h3 style="color: white;">Reporte de Facturas</h3>
+	<h3 style="color: white;">Reporte de Pedidos</h3>
 	<div style="max-height: 720px; overflow-y: scroll;">
         <table class="table table-bordered table-striped table-dark text-light mb-0 table-style">
 			<thead>
 				<tr class="linea1">
-					<td>RUT Cliente</td>	
-					<td>Desde</td>
-					<td>Hasta</td>
-					<td>Valor Dia</td>
+					<td>Pedido</td>	
+					<td>Producto</td>
+					<td>Cantidad</td>
+					<td>Precio</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% if facturas %}
+				{% if prodped %}
 
-				{% for f in facturas %}
+				{% for pp in prodped %}
 				<tr class="linea_producto">
-					<td>{{ f.fk_id_orden_compra.fk_id_reserva.fk_id_empresa.rut }}</td>
-					<td>{{ f.fk_id_orden_compra.fk_id_reserva.fecha_inicio }}</td>
-					<td>{{ f.fk_id_orden_compra.fk_id_reserva.fecha_termino }}</td>
-					<td>{{ f.fk_id_orden_compra.monto_pago }}</td>
+					<td>{{ pp.fk_id_pedido.id }}</td>	
+					<td>{{ pp.fk_id_producto.nombre }}</td>
+					<td>{{ pp.cantidad }}</td>	
+					<td>{{ pp.fk_id_producto.precio }}</td>
 				</tr>
 				{% endfor %}
 				
@@ -38,9 +38,9 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="row mt-2">
+    <div class="row mt-2">
         <a class="btn btn-secondary mr-5" href="/informe/crear">volver</a>
-        <a class="btn btn-primary" href="/informe/ExcelFac">Esportar a Excel</a>
+        <a class="btn btn-primary" href="/informe/ExcelPed">Esportar a Excel</a>
 	</div>
 </form>
 

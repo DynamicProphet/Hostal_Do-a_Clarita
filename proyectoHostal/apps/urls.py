@@ -122,6 +122,8 @@ urlpatterns = [
         path('crear', InformeCrear, name="crear-informe"),
         path('facturas', InformeCrearFacuras, name="facturas-informe"),
         path('ExcelFac', ExcelFacturas, name="facturas-excel"),
+        path('pedidos', InformeCrearPedidos, name="pedidos-informe"),
+        path('ExcelPed', ExcelPedidos, name="pedidos-excel"),
     ])),
     path('adm_habitaciones/', include([
         path('administracion-habitaciones/', AdministracionHabitaciones,

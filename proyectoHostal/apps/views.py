@@ -737,7 +737,7 @@ def OrdenListar(request):
                 ser = Servicio.objects.all().filter(id=r2.fk_id_servicio.id)
                 for s in ser:
                     total=total+s.precio
-            o.monto_pago=total
+            o.monto_pago=total*((o.fk_id_reserva.fecha_termino-o.fk_id_reserva.fecha_inicio).days+1)
             o.save()
         return render(request, 'orden/orden-listar.html', {'ordenes':ordenes})
     else:
@@ -756,7 +756,8 @@ def OrdenVer(request, id):
         for s in sers:
             x = Servicio.objects.get(id=s.fk_id_servicio.id)
             ts = ts + x.precio
-        return render(request, 'orden/orden-ver.html', {'orden':o, 'habs':len(habs), 'habitaciones':habs, 'totalh':th, 'sers':len(sers), 'servicios':sers, 'totals':ts})
+        dias = (o.fk_id_reserva.fecha_termino - o.fk_id_reserva.fecha_inicio).days + 1
+        return render(request, 'orden/orden-ver.html', {'orden':o, 'habs':len(habs), 'habitaciones':habs, 'totalh':th*dias, 'sers':len(sers), 'servicios':sers, 'totals':ts*dias, 'dias':dias})
 
     else:
         return redirect('/')
@@ -764,6 +765,8 @@ def OrdenVer(request, id):
 def InformeCrear(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
         return render(request, 'informes/informe-crear.html')
+    else:
+        return redirect('/')
 
 def InformeCrearFacuras(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
@@ -776,6 +779,8 @@ def InformeCrearFacuras(request):
             if n>0 and n<30:
                 lista.append(f)
         return render(request, 'informes/informe-facturas.html', {'facturas':lista})
+    else:
+        return redirect('/')
 
 def ExcelFacturas(request):
     if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
@@ -793,17 +798,20 @@ def ExcelFacturas(request):
         ws['A1'] = "RUT cliente"
         ws['B1'] = "Desde"
         ws['C1'] = "Hasta"
-        ws['D1'] = "Total Pago"
+        ws['D1'] = "Dias"
+        ws['E1'] = "Total Pago"
         
         cont=2
         total=0
 
         for f in lista:
+            dias = (f.fk_id_orden_compra.fk_id_reserva.fecha_termino-f.fk_id_orden_compra.fk_id_reserva.fecha_inicio).days+1
             ws.cell(row = cont, column = 1).value = f.fk_id_orden_compra.fk_id_reserva.fk_id_empresa.rut
             ws.cell(row = cont, column = 2).value = f.fk_id_orden_compra.fk_id_reserva.fecha_inicio
             ws.cell(row = cont, column = 3).value = f.fk_id_orden_compra.fk_id_reserva.fecha_termino
-            ws.cell(row = cont, column = 4).value = f.fk_id_orden_compra.monto_pago
-            total = total + f.fk_id_orden_compra.monto_pago
+            ws.cell(row = cont, column = 4).value = dias
+            ws.cell(row = cont, column = 5).value = f.fk_id_orden_compra.monto_pago*dias
+            total = total + (f.fk_id_orden_compra.monto_pago*dias)
             cont+=1
 
         ws.cell(row = cont, column = 1).value = 'Total :'
@@ -816,6 +824,62 @@ def ExcelFacturas(request):
         wb.save(response)
 
         return response
+    else:
+        return redirect('/')
+
+def InformeCrearPedidos(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        pedidos = Pedido.objects.all().order_by('id')
+        lista = []
+        for p in pedidos:
+            prodped = ProductosPedidos.objects.all().filter(fk_id_pedido=p.id)
+            for pp in prodped:
+                lista.append(pp)
+        return render(request, 'informes/informe-pedidos.html', {'prodped':lista})
+    else:
+        return redirect('/')
+
+def ExcelPedidos(request):
+    if request.user.groups.filter(name = "GERENTE" ).exists() or request.user.is_superuser:
+        pedidos = Pedido.objects.all().order_by('id')
+        lista = []
+        for p in pedidos:
+            prodped = ProductosPedidos.objects.all().filter(fk_id_pedido=p.id)
+            for pp in prodped:
+                lista.append(pp)
+
+        wb = Workbook()
+        ws = wb.active
+        ws['A1'] = "Pedido"
+        ws['B1'] = "Producto"
+        ws['C1'] = "Cantidad"
+        ws['D1'] = "Precio"
+        ws['E1'] = "Total"
+        
+        cont=2
+        total=0
+
+        for pp in lista:
+            ws.cell(row = cont, column = 1).value = pp.fk_id_pedido.id
+            ws.cell(row = cont, column = 2).value = pp.fk_id_producto.nombre
+            ws.cell(row = cont, column = 3).value = pp.cantidad
+            ws.cell(row = cont, column = 4).value = pp.fk_id_producto.precio
+            ws.cell(row = cont, column = 5).value = pp.fk_id_producto.precio*pp.cantidad
+            total = total + (pp.fk_id_producto.precio*pp.cantidad)
+            cont+=1
+
+        ws.cell(row = cont, column = 1).value = 'Total :'
+        ws.cell(row = cont, column = 2).value = total
+
+        nombre = "ReportePedidos.xlsx"
+        response = HttpResponse(content_type = "application/ms-excel")
+        content = "attachment; filename = {0}".format(nombre)
+        response['Content-Disposition'] = content
+        wb.save(response)
+
+        return response
+    else:
+        return redirect('/')
 
 #CU 7
 
